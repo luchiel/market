@@ -58,10 +58,9 @@ div#account
 
 #menu
 {
-    width: 150px;
     float: left;
     margin: 10px;
-    padding: 10px;
+    width: 150px;
     background-color: rgb(140, 140, 225);
 }
 
@@ -104,4 +103,68 @@ table#user_table tr.top td
 {
     background-color: rgb(140, 140, 225); 
     font-weight: bold;
+}
+
+ul.menu, ul.menu li
+{
+    margin: 0;
+    padding: 0;
+    width: 150px;
+}
+
+ul.menu li a
+{
+    margin: 0;
+}
+
+ul.menu:after
+{
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+ul.menu li
+{
+    float: left; 
+    position: relative;
+    background-color: rgb(140, 140, 225);
+    padding: 5px;
+    padding-left: 10px;
+}
+
+ul.menu ul
+{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 166px;
+}
+
+ul.menu li:hover ul,
+ul li ul.menu li:hover ul
+{
+    display: block;
+}
+
+ul.menu li:hover ul ul
+{
+    display: none;
+}
+
+li.menu_title
+{
+    font-style: italic;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(255, 255, 255);
+}
+
+li.menu_insert
+{
+/*    text-decoration: underline;*/
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(255, 255, 255);
 }

@@ -1,16 +1,16 @@
-from hashlib import sha1
 import random
 import string
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
 from django.template import RequestContext
-from market.models import User
-from market.forms import LoginForm, RegistrationForm, AccountForm, AdminRegistrationForm, AdminAccountForm
+from market.models import User, Category
+from market.forms import LoginForm, RegistrationForm, AdminRegistrationForm
+from market.forms import AccountForm, AdminAccountForm
+from market.forms import AddCategoryForm
 from market.shortcuts import direct_to_template
 
 
 def index(request):
-    return direct_to_template(request, 'index.html')
+    return direct_to_template(request, 'index.html', {'root': Category.objects.filter(depth=1)})
 
 
 def logout(request):
@@ -26,14 +26,16 @@ def login(request):
     if form.is_valid():
         request.session['user_id'] = form.user.id
         return HttpResponseRedirect('/theMarket/')
-    return direct_to_template(request, 'login.html', {'form': form})
+    return direct_to_template(
+        request, 'login.html', {'form': form, 'root': Category.objects.filter(depth=1)}
+    )
 
 
-def account(request, user_login):
-    if not request.user or (user_login != request.user.login and not request.user.is_admin):
+def edit_user(request, user_id):
+    if not request.user or (user_id != str(request.user.id) and not request.user.is_admin):
         return HttpResponseRedirect('/theMarket/')
     msg = ''
-    edited_user = User.objects.get(login=user_login)
+    edited_user = User.objects.get(id=user_id)
     form_class = AdminAccountForm if request.user.is_admin else AccountForm
     form = form_class(
         data=(
@@ -42,7 +44,7 @@ def account(request, user_login):
         ), user=edited_user
     )
     if request.method == 'POST' and form.is_valid():
-        if form.cleaned_data.get('password') != '':
+        if form.cleaned_data.get('password'):
             edited_user.password = edited_user.get_password_hash(form.cleaned_data['password'])
         edited_user.login = form.cleaned_data.get('login')
         edited_user.email = form.cleaned_data.get('email')
@@ -51,20 +53,20 @@ def account(request, user_login):
         edited_user.save()
         msg = 'Data saved'
     request.user = User.objects.get(id=request.user.id)
-    return direct_to_template(request, 'account.html', {'form': form, 'message': msg, 'current': edited_user})
-
-
-def add(request):
-    if not request.user or not request.user.is_admin:
-        return HttpResponseRedirect('/theMarket/users/')
-    return direct_to_template(request, 'registration.html', {'form': AdminRegistrationForm()})
+    return direct_to_template(
+        request, 'edit_user.html',
+        {
+            'form': form, 'message': msg, 'current': edited_user,
+            'root': Category.objects.filter(depth=1)
+        }
+    )
 
 
 def product(request, product_id):
     return HttpResponse("ID: %s" % product_id)
 
 
-def registration(request):
+def register(request):
     form_class = AdminRegistrationForm if request.user and request.user.is_admin else RegistrationForm
     form = form_class(request.POST or None)
     if form.is_valid():
@@ -78,21 +80,33 @@ def registration(request):
             user.is_admin = form.cleaned_data.get('is_admin')
         user.save()
         return HttpResponseRedirect('/theMarket/')
-    return direct_to_template(request, 'registration.html', {'form': form})
+    return direct_to_template(
+        request, 'registration.html', {'form': form, 'root': Category.objects.filter(depth=1)}
+    )
 
 
-def basket(request):
-    return HttpResponse("No goods in the basket")
+def basket(request, user_id):
+    return HttpResponse('No goods in the basket')
 
 
 def users(request):
-    return direct_to_template(request, 'users.html', {'users': User.objects.all(), 'current': request.user})
+    if not request.user:
+        return HttpResponseRedirect('/theMarket/')
+    else:
+        return direct_to_template(
+            request, 'users.html',
+            {
+                'users': User.objects.all(), 'current': request.user,
+                'root': Category.objects.filter(depth=1)
+            }
+        )
 
-def delete(request, user_login):
+
+def delete_user(request, user_id):
     if request.method == 'POST':
         if not request.user or not request.user.is_admin:
             return HttpResponseRedirect('/theMarket/')
-        user = User.objects.get(login=user_login)
+        user = User.objects.get(id=user_id)
         #admin must live!
         if user.is_admin and User.objects.filter(is_admin=True).count() == 1:
             return HttpResponseRedirect('/theMarket/users/')
@@ -101,3 +115,30 @@ def delete(request, user_login):
             del request.session['user_id']
         user.delete()
     return HttpResponseRedirect('/theMarket/users/')
+
+
+def add_category(request, parent_id):
+    form = AddCategoryForm(request.POST or None)
+    if form.is_valid():
+        category = Category(
+            name=form.cleaned_data['name'],
+            depth=0,
+        )
+        category.save()
+        category.make_path_and_depth(parent_id)
+        category.save()
+        return HttpResponseRedirect('/theMarket/')
+    if Category.objects.filter(id=parent_id).exists():
+        parent_name = Category.objects.get(id=parent_id).name
+    else:
+        parent_name = 'root'
+    return direct_to_template(
+        request, 'add_category.html',
+        {
+            'form': form, 'parent_id': parent_id, 'parent_name': parent_name,
+            'root': Category.objects.filter(depth=1)
+        }
+    )
+
+def category(request, category_id):
+    return HttpResponseRedirect('/theMarket/')

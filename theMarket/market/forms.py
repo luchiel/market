@@ -4,7 +4,7 @@ from market.models import User
 
 class UserBaseForm(forms.Form):
     login            = forms.RegexField(
-        regex='^[a-zA-Z0-9_-]+$',
+        regex='^[\w-]+$',
         max_length=200,
         error_messages={'invalid': 'Only latin letters, symbols \'-\', \'_\' and digits are accepted.'},
     )
@@ -35,13 +35,10 @@ class LoginForm(forms.Form):
 
 class RegistrationForm(UserBaseForm):
     def clean_login(self):
-        login = self.cleaned_data.get('login')
-        try:
-            User.objects.get(login=login)
-        except User.DoesNotExist:
-            return login
-        else:
-            raise forms.ValidationError('User with login "%s" already exists.' % login)
+        new_login = self.cleaned_data.get('login')
+        if User.objects.filter(login=new_login).exists():
+            raise forms.ValidationError('User with login \'%s\' already exists.' % new_login)
+        return new_login
 
 
 class AdminRegistrationForm(RegistrationForm):
@@ -57,18 +54,21 @@ class AccountForm(UserBaseForm):
         self.user = user
     
     def clean_login(self):
-        login = self.cleaned_data.get('login')
-        if User.objects.filter(login=login).exists():
-            if self.user.login != login:
-                raise forms.ValidationError('User with login "%s" already exists.' % login)
-        return login
+        new_login = self.cleaned_data.get('login')
+        if User.objects.filter(login=new_login).exists() and self.user.login != new_login:
+            raise forms.ValidationError('User with login \'%s\' already exists.' % new_login)
+        return new_login
 
 
 class AdminAccountForm(AccountForm):
     is_admin = forms.BooleanField(required=False)
         
     def clean_is_admin(self):
-        is_admin = self.cleaned_data.get('is_admin')
-        if self.user.is_admin and User.objects.filter(is_admin=True).count() == 1 and not is_admin:
+        new_is_admin = self.cleaned_data.get('is_admin')
+        if self.user.is_admin and User.objects.filter(is_admin=True).count() == 1 and not new_is_admin:
             raise forms.ValidationError('At least one administrator should exist.')
-        return is_admin
+        return new_is_admin
+
+
+class AddCategoryForm(forms.Form):
+    name = forms.CharField(max_length=200)

@@ -13,13 +13,13 @@
         <div id="userinfo">
             {% block userinfo %}
                 <div id="account">
-                    <a href="{% url theMarket.market.views.users %}">Users</a>
                     {% if request.user %}
-                        <a href="{% url theMarket.market.views.account user_login=request.user.login %}">Account</a>
-                        <a href="{% url theMarket.market.views.logout %}">Log out</a>
+                        <a href="{% url users %}">Users</a>
+                        <a href="{% url edit_user request.user.id %}">Account</a>
+                        <a href="{% url logout %}">Log out</a>
                     {% else %}
-                        <a href="{% url theMarket.market.views.login %}">Log in</a>
-                        <a href="{% url theMarket.market.views.registration %}">Registration</a>
+                        <a href="{% url login %}">Log in</a>
+                        <a href="{% url register %}">Registration</a>
                     {% endif %}
                 </div>
                 <div id="welcome">
@@ -28,14 +28,36 @@
             {% endblock userinfo %}
         </div>
         <div id="menu">
-            <ul>
-                {% block menu %}
-                <li><a href="">Goods</a></li>
-                <li><a href="">Bads</a></li>
-                <li><a href="">Very goods</a></li>
-                <li><a href="">This links</a></li>
-                <li><a href="">Do nothing</a></li>
-                {% endblock menu %}
+            <ul class="menu">
+                <li class="menu_title">Categories</li>
+                {% if request.user.is_admin %}
+                    <li class="menu_insert"><a href="{% url add_category 0 %}">Add category</a></li>
+                {% endif %}
+                {% for cat0 in root %}
+                <li>
+                    <a href="{% url category cat0.id %}">{{ cat0.name }}</a>
+                    <ul class="menu">
+                        {% if request.user.is_admin %}
+                            <li class="menu_insert"><a href="{% url add_category cat0.id %}">Add category</a></li>
+                        {% endif %}
+                        {% for cat1 in cat0.get_direct_child_categories %}
+                        <li>
+                            <a href="{% url category cat1.id %}">{{ cat1.name }}</a>
+                            <ul class="menu">
+                            {% if request.user.is_admin %}
+                                <li class="menu_insert"><a href="{% url add_category cat1.id %}">Add category</a></li>
+                            {% endif %}
+                            {% for cat2 in cat1.get_direct_child_categories %}
+                                <li>
+                                    <a href="{% url category cat2.id %}">{{ cat2.name }}</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
             </ul>
         </div>
         <div id="content">
