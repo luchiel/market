@@ -141,4 +141,12 @@ def add_category(request, parent_id):
     )
 
 def category(request, category_id):
-    return HttpResponseRedirect('/theMarket/')
+    if not Category.objects.filter(id=category_id).exists():
+        return HttpResponseRedirect('/theMarket/')
+    return direct_to_template(
+        request, 'category.html',
+        {
+            'category': Category.objects.get(id=category_id),
+            'root': Category.objects.filter(depth=1)
+        }
+    )

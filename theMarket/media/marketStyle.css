@@ -1,4 +1,4 @@
-body, div, p, img
+body, div, p, img, ul, li
 {
     margin: 0;
     border: 0;
@@ -117,14 +117,6 @@ ul.menu li a
     margin: 0;
 }
 
-ul.menu:after
-{
-    clear: both;
-    display: block;
-    height: 0;
-    visibility: hidden;
-}
-
 ul.menu li
 {
     float: left; 
@@ -163,8 +155,51 @@ li.menu_title
 
 li.menu_insert
 {
-/*    text-decoration: underline;*/
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: rgb(255, 255, 255);
+}
+
+ul#cat_menu li
+{
+    background-color: rgb(200, 200, 240);
+    float: left;
+    display: inline;
+    position: relative;
+    height: 30px;
+}
+
+ul#cat_menu ul
+{
+    background-color: rgb(200, 200, 240);
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+}
+
+ul#cat_menu ul li
+{
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: rgb(255, 255, 255);
+    float: left;
+    display: inline;
+    width: 150px;
+}
+
+ul#cat_menu a
+{
+    float: left;
+    display: block;
+}
+
+ul#cat_menu li:hover li a
+{
+    float: none;
+}
+
+ul#cat_menu li:hover ul
+{
+    display: block;
 }

@@ -20,6 +20,14 @@ class Category(models.Model):
     def get_parent_category(self):
         return Category.objects.get(path=self.path.rpartition('.')[0])
 
+    def get_category_sequence(self):
+        current = self
+        categories = [self]
+        while current.path != str(current.id):
+            current = current.get_parent_category()
+            categories.insert(0, current)
+        return categories
+
     def get_child_categories(self):
         return Category.objects.filter(path__startswith=self.path + '.')
 

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="category_menu">
+    <ul id="cat_menu">
+        {% for cat in category.get_category_sequence %}
+        <li>
+            <a href="{% url category cat.id %}">{{ cat.name }}</a>
+            &gt;
+            <ul>
+            {% for child_cat in cat.get_direct_child_categories %}
+                <li>
+                    <a href="{% url category child_cat.id %}">{{ child_cat.name }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}
