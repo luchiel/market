@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    {% load webdesign %}
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link type="text/css" rel="stylesheet" href="/media/marketStyle.css">
+        <title>theMarket</title>
+    </head>
+    <body>
+        <div id="logo">
+            <img src="/media/logo.jpg" alt="logotype"/>
+        </div>
+        <div id="userinfo">
+            {% block userinfo %}
+                <div id="account">
+                    {% if request.user %}
+                        <a href="{% url theMarket.market.views.account %}">Account</a>
+                        <a href="{% url theMarket.market.views.logout %}">Log out</a>
+                    {% else %}
+                        <a href="{% url theMarket.market.views.login %}">Log in</a>
+                        <a href="{% url theMarket.market.views.registration %}">Registration</a>
+                    {% endif %}
+                </div>
+                <div id="welcome">
+                    Welcome, {% if request.user %}{{request.user.login}}{% else %}Nobody{% endif %}.
+                </div>
+            {% endblock userinfo %}
+        </div>
+        <div id="menu">
+            <ul>
+                {% block menu %}
+                <li><a href="">Goods</a></li>
+                <li><a href="">Bads</a></li>
+                <li><a href="">Very goods</a></li>
+                <li><a href="">This links</a></li>
+                <li><a href="">Do nothing</a></li>
+                {% endblock menu %}
+            </ul>
+        </div>
+        <div id="content">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </body>
+</html>

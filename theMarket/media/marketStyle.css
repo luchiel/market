@@ -1,0 +1,67 @@
+body, div, p, img
+{
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+a
+{
+    margin: 10px;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+div#userinfo
+{
+    background-color: rgb(225, 155, 190);
+    margin: 10px;
+    margin-bottom: 0;
+    padding: 10px;
+}
+
+form ul, #menu ul
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+form.field_list label
+{
+    width: 10em;
+    display: block;
+    float: left;
+}
+
+form.field_list input
+{
+    display: block;
+}
+
+div#account
+{
+    float: right;
+}
+
+#content
+{
+    margin-left: 180px;
+    padding: 10px;
+}
+
+#menu
+{
+    width: 150px;
+    float: left;
+    margin: 10px;
+    padding: 10px;
+    background-color: rgb(225, 155, 190);
+}
+
+p.message
+{
+    font-style: italic;
+    padding: 5px;
+}
