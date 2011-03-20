@@ -1,34 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form class="table" id="users" action="/theMarket/users/" method="POST">{% csrf_token %}
-    <table id="user_table">
+<table id="user_table">
+    {% if current.is_admin %}
+    <tr class="top">
+        <td colspan="4"><a href="add">Add</a></td>
+    </tr>
+    {% endif %}
+    <tr class="top">
+        <td>Login</td>
+        <td>Email</td>
+        <td>IsAdmin</td>
         {% if current.is_admin %}
-        <tr class="top">
-            <td colspan="4"><a href="add">Add</a></td>
-        </tr>
+            <td></td>
         {% endif %}
-        <tr class="top">
-            <td>Login</td>
-            <td>Email</td>
-            <td>IsAdmin</td>
+    </tr>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.login }}</td>
+            <td>{{ user.email }}</td>
+            <td>{% if user.is_admin %}+{% else %}-{% endif %}</td>
             {% if current.is_admin %}
-                <td></td>
+            <td >
+                <a href="{% url theMarket.market.views.account user_login=user.login %}">Edit</a>
+                <form class="delete_button" action="{% url theMarket.market.views.delete user_login=user.login %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
             {% endif %}
         </tr>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.login }}</td>
-                <td>{{ user.email }}</td>
-                <td>{% if user.is_admin %}+{% else %}-{% endif %}</td>
-                {% if current.is_admin %}
-                <td >
-                    <a href="{% url theMarket.market.views.account user_login=user.login %}">Edit</a>
-                    <input type="submit" value="Delete" />
-                </td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-    </table>
-</form>
+    {% endfor %}
+</table>
 {% endblock content %}

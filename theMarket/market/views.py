@@ -37,6 +37,7 @@ def account(request, user_login):
         return HttpResponseRedirect('/theMarket/')
     if user_login != request.user.login and not request.user.is_admin:
         return HttpResponseRedirect('/theMarket/')
+    #admin can be only one!
     msg = ''
     edited_user = User.objects.get(login=user_login)
     if request.method == 'POST':
@@ -102,8 +103,18 @@ def basket(request):
 
 
 def users(request):
-    if request.method == 'POST':
-        pass
-    else:
-        pass
     return direct_to_template(request, 'users.html', {'users': User.objects.all(), 'current': request.user})
+
+def delete(request, user_login):
+    if request.method == 'POST':
+        if not request.user or not request.user.is_admin:
+            return HttpResponseRedirect('/theMarket/')
+        #admin can be only one!
+        user = User.objects.get(login=user_login)
+        if user.id == request.user.id:
+            del request.session['user_id']
+        user.delete()
+        #del user
+        return HttpResponseRedirect('/theMarket/users/')
+    else:
+        return HttpResponseRedirect('/theMarket/users/')
