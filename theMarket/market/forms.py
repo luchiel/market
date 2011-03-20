@@ -62,6 +62,12 @@ class AccountForm(UserBaseForm):
             if self.user.login != login:
                 raise forms.ValidationError('User with login "%s" already exists.' % login)
         return login
+        
+    def clean_is_admin(self):
+        is_admin = self.cleaned_data.get('is_admin')
+        if self.user.is_admin and User.objects.filter(is_admin=True).count() == 1 and not is_admin:
+            raise forms.ValidationError('At least one administrator should exist.')
+        return is_admin
 
 
 class AdminAccountForm(AccountForm):

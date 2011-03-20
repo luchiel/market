@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from market.models import User
-from market.forms import UserBaseForm, LoginForm, RegistrationForm, AccountForm, AdminRegistrationForm, AdminAccountForm
+from market.forms import LoginForm, RegistrationForm, AccountForm, AdminRegistrationForm, AdminAccountForm
 from market.shortcuts import direct_to_template
 
 
@@ -37,7 +37,6 @@ def account(request, user_login):
         return HttpResponseRedirect('/theMarket/')
     if user_login != request.user.login and not request.user.is_admin:
         return HttpResponseRedirect('/theMarket/')
-    #admin can be only one!
     msg = ''
     edited_user = User.objects.get(login=user_login)
     if request.method == 'POST':
@@ -51,12 +50,22 @@ def account(request, user_login):
             edited_user.login = form.cleaned_data.get('login')
             edited_user.email = form.cleaned_data.get('email')
             if 'is_admin' in form.cleaned_data:
+                #admin must live!
+                #if
+                #    edited_user.is_admin and
+                #    User.objects.filter(is_admin=True).count() == 1 and
+                #    form.cleaned_data.get('is_admin') == False:
+                #    return HttpResponseRedirect('/theMarket/users/')
+                #end
                 edited_user.is_admin = form.cleaned_data.get('is_admin')
             edited_user.save()
             msg = 'Data saved'
     else:
         if request.user.is_admin:
-            form = AdminAccountForm(data={'login': edited_user.login, 'email': edited_user.email, 'is_admin': edited_user.is_admin}, user=edited_user)
+            form = AdminAccountForm(
+                data={'login': edited_user.login, 'email': edited_user.email, 'is_admin': edited_user.is_admin},
+                user=edited_user
+            )
         else:
             form = AccountForm(data={'login': edited_user.login, 'email': edited_user.email}, user=edited_user)
     request.user = User.objects.get(id=request.user.id)
@@ -109,12 +118,14 @@ def delete(request, user_login):
     if request.method == 'POST':
         if not request.user or not request.user.is_admin:
             return HttpResponseRedirect('/theMarket/')
-        #admin can be only one!
         user = User.objects.get(login=user_login)
+        #admin must live!
+        if user.is_admin and User.objects.filter(is_admin=True).count() == 1:
+            return HttpResponseRedirect('/theMarket/users/')
+        #end
         if user.id == request.user.id:
             del request.session['user_id']
         user.delete()
-        #del user
         return HttpResponseRedirect('/theMarket/users/')
     else:
         return HttpResponseRedirect('/theMarket/users/')
