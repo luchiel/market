@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'F:/_repo/market/theMarket/market/database/theMarketDB.sqlite3',
+        'NAME': os.path.join(CURRENT_DIR, 'database/theMarketDB.sqlite3'),
         'USER': '',  
         'PASSWORD': '',
         'HOST': '',

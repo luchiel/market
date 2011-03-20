@@ -1,19 +1,23 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
-from market.models import User
 from hashlib import sha1
-from market.forms import LoginForm, RegistrationForm, AccountForm
 import random
 import string
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.template import RequestContext
+from market.models import User
+from market.forms import UserBaseForm, LoginForm, RegistrationForm, AccountForm, AdminRegistrationForm, AdminAccountForm
+from market.shortcuts import direct_to_template
+
 
 def index(request):
-    return render_to_response('index.html', context_instance=RequestContext(request))
-    
+    return direct_to_template(request, 'index.html')
+
+
 def logout(request):
     if 'user_id' in request.session:
         del request.session['user_id']
     return HttpResponseRedirect('/theMarket/')
+
 
 def login(request):
     if request.user:
@@ -25,43 +29,55 @@ def login(request):
             return HttpResponseRedirect('/theMarket/')
     else:
         form = LoginForm()
-    return render_to_response(
-        'login.html',
-        {
-            'form': form,
-        },
-        context_instance=RequestContext(request)
-    )
+    return direct_to_template(request, 'login.html', {'form': form})
 
-def account(request):
+
+def account(request, user_login):
     if not request.user:
         return HttpResponseRedirect('/theMarket/')
+    if user_login != request.user.login and not request.user.is_admin:
+        return HttpResponseRedirect('/theMarket/')
     msg = ''
+    edited_user = User.objects.get(login=user_login)
     if request.method == 'POST':
-        form = AccountForm(request.POST)
+        if request.user.is_admin:
+            form = AdminAccountForm(data=request.POST, user=edited_user)
+        else:
+            form = AccountForm(data=request.POST, user=edited_user)
         if form.is_valid():
-            if form.cleaned_data.get('new_password') != '':
-                request.user.password = request.user.get_password_hash(form.cleaned_data['new_password'])
-            request.user.email = form.cleaned_data.get('email')
-            request.user.save()
+            if form.cleaned_data.get('password') != '':
+                edited_user.password = edited_user.get_password_hash(form.cleaned_data['password'])
+            edited_user.login = form.cleaned_data.get('login')
+            edited_user.email = form.cleaned_data.get('email')
+            if 'is_admin' in form.cleaned_data:
+                edited_user.is_admin = form.cleaned_data.get('is_admin')
+            edited_user.save()
             msg = 'Data saved'
     else:
-        form = AccountForm({'email': request.user.email})
-    return render_to_response(
-        'account.html',
-        {
-            'form': form,
-            'message': msg,
-        },
-        context_instance=RequestContext(request)
-    )
+        if request.user.is_admin:
+            form = AdminAccountForm(data={'login': edited_user.login, 'email': edited_user.email, 'is_admin': edited_user.is_admin}, user=edited_user)
+        else:
+            form = AccountForm(data={'login': edited_user.login, 'email': edited_user.email}, user=edited_user)
+    request.user = User.objects.get(id=request.user.id)
+    return direct_to_template(request, 'account.html', {'form': form, 'message': msg, 'current': edited_user})
+
+
+def add(request):
+    if not request.user or not request.user.is_admin:
+        return HttpResponseRedirect('/theMarket/users/')
+    return direct_to_template(request, 'registration.html', {'form': AdminRegistrationForm()})
+
 
 def product(request, product_id):
     return HttpResponse("ID: %s" % product_id)
 
+
 def registration(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        if request.user and request.user.is_admin:
+            form = AdminRegistrationForm(request.POST)
+        else:
+            form = RegistrationForm(request.POST)
         if form.is_valid():
             user = User(
                 login=form.cleaned_data['login'],
@@ -69,26 +85,25 @@ def registration(request):
                 salt=''.join(random.choice(string.letters) for i in range(10)),
             )
             user.password = user.get_password_hash(form.cleaned_data['password'])
+            if 'is_admin' in form.cleaned_data:
+                user.is_admin = form.cleaned_data.get('is_admin')
             user.save()
             return HttpResponseRedirect('/theMarket/')
     else:
-        form = RegistrationForm()
-    return render_to_response(
-        'registration.html',
-        {
-            'form': form,
-        },
-        context_instance=RequestContext(request)
-    )
+        if request.user and request.user.is_admin:
+            form = AdminRegistrationForm()
+        else:
+            form = RegistrationForm()
+    return direct_to_template(request, 'registration.html', {'form': form})
+
 
 def basket(request):
     return HttpResponse("No goods in the basket")
-    
+
+
 def users(request):
-    return render_to_response(
-        'users.html',
-        {
-            'users': User.objects.all().order_by('login'),
-        },
-        context_instance=RequestContext(request)
-    )
+    if request.method == 'POST':
+        pass
+    else:
+        pass
+    return direct_to_template(request, 'users.html', {'users': User.objects.all(), 'current': request.user})

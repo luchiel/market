@@ -6,6 +6,7 @@ class User(models.Model):
     password = models.CharField(max_length=40)
     email    = models.EmailField()
     salt     = models.CharField(max_length=10)
+    is_admin = models.BooleanField(default=False)
     def __unicode__(self):
         return self.login
     def get_password_hash(self, password):

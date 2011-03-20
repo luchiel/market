@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form class="field_list" id="login" action="/theMarket/login/" method="POST">{% csrf_token %}
+<form class="field_list" id="login" action="{% url theMarket.market.views.login %}" method="POST">{% csrf_token %}
     <ul>
     {{ form.as_ul }}
     </ul>

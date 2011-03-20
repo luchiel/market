@@ -13,8 +13,9 @@
         <div id="userinfo">
             {% block userinfo %}
                 <div id="account">
+                    <a href="{% url theMarket.market.views.users %}">Users</a>
                     {% if request.user %}
-                        <a href="{% url theMarket.market.views.account %}">Account</a>
+                        <a href="{% url theMarket.market.views.account user_login=request.user.login %}">Account</a>
                         <a href="{% url theMarket.market.views.logout %}">Log out</a>
                     {% else %}
                         <a href="{% url theMarket.market.views.login %}">Log in</a>
