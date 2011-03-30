@@ -1,0 +1,4 @@
+*.pyc
+*.sqlite
+theMarket/media/development-bundle/*
+theMarket/media/js/src/*
