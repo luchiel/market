@@ -4,7 +4,12 @@
 <table id="user_table">
     {% if current.is_admin %}
     <tr class="top">
-        <td colspan="4"><a href="{% url register %}">Add</a></td>
+        <td colspan="4">
+            <form action="{% url register %}" method="GET">
+                {% csrf_token %}
+                <input class="user_button" type="submit" value="Add" />
+            </form>
+        </td>
     </tr>
     {% endif %}
     <tr class="top">
@@ -22,10 +27,13 @@
             <td>{% if user.is_admin %}+{% else %}-{% endif %}</td>
             {% if current.is_admin %}
             <td >
-                <a href="{% url edit_user user.id %}">Edit</a>
-                <form class="delete_button" action="{% url delete_user user.id %}" method="POST">
+                <form action="{% url edit_user user.id %}" method="GET">
                     {% csrf_token %}
-                    <input type="submit" value="Delete" />
+                    <input class="user_button" type="submit" value="Edit" />
+                </form>
+                <form action="{% url delete_user user.id %}" method="POST">
+                    {% csrf_token %}
+                    <input class="user_button" type="submit" value="Delete" />
                 </form>
             </td>
             {% endif %}

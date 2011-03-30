@@ -1,0 +1,2 @@
+;
+insert into main.market_category(id, parent_id, depth, path, name) values (1, 1, 0, '1', 'root');

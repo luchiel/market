@@ -13,16 +13,17 @@ class User(models.Model):
         return sha1(self.salt + password).hexdigest()
 
 class Category(models.Model):
-    depth = models.IntegerField()
-    path  = models.CharField(max_length=40, unique=True)
-    name  = models.CharField(max_length=200)
+    depth  = models.IntegerField()
+    parent = models.ForeignKey('self')
+    path   = models.CharField(max_length=40, unique=True)
+    name   = models.CharField(max_length=200)
 
     def get_parent_category(self):
         return Category.objects.get(path=self.path.rpartition('.')[0])
 
     def get_category_sequence(self):
         current = self
-        categories = [self]
+        categories = []
         while current.path != str(current.id):
             current = current.get_parent_category()
             categories.insert(0, current)
@@ -35,13 +36,10 @@ class Category(models.Model):
         return Category.objects.filter(path__startswith=self.path + '.', depth=self.depth + 1)
 
     def make_path_and_depth(self, parent_id):
-        if parent_id != '0':
-            parent = Category.objects.get(id=int(parent_id)) 
-            self.path = parent.path + '.' + str(self.id)
-            self.depth = parent.depth + 1
-        else:
-            self.path = self.id
-            self.depth = 1
+        parent = Category.objects.get(id=parent_id)
+        parent_obj = Category.objects.get(id=int(parent_id))
+        self.path = parent_obj.path + '.' + str(self.id)
+        self.depth = parent_obj.depth + 1
 
     def get_products(self):
         return Product.objects.filter(category=self.id)

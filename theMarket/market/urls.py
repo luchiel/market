@@ -15,4 +15,7 @@ urlpatterns = patterns('theMarket.market.views',
     url(r'^(?P<user_id>\d+)/basket/$', 'basket', name='basket'),
     url(r'^categories/(?P<parent_id>\d+)/addcategory/$', 'add_category', name='add_category'),
     url(r'^categories/(?P<category_id>\d+)/$', 'category', name='category'),
+    url(r'^categories/(?P<category_id>\d+)/deletecategory/$', 'delete_category', name='delete_category'),
+    url(r'^.*category_tree/(?P<location>.*)/$', 'category_tree', name='category_tree'),
+    #url(r'^.*category_tree/$', 'category_tree', name='category_tree'),
 )

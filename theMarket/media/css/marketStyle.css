@@ -52,15 +52,15 @@ div#account
 
 #content
 {
-    margin-left: 180px;
     padding: 10px;
+    float: left;
 }
 
 #menu
 {
     float: left;
     margin: 10px;
-    width: 150px;
+    /*width: 150px;*/
     background-color: rgb(140, 140, 225);
 }
 
@@ -202,4 +202,39 @@ ul#cat_menu li:hover li a
 ul#cat_menu li:hover ul
 {
     display: block;
+}
+
+.small_margin
+{
+    margin: 5px;
+}
+
+div#category_menu
+{
+    float: left;
+    margin-bottom: 10px;
+}
+
+ul.marked
+{
+    list-style: square;
+    margin-left: 20px;
+}
+
+input.user_button
+{
+/*    width: 20px;*/
+}
+
+div#category_not_menu div
+{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    float: none;
+    clear: left;
+}
+
+.jqgrow:hover
+{
+    cursor: pointer;
 }

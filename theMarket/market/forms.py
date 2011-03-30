@@ -70,5 +70,6 @@ class AdminAccountForm(AccountForm):
         return new_is_admin
 
 
-class AddCategoryForm(forms.Form):
+class CategoryForm(forms.Form):
     name = forms.CharField(max_length=200)
+
