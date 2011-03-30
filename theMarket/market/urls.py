@@ -17,5 +17,4 @@ urlpatterns = patterns('theMarket.market.views',
     url(r'^categories/(?P<category_id>\d+)/$', 'category', name='category'),
     url(r'^categories/(?P<category_id>\d+)/deletecategory/$', 'delete_category', name='delete_category'),
     url(r'^.*category_tree/(?P<location>.*)/$', 'category_tree', name='category_tree'),
-    #url(r'^.*category_tree/$', 'category_tree', name='category_tree'),
 )

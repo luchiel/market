@@ -170,9 +170,11 @@ def category(request, category_id):
 
 def delete_category(request, category_id):
     def move_upstairs_recursive(cat, new_parent_id):
+        children = cat.get_direct_child_categories()
         cat.make_path_and_depth(new_parent_id)
-        for c in cat.get_direct_child_categories():
-            c.move_upstairs_recursive(c, cat.id)
+        cat.save()
+        for c in children:
+            move_upstairs_recursive(c, cat.id)
             
     if category_id == '1':
         return redirect('category', category_id=category_id)
@@ -181,7 +183,7 @@ def delete_category(request, category_id):
     if request.method == 'POST' and request.user and request.user.is_admin:
         #children?
         for cat in category.get_direct_child_categories():
-            move_upstairs_recursive(cat, category.parent.id)
+            move_upstairs_recursive(cat, parent_id)
         category.delete()
     #goods?
     return redirect('category', category_id='1')
@@ -198,7 +200,7 @@ def category_tree(request, location):
     cats = []
     
     def add(node):
-        parent_id = node.parent.id #if node.id != node.parent.id else None
+        parent_id = node.parent.id if node.id != node.parent.id else None
         children = node.get_direct_child_categories()
         cats.append({
             'id': node.id,
@@ -206,7 +208,7 @@ def category_tree(request, location):
                 node.id,
                 node.name,
                 node.id,
-                node.depth - 1,
+                node.depth,
                 parent_id,
                 len(children) == 0,
                 node in category_path,
@@ -215,8 +217,8 @@ def category_tree(request, location):
         map(add, children)
 
     # skip root
-    map(add, Category.objects.filter(depth='1'))
-    #add(Category.objects.get(depth='0'))
+    #map(add, Category.objects.filter(depth='1'))
+    add(Category.objects.get(depth='0'))
 
     result = {
         'records': len(cats),

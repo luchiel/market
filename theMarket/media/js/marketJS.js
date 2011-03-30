@@ -16,7 +16,8 @@ $('#categories').jqGrid({
     ExpandColumn: 'name',
     ExpandColClick: true,
     autowidth: true,
-    onSelectRow: function (rid, status) {
+    onSelectRow: function (rid, status)
+    {
         row = $('.jqgrow[id="' + rid + '"]');
         true_id = $('td[aria-describedby=categories_true_id]', row).attr('title');
         window.location.pathname = '/theMarket/categories/' + true_id;

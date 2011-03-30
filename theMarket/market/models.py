@@ -15,7 +15,7 @@ class User(models.Model):
 class Category(models.Model):
     depth  = models.IntegerField()
     parent = models.ForeignKey('self')
-    path   = models.CharField(max_length=40, unique=True)
+    path   = models.CharField(max_length=40)
     name   = models.CharField(max_length=200)
 
     def get_parent_category(self):
@@ -36,10 +36,11 @@ class Category(models.Model):
         return Category.objects.filter(path__startswith=self.path + '.', depth=self.depth + 1)
 
     def make_path_and_depth(self, parent_id):
-        parent = Category.objects.get(id=parent_id)
-        parent_obj = Category.objects.get(id=int(parent_id))
-        self.path = parent_obj.path + '.' + str(self.id)
-        self.depth = parent_obj.depth + 1
+        #self.parent_id = parent_id
+        self.parent = Category.objects.get(id=parent_id)
+        #parent = Category.objects.get(id=parent_id)
+        self.path = self.parent.path + '.' + str(self.id)
+        self.depth = self.parent.depth + 1
 
     def get_products(self):
         return Product.objects.filter(category=self.id)
