@@ -1,4 +1,5 @@
-*.pyc
-*.sqlite
+theMarket/*.pyc
+theMarket/market/*.pyc
+theMarket/database/*.sqlite
 theMarket/media/development-bundle/*
 theMarket/media/js/src/*
