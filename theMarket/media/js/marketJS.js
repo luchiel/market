@@ -10,12 +10,14 @@ $('#categories').jqGrid({
     colNames: ['id', 'name', 'true_id'],
     colModel: [
         { name: 'id', hidden: true, key: true },
-        { name: 'name' },
+        { name: 'name', width: 400, search: true },
         { name: 'true_id', hidden: true }
     ],
     ExpandColumn: 'name',
     ExpandColClick: true,
-    autowidth: true,
+    rowNum: 200,
+    shrinkToFit: 400,
+    width: 200,
     onSelectRow: function (rid, status)
     {
         row = $('.jqgrow[id="' + rid + '"]');
@@ -23,6 +25,8 @@ $('#categories').jqGrid({
         window.location.pathname = '/theMarket/categories/' + true_id;
     }
 });
+
+$('#categories').jqGrid('filterToolbar', { stringResult: true, searchOnEnter: false });
 
 $('.ui-jqgrid-titlebar-close').remove();
 $('.ui-jqgrid-labels').remove();

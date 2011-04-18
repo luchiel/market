@@ -2,17 +2,25 @@
 
 {% block content %}
 
-<form id="product" action="{% url add_product category.id %}" method="POST">
+<form id="product" class="field_list" action="{% url add_product category.id %}" method="POST" enctype="multipart/form-data">
 {% csrf_token %}
-<table id="product_info">
-    <tr>
-        <td><input type="text" value="Input name" /></td>
-        <td colspan="2"><input type="text" value="Input description" /></td>
-    </tr>
-    <tr>
-        <td><input id="id_image" type="file" name="image" /></td>
-    </tr>
-</table>
+<ul id="product_info">
+    <li>
+        {{ form.name.errors }}
+        <label for="name">Name:</label>
+        <input type="text" name="name" />
+    </li>
+    <li>
+        {{ form.image.errors }}
+        <label for="image">Image:</label>
+        <input id="id_image" type="file" name="image" />
+    </li>
+    <li>
+        {{ form.description.errors }}
+        <label for="description">Description:</label>
+        <textarea type="text" rows="3" cols="30" name="description"></textarea>
+    </li>
+</ul>
 <input type="submit" value="Add" />
 </form>
 

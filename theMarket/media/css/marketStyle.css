@@ -15,7 +15,7 @@ a
 
 div#content
 {
-    width: 500px;
+    width: 600px;
 }
 
 div#userinfo
@@ -45,7 +45,7 @@ form.field_list label
     float: left;
 }
 
-form.field_list input
+form.field_list input, form.field_list textarea
 {
     display: block;
 }

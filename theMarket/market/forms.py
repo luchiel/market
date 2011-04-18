@@ -81,7 +81,7 @@ class MoveCategoryForm(forms.Form):
 
 class AddProductForm(forms.Form):
     name = forms.CharField(max_length=200)
-    image = forms.ImageField()
+    image = forms.ImageField(required=False)
     description = forms.CharField()
 
 

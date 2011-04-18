@@ -51,7 +51,8 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name     = models.CharField(max_length=200)
-    category = models.ForeignKey(Category)
-    image    = models.CharField(max_length=200)
+    name        = models.CharField(max_length=200)
+    description = models.TextField()
+    image       = models.CharField(max_length=200)
+    category    = models.ForeignKey(Category)
 

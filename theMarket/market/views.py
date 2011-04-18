@@ -6,7 +6,7 @@ from django.utils import simplejson as json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.template import RequestContext
-from market.models import User, Category
+from market.models import User, Category, Product
 from market.forms import LoginForm, RegistrationForm, AdminRegistrationForm
 from market.forms import AccountForm, AdminAccountForm
 from market.forms import CategoryForm, MoveCategoryForm
@@ -158,12 +158,11 @@ def delete_category(request, category_id):
 def category_tree(request, location, category_id):
     x = re.match(r'.*categories/(\d+)', location)
     category_path = []
+    cats = []
     if x:
         current_cat = Category.objects.get(id=int(x.group(1)))
         category_path = current_cat.get_category_sequence()
         category_path.append(current_cat)
-
-    cats = []
 
     def add(node):
         parent_id = node.get_parent_category().id if node.depth != 0 else None
@@ -183,9 +182,32 @@ def category_tree(request, location, category_id):
             ],
         })
         map(add, children)
+        
+    def add_list(keyword):
+        categories = Category.objects.filter(name__startswith=keyword)
+        for cat in categories:
+            cats.append({
+                'id': cat.id,
+                'cell': [
+                    cat.id,
+                    cat.name,
+                    cat.id,
+                    0,
+                    0,
+                    True,
+                    False,
+                ],
+            })
 
-    add(Category.objects.get(depth='0'))
-
+    keyword = request.GET.get('search_keyword', '')
+    if 'filters' in request.GET and keyword == '':
+        rules = json.loads(request.GET['filters'])['rules']
+        if rules:
+            keyword = rules[0]['data']
+    if keyword == '':
+        add(Category.objects.get(depth='0'))
+    else:
+        add_list(keyword)
     result = {
         'records': len(cats),
         'page': 1,
@@ -212,9 +234,9 @@ def move_category(request, category_id, parent_id):
 
 
 def product(request, product_id):
-    product = Proguct.objects.get(id=product_id)
+    product = Product.objects.get(id=product_id)
     form = ProductForm(request.POST or {'name': product.name, 'category': category, 'image': product.image})
-    return direct_to_template(request, 'edit_product.html', {'current': request.user, 'form': form})
+    return direct_to_template(request, 'edit_product.html', {'current': request.user, 'product': product, 'form': form})
 #onPOST!
 
 def add_product(request, category_id):
@@ -222,7 +244,7 @@ def add_product(request, category_id):
     def save_image(i):
         hash = md5()
         map(hash.update, i.chunks())
-        iname = IMAGE_PATH + hash.hexdigest() + i.name.rpartition('.')[2]
+        iname = IMAGE_PATH + hash.hexdigest() + '.' + i.name.rpartition('.')[2]
         with open(iname, 'wb+') as dest:
             map(dest.write, i.chunks())
         return iname
@@ -232,8 +254,13 @@ def add_product(request, category_id):
     category = Category.objects.get(id=category_id)
     form = AddProductForm(request.POST, request.FILES) if request.POST else AddProductForm()
     if request.POST and form.is_valid():
-        image = save_image(request.FILES['image'])
-        product = Product(form.cleaned_data.get('name'), category, image)
+        image = save_image(request.FILES['image']) if 'image' in request.FILES else ''
+        product = Product(
+            name=form.cleaned_data.get('name'),
+            description=form.cleaned_data.get('description'),
+            image=image,
+            category=category,
+        )
         product.save()
         return redirect('product', product_id=product.id)
     return direct_to_template(
@@ -247,6 +274,7 @@ def delete_product(request, product_id):
         return redirect('category', category_id=category_id)
     product = Product.objects.get(id=product_id)
     category_id = product.category.id
-    os.remove(product.image)
+    if product.image != '' and os.path.exists(os.getcwd() + product.image):
+        os.remove(os.getcwd() + product.image)
     product.delete()
     return redirect('category', category_id=category_id)
