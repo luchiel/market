@@ -73,3 +73,17 @@ class AdminAccountForm(AccountForm):
 class CategoryForm(forms.Form):
     name = forms.CharField(max_length=200)
 
+
+class MoveCategoryForm(forms.Form):
+    parent = forms.CharField(max_length=200, widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    parent_id = forms.IntegerField(widget=forms.HiddenInput)
+
+
+class AddProductForm(forms.Form):
+    name = forms.CharField(max_length=200)
+    image = forms.ImageField()
+    description = forms.CharField()
+
+
+class ProductForm(forms.Form):
+    pass

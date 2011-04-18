@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-$('#categories').jqGrid({
-    url: 'category_tree' + window.location.pathname + '0/',
+$('#move_category').jqGrid({
+    url: 'category_tree' + window.location.pathname + $('#category_id').attr('value') + '/',
     datatype: 'json',
     height: 'auto',
     treeGrid: true,
@@ -19,8 +19,8 @@ $('#categories').jqGrid({
     onSelectRow: function (rid, status)
     {
         row = $('.jqgrow[id="' + rid + '"]');
-        true_id = $('td[aria-describedby=categories_true_id]', row).attr('title');
-        window.location.pathname = '/theMarket/categories/' + true_id;
+        $('#id_parent').attr('value', $('td[aria-describedby=categories_name]', row).attr('title'));
+        $('#id_parent_id').attr('value', $('td[aria-describedby=categories_true_id]', row).attr('title'));
     }
 });
 

@@ -13,10 +13,9 @@ class User(models.Model):
         return sha1(self.salt + password).hexdigest()
 
 class Category(models.Model):
-    depth  = models.IntegerField()
-    parent = models.ForeignKey('self')
-    path   = models.CharField(max_length=40)
-    name   = models.CharField(max_length=200)
+    depth = models.IntegerField()
+    path  = models.CharField(max_length=40)
+    name  = models.CharField(max_length=200)
 
     def get_parent_category(self):
         return Category.objects.get(path=self.path.rpartition('.')[0])
@@ -36,15 +35,23 @@ class Category(models.Model):
         return Category.objects.filter(path__startswith=self.path + '.', depth=self.depth + 1)
 
     def make_path_and_depth(self, parent_id):
-        #self.parent_id = parent_id
-        self.parent = Category.objects.get(id=parent_id)
-        #parent = Category.objects.get(id=parent_id)
-        self.path = self.parent.path + '.' + str(self.id)
-        self.depth = self.parent.depth + 1
+        parent = Category.objects.get(id=parent_id)
+        self.path = parent.path + '.' + str(self.id)
+        self.depth = parent.depth + 1
 
     def get_products(self):
         return Product.objects.filter(category=self.id)
 
+    def change_parent(self, new_parent_id):
+        children = self.get_direct_child_categories()
+        self.make_path_and_depth(new_parent_id)
+        self.save()
+        for c in children:
+            c.change_parent(self.id)
+
+
 class Product(models.Model):
     name     = models.CharField(max_length=200)
     category = models.ForeignKey(Category)
+    image    = models.CharField(max_length=200)
+

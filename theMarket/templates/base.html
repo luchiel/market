@@ -10,6 +10,8 @@
         <script src="/media/js/grid.locale-en.js" type="text/javascript"></script>
         <script src="/media/js/jquery.jqGrid.min.js" type="text/javascript"></script>
         <script src="/media/js/marketJS.js" type="text/javascript"></script>
+        {% block scripts %}
+        {% endblock scripts %}
         <title>theMarket</title>
     </head>
     <body>
@@ -33,62 +35,12 @@
                 </div>
             {% endblock userinfo %}
         </div>
-<!--
-        <div id="menu">
-            <ul class="menu">
-                <li class="menu_title"><a href="{% url category root.id %}">Categories</a></li>
-                {% if request.user.is_admin %}
-                    <li class="menu_insert">
-                        <form class="field_list" id="add_category" action="{% url add_category 1 %}" method="GET">
-                        {% csrf_token %}
-                            <input type="submit" value="Add category" />
-                        </form>
-                    </li>
-                {% endif %}
-                {% for cat0 in root.get_direct_child_categories %}
-                <li>
-                    <a href="{% url category cat0.id %}">{{ cat0.name }}</a>
-                    <ul class="menu">
-                        {% if request.user.is_admin %}
-                            <li class="menu_insert">
-                                <form class="field_list" id="add_category" action="{% url add_category cat0.id %}" method="GET">
-                                {% csrf_token %}
-                                    <input type="submit" value="Add category" />
-                                </form>
-                            </li>
-                        {% endif %}
-                        {% for cat1 in cat0.get_direct_child_categories %}
-                        <li>
-                            <a href="{% url category cat1.id %}">{{ cat1.name }}</a>
-                            <ul class="menu">
-                            {% if request.user.is_admin %}
-                                <li class="menu_insert">
-                                    <form class="field_list" id="add_category" action="{% url add_category cat1.id %}" method="GET">
-                                    {% csrf_token %}
-                                        <input type="submit" value="Add category" />
-                                    </form>
-                                </li>
-                            {% endif %}
-                            {% for cat2 in cat1.get_direct_child_categories %}
-                                <li>
-                                    <a href="{% url category cat2.id %}">{{ cat2.name }}</a>
-                                </li>
-                            {% endfor %}
-                            </ul>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
--->
 
         <div id="menu">
         <table id="categories">
         </table>
         </div>
-        
+
         <div id="content">
             {% block content %}
             {% endblock content %}

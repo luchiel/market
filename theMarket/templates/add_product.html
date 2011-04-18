@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form id="product" action="{% url add_product category.id %}" method="POST">
+{% csrf_token %}
+<table id="product_info">
+    <tr>
+        <td><input type="text" value="Input name" /></td>
+        <td colspan="2"><input type="text" value="Input description" /></td>
+    </tr>
+    <tr>
+        <td><input id="id_image" type="file" name="image" /></td>
+    </tr>
+</table>
+<input type="submit" value="Add" />
+</form>
+
+{% endblock content %}

@@ -4,50 +4,43 @@
 <div id="category_menu">
     <ul id="cat_menu">
         {% for cat in category.get_category_sequence %}
-        <li>
-            <a class="small_margin" href="{% url category cat.id %}">{{ cat.name }}</a>
-            <ul>
-            {% if request.user.is_admin %}
-                <li>
-                    <form class="field_list" id="add_category" action="{% url add_category cat.id %}" method="GET">
-                    {% csrf_token %}
-                        <input class="small_margin" type="submit" value="Add category" />
-                    </form>
-                </li>
-            {% endif %}
-            {% for child_cat in cat.get_direct_child_categories %}
-                <li>
-                    <a class="small_margin" href="{% url category child_cat.id %}">{{ child_cat.name }}</a>
-                </li>
-            {% endfor %}
-            </ul>
-        </li>
-        <li>
-            <p class="small_margin">&gt;</p>
-        </li>
+        <li><a class="small_margin underlined" href="{% url category cat.id %}">{{ cat.name }}</a></li>
+        <li><p class="small_margin">&gt;</p></li>
         {% endfor %}
-        <li>
-            <p class="small_margin">{{ category.name }}</p>
-        </li>
+        <li><p class="small_margin">{{ category.name }}</p></li>
     </ul>
 </div>
 
-<div id="category_not_menu">
+<div id="category_info">
 
-<div id="edit_category">
-    {% if current.is_admin and not category.id == 1 %}
-    <form class="field_list" id="category" action="{% url category category.id %}" method="POST">
-    {% csrf_token %}
-        <ul>
-        {{ form.as_ul }}
-        </ul>
-        <input type="submit" value="Save" />
+{% if current.is_admin %}
+<div id="edit_category" class="data_blocks">
+    {% if not category.id == 1 %}
+        <form class="field_list" id="category" action="{% url category category.id %}" method="POST">
+        {% csrf_token %}
+            <ul>
+            {{ form.as_ul }}
+            </ul>
+            <input class="button" type="submit" value="Save" />
+        </form>
+    {% endif %}
+    <form id="add_category" action="{% url add_category category.id %}" method="GET">
+        <input id="first_btn" type="submit" value="Add subcategory" />
     </form>
+    {% if not category.id == 1 %}
+        <form id="delete_category" action="{% url delete_category category.id %}" method="POST">
+        {% csrf_token %}
+            <input type="submit" value="Delete category" />
+        </form>
+        <form id="move_category" action="{% url move_category category.id category.get_parent_category.id %}" method="GET">
+            <input type="submit" value="Move category to..." />
+        </form>
     {% endif %}
 </div>
+{% endif %}
 
-{% if category.get_direct_child_categories or current.is_admin %}
-<div id="child_categories">
+{% if category.get_direct_child_categories %}
+<div id="child_categories" class="data_blocks">
     <p>Child categories:</p>
     <ul class="marked">
         {% for cat in category.get_direct_child_categories %}
@@ -55,31 +48,13 @@
                 <a href="{% url category cat.id %}">{{ cat.name }}</a>
             </li>
         {% endfor %}
-        {% if current.is_admin %}
-            <li class="menu_insert">
-                <form class="field_list" id="add_category" action="{% url add_category category.id %}" method="GET">
-                {% csrf_token %}
-                    <input type="submit" value="Add category" />
-                </form>
-            </li>
-        {% endif %}
     </ul>
 </div>
 {% endif %}
 
-<div id="category_goods">
-</div>
-
-<div id="move_category">
-</div>
-
-<div id="delete_category">
-    {% if current.is_admin and not category.id == 1 %}
-    <form class="field_list" id="delete_category" action="{% url delete_category category.id %}" method="POST">
-    {% csrf_token %}
-        <input type="submit" value="Delete category" />
-    </form>
-    {% endif %}
+<div id="category_goods" class="data_blocks">
+    <table id="goods_table"></table>
+    <div id="goods_pager"></div>
 </div>
 
 </div>

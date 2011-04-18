@@ -1,0 +1,2 @@
+;
+insert into main.market_category(id, depth, path, name) values (1, 0, '1', 'Souls');

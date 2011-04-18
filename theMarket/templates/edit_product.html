@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form id="product" action="{% url product product.id %}" method="POST">
+<table id="product_info">
+    <tr>
+        <td></td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+</table>
+<input type="submit" value="Save" />
+</form>
+
+{% endblock content %}

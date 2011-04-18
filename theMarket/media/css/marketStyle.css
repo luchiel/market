@@ -13,6 +13,11 @@ a
     text-decoration: none;
 }
 
+div#content
+{
+    width: 500px;
+}
+
 div#userinfo
 {
     background-color: rgb(140, 140, 225);
@@ -73,7 +78,6 @@ div#account
 .errorlist
 {
     color: red;
-    padding-left: 160px;
 }
 
 table#user_table
@@ -105,46 +109,6 @@ table#user_table tr.top td
     font-weight: bold;
 }
 
-ul.menu, ul.menu li
-{
-    margin: 0;
-    padding: 0;
-    width: 150px;
-}
-
-ul.menu li a
-{
-    margin: 0;
-}
-
-ul.menu li
-{
-    float: left; 
-    position: relative;
-    background-color: rgb(140, 140, 225);
-    padding: 5px;
-    padding-left: 10px;
-}
-
-ul.menu ul
-{
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 166px;
-}
-
-ul.menu li:hover ul,
-ul li ul.menu li:hover ul
-{
-    display: block;
-}
-
-ul.menu li:hover ul ul
-{
-    display: none;
-}
-
 li.menu_title
 {
     font-style: italic;
@@ -162,45 +126,15 @@ li.menu_insert
 
 ul#cat_menu li
 {
-    background-color: rgb(200, 200, 240);
     float: left;
     display: inline;
     position: relative;
     height: 30px;
 }
 
-ul#cat_menu ul
-{
-    background-color: rgb(200, 200, 240);
-    display: none;
-    position: absolute;
-    top: 30px;
-    left: 0;
-}
-
-ul#cat_menu ul li
-{
-    border-top-style: solid;
-    border-top-width: 1px;
-    border-top-color: rgb(255, 255, 255);
-    float: left;
-    display: inline;
-    width: 150px;
-}
-
 ul#cat_menu a
 {
     float: left;
-    display: block;
-}
-
-ul#cat_menu li:hover li a
-{
-    float: none;
-}
-
-ul#cat_menu li:hover ul
-{
     display: block;
 }
 
@@ -212,7 +146,7 @@ ul#cat_menu li:hover ul
 div#category_menu
 {
     float: left;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 ul.marked
@@ -221,14 +155,8 @@ ul.marked
     margin-left: 20px;
 }
 
-input.user_button
+div.data_blocks
 {
-/*    width: 20px;*/
-}
-
-div#category_not_menu div
-{
-    margin-bottom: 10px;
     padding-bottom: 10px;
     float: none;
     clear: left;
@@ -237,4 +165,37 @@ div#category_not_menu div
 .jqgrow:hover
 {
     cursor: pointer;
+}
+
+.underlined
+{
+    text-decoration: underline;
+}
+
+div#edit_category input
+{
+    margin-bottom: 10px;
+    margin-right: 2px;
+    float: left;
+    clear: none;
+}
+
+div#edit_category input#first_btn
+{
+    clear: left;
+}
+
+.field_list input.button
+{
+    clear: left !important;
+}
+
+#gbox_move_category
+{
+    float: left;
+}
+
+#move_category_list, #move_category_submit
+{
+    clear: left;
 }

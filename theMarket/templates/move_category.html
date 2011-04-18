@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block scripts %}
+<script src="/media/js/marketJSmovecategory.js" type="text/javascript"></script>
+{% endblock scripts %}
+
+{% block content %}
+<div id="category_menu">
+    <ul id="cat_menu">
+        {% for cat in category.get_category_sequence %}
+        <li><a class="small_margin underlined" href="{% url category cat.id %}">{{ cat.name }}</a></li>
+        <li><p class="small_margin">&gt;</p></li>
+        {% endfor %}
+        <li><p class="small_margin">{{ category.name }}</p></li>
+    </ul>
+</div>
+
+<div id="category_info">
+
+<div>
+    <form class="field_list" action="{% url move_category category.id category.get_parent_category.id %}" method="POST">
+    {% if current.is_admin and not category.id == 1 %}
+        <ul id="move_category_list">
+            {{ form.as_ul }}
+        </ul>
+
+        <input id="category_id" type="hidden" value="{{ category.id }}" name="category_id">
+        <table id="move_category">
+        </table>
+        
+        {% csrf_token %}
+        <input id="move_category_submit" type="submit" value="Move category" />
+    {% endif %}
+    </form>
+</div>
+
+</div>
+{% endblock content %}

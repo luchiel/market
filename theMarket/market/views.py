@@ -1,6 +1,7 @@
 import random
 import string
 import re
+import os
 from django.utils import simplejson as json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
@@ -8,12 +9,14 @@ from django.template import RequestContext
 from market.models import User, Category
 from market.forms import LoginForm, RegistrationForm, AdminRegistrationForm
 from market.forms import AccountForm, AdminAccountForm
-from market.forms import CategoryForm
+from market.forms import CategoryForm, MoveCategoryForm
+from market.forms import AddProductForm, ProductForm
 from market.shortcuts import direct_to_template
+from hashlib import md5
 
 
 def index(request):
-    return direct_to_template(request, 'index.html', {'root': Category.objects.get(id='1')})
+    return direct_to_template(request, 'index.html')
 
 
 def logout(request):
@@ -30,7 +33,7 @@ def login(request):
         request.session['user_id'] = form.user.id
         return redirect('index')
     return direct_to_template(
-        request, 'login.html', {'form': form, 'root': Category.objects.get(id='1')}
+        request, 'login.html', {'form': form}
     )
 
 
@@ -60,16 +63,8 @@ def edit_user(request, user_id):
     request.user = User.objects.get(id=request.user.id)
     form = select_form()
     return direct_to_template(
-        request, 'edit_user.html',
-        {
-            'form': form, 'message': msg, 'current': edited_user,
-            'root': Category.objects.get(id='1')
-        }
+        request, 'edit_user.html', {'form': form, 'message': msg, 'current': edited_user}
     )
-
-
-def product(request, product_id):
-    return HttpResponse("ID: %s" % product_id)
 
 
 def register(request):
@@ -86,13 +81,7 @@ def register(request):
             user.is_admin = form.cleaned_data.get('is_admin')
         user.save()
         return redirect('users')
-    return direct_to_template(
-        request, 'registration.html', {'form': form, 'root': Category.objects.get(id='1')}
-    )
-
-
-def basket(request, user_id):
-    return HttpResponse('No goods in the basket')
+    return direct_to_template(request, 'registration.html', {'form': form})
 
 
 def users(request):
@@ -100,11 +89,7 @@ def users(request):
         return redirect('index')
     else:
         return direct_to_template(
-            request, 'users.html',
-            {
-                'users': User.objects.all(), 'current': request.user,
-                'root': Category.objects.get(id='1')
-            }
+            request, 'users.html', {'users': User.objects.all(), 'current': request.user}
         )
 
 
@@ -131,7 +116,6 @@ def add_category(request, parent_id):
         category = Category(
             name=form.cleaned_data['name'],
             depth=0,
-            parent=Category.objects.get(id=parent_id),
         )
         category.save()
         category.make_path_and_depth(parent_id)
@@ -142,11 +126,7 @@ def add_category(request, parent_id):
     else:
         parent_name = 'root'
     return direct_to_template(
-        request, 'add_category.html',
-        {
-            'form': form, 'parent_id': parent_id, 'parent_name': parent_name,
-            'root': Category.objects.get(id='1')
-        }
+        request, 'add_category.html', {'form': form, 'parent_id': parent_id, 'parent_name': parent_name}
     )
 
 def category(request, category_id):
@@ -154,42 +134,28 @@ def category(request, category_id):
         return redirect('index')
     cat = Category.objects.get(id=category_id)
     form = CategoryForm(request.POST or {'name': cat.name})
-    if request.method == 'POST' and form.is_valid() and cat.id != 1:
+    if request.method == 'POST' and form.is_valid() and cat.id != 1 and request.user.is_admin:
         cat.name = form.cleaned_data.get('name')
         cat.save()
     return direct_to_template(
-        request, 'category.html',
-        {
-            'form': form,
-            'category': cat,
-            'current': request.user,
-            'root': Category.objects.get(id='1')
-        }
+        request, 'category.html', {'form': form, 'category': cat, 'current': request.user}
     )
 
 
 def delete_category(request, category_id):
-    def move_upstairs_recursive(cat, new_parent_id):
-        children = cat.get_direct_child_categories()
-        cat.make_path_and_depth(new_parent_id)
-        cat.save()
-        for c in children:
-            move_upstairs_recursive(c, cat.id)
-            
     if category_id == '1':
         return redirect('category', category_id=category_id)
     category = Category.objects.get(id=category_id)
     parent_id = category.get_parent_category().id
     if request.method == 'POST' and request.user and request.user.is_admin:
-        #children?
         for cat in category.get_direct_child_categories():
-            move_upstairs_recursive(cat, parent_id)
+            cat.change_parent(parent_id)
         category.delete()
     #goods?
     return redirect('category', category_id='1')
 
 
-def category_tree(request, location):
+def category_tree(request, location, category_id):
     x = re.match(r'.*categories/(\d+)', location)
     category_path = []
     if x:
@@ -198,10 +164,12 @@ def category_tree(request, location):
         category_path.append(current_cat)
 
     cats = []
-    
+
     def add(node):
-        parent_id = node.parent.id if node.id != node.parent.id else None
-        children = node.get_direct_child_categories()
+        parent_id = node.get_parent_category().id if node.depth != 0 else None
+        if node.id == int(category_id):
+            return
+        children = node.get_direct_child_categories().exclude(id=category_id)
         cats.append({
             'id': node.id,
             'cell': [
@@ -216,8 +184,6 @@ def category_tree(request, location):
         })
         map(add, children)
 
-    # skip root
-    #map(add, Category.objects.filter(depth='1'))
     add(Category.objects.get(depth='0'))
 
     result = {
@@ -227,3 +193,60 @@ def category_tree(request, location):
         'rows': cats,
     }
     return HttpResponse(json.dumps(result), mimetype='application/json')
+
+
+def move_category(request, category_id, parent_id):
+    if not request.user.is_admin:
+        return redirect('category', category_id=category_id)
+    category = Category.objects.get(id=category_id)
+    form = MoveCategoryForm(request.POST or
+        {'parent': category.get_parent_category().name, 'parent_id': category.get_parent_category().id}
+    )
+    if request.POST and form.is_valid():
+        category.change_parent(form.cleaned_data.get('parent_id'))
+        return redirect('category', category_id=category_id)
+    return direct_to_template(
+        request, 'move_category.html',
+        {'category': category, 'current': request.user, 'form': form}
+    )
+
+
+def product(request, product_id):
+    product = Proguct.objects.get(id=product_id)
+    form = ProductForm(request.POST or {'name': product.name, 'category': category, 'image': product.image})
+    return direct_to_template(request, 'edit_product.html', {'current': request.user, 'form': form})
+#onPOST!
+
+def add_product(request, category_id):
+    IMAGE_PATH = 'media/img/'
+    def save_image(i):
+        hash = md5()
+        map(hash.update, i.chunks())
+        iname = IMAGE_PATH + hash.hexdigest() + i.name.rpartition('.')[2]
+        with open(iname, 'wb+') as dest:
+            map(dest.write, i.chunks())
+        return iname
+
+    if not request.user.is_admin:
+        return redirect('category', category_id=category_id)
+    category = Category.objects.get(id=category_id)
+    form = AddProductForm(request.POST, request.FILES) if request.POST else AddProductForm()
+    if request.POST and form.is_valid():
+        image = save_image(request.FILES['image'])
+        product = Product(form.cleaned_data.get('name'), category, image)
+        product.save()
+        return redirect('product', product_id=product.id)
+    return direct_to_template(
+        request, 'add_product.html',
+        {'current': request.user, 'form': form, 'category': category}
+    )
+
+
+def delete_product(request, product_id):
+    if not request.user.is_admin:
+        return redirect('category', category_id=category_id)
+    product = Product.objects.get(id=product_id)
+    category_id = product.category.id
+    os.remove(product.image)
+    product.delete()
+    return redirect('category', category_id=category_id)
