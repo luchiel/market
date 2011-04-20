@@ -5,32 +5,32 @@
 {% endblock scripts %}
 
 {% block content %}
-<!--{% include 'breadcrumbs.html' with category=category %}-->
+<!--{% include 'breadcrumbs.html' with category=product.category %}-->
 <div id="category_menu">
     <ul id="cat_menu">
-        {% for cat in category.get_category_sequence %}
+        {% for cat in product.category.get_category_sequence %}
         <li><a class="small_margin underlined" href="{% url category cat.id %}">{{ cat.name }}</a></li>
         <li><p class="small_margin">&gt;</p></li>
         {% endfor %}
-        <li><p class="small_margin">{{ category.name }}</p></li>
+        <li><p class="small_margin">{{ product.category.name }}</p></li>
     </ul>
 </div>
 
 <div id="category_info">
 
 <div>
-    <form class="field_list" action="{% url move_category category.id %}" method="POST">
-    {% if request.user.is_admin and not category.id == 1 %}
+    <form class="field_list" action="{% url move_product product.id %}" method="POST">
+    {% if request.user.is_admin %}
         <ul class="move_list">
             {{ form.as_ul }}
         </ul>
 
-        <input id="category_id" type="hidden" value="{{ category.id }}" name="category_id">
+        <input id="category_id" type="hidden" value="0" name="category_id">
         <table id="move_to_category">
         </table>
         
         {% csrf_token %}
-        <input class="move_submit" type="submit" value="Move category" />
+        <input class="move_submit" type="submit" value="Move product" />
     {% endif %}
     </form>
 </div>

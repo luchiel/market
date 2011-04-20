@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-$('#move_category').jqGrid({
+$('#move_to_category').jqGrid({
     url: 'category_tree' + window.location.pathname + $('#category_id').attr('value') + '/',
     datatype: 'json',
     height: 'auto',

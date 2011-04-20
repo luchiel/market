@@ -74,7 +74,7 @@ class CategoryForm(forms.Form):
     name = forms.CharField(max_length=200)
 
 
-class MoveCategoryForm(forms.Form):
+class MoveForm(forms.Form):
     parent = forms.CharField(max_length=200, widget = forms.TextInput(attrs={'readonly':'readonly'}))
     parent_id = forms.IntegerField(widget=forms.HiddenInput)
 

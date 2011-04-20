@@ -6,6 +6,7 @@
     <div id="goods_pager"></div>
 </div>
 
+<!--{   include 'breadcrumbs.html' with category=category %}-->
 <div id="category_menu">
     <ul id="cat_menu">
         {% for cat in category.get_category_sequence %}
@@ -30,15 +31,15 @@
         </form>
     {% endif %}
     <form id="add_category" action="{% url add_category category.id %}" method="GET">
-        <input id="first_btn" type="submit" value="Add subcategory" />
+        <input class="edit_button" type="submit" value="Add subcategory" />
     </form>
     {% if not category.id == 1 %}
         <form id="delete_category" action="{% url delete_category category.id %}" method="POST">
         {% csrf_token %}
-            <input type="submit" value="Delete category" />
+            <input class="edit_button" type="submit" value="Delete category" />
         </form>
-        <form id="move_category" action="{% url move_category category.id category.get_parent_category.id %}" method="GET">
-            <input type="submit" value="Move category to..." />
+        <form id="move_category" action="{% url move_category category.id %}" method="GET">
+            <input class="edit_button" type="submit" value="Move category to..." />
         </form>
     {% endif %}
 </div>

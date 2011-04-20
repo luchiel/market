@@ -2,6 +2,7 @@
 
 {% block content %}
 {% if request.user.is_admin %}
+<p>Add product to category {{ category.name }}:</p>
 <form id="product" class="field_list" action="{% url add_product category.id %}" method="POST" enctype="multipart/form-data">
 {% csrf_token %}
 <ul id="product_info">

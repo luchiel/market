@@ -40,7 +40,7 @@ class Category(models.Model):
         self.depth = parent.depth + 1
 
     def get_products(self):
-        return Product.objects.filter(category=self.id)
+        return Product.objects.filter(category=self)
 
     def change_parent(self, new_parent_id):
         children = self.get_direct_child_categories()

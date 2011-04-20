@@ -9,6 +9,7 @@ body, div, p, img, ul, li
 a
 {
     margin: 10px;
+    margin-left: 0;
     color: black;
     font-weight: bold;
     text-decoration: none;
@@ -167,7 +168,7 @@ div.data_blocks
     text-decoration: underline;
 }
 
-div#edit_category input
+div#edit_category input, input.edit_button
 {
     margin-bottom: 10px;
     margin-right: 2px;
@@ -175,17 +176,12 @@ div#edit_category input
     clear: none;
 }
 
-div#edit_category input#first_btn
-{
-    clear: left;
-}
-
-#gbox_move_category
+#gbox_move_to_category
 {
     float: left;
 }
 
-#move_category_list, #move_category_submit
+.move_list, .move_submit
 {
     clear: left;
 }

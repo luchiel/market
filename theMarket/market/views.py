@@ -9,7 +9,7 @@ from django.template import RequestContext
 from market.models import User, Category, Product
 from market.forms import LoginForm, RegistrationForm, AdminRegistrationForm
 from market.forms import AccountForm, AdminAccountForm
-from market.forms import CategoryForm, MoveCategoryForm
+from market.forms import CategoryForm, MoveForm
 from market.forms import ProductForm
 from market.shortcuts import direct_to_template
 from market.utils import save_image
@@ -145,13 +145,15 @@ def delete_category(request, category_id):
     if category_id == '1':
         return redirect('category', category_id=category_id)
     category = Category.objects.get(id=category_id)
-    parent_id = category.get_parent_category().id
+    parent = category.get_parent_category()
     if request.method == 'POST' and request.user and request.user.is_admin:
         for cat in category.get_direct_child_categories():
-            cat.change_parent(parent_id)
+            cat.change_parent(parent.id)
+        for product in category.get_products():
+            product.category = parent
+            product.save()
         category.delete()
-    #goods?
-    return redirect('category', category_id='1')
+    return redirect('category', category_id=parent.id)
 
 
 def category_tree(request, location, category_id):
@@ -206,19 +208,18 @@ def category_tree(request, location, category_id):
     return HttpResponse(json.dumps(result), mimetype='application/json')
 
 
-def move_category(request, category_id, parent_id):
+def move_category(request, category_id):
     if not request.user or not request.user.is_admin:
         return redirect('category', category_id=category_id)
     category = Category.objects.get(id=category_id)
-    form = MoveCategoryForm(request.POST or
+    form = MoveForm(request.POST or
         {'parent': category.get_parent_category().name, 'parent_id': category.get_parent_category().id}
     )
     if request.POST and form.is_valid():
         category.change_parent(form.cleaned_data.get('parent_id'))
         return redirect('category', category_id=category_id)
     return direct_to_template(
-        request, 'move_category.html',
-        {'category': category, 'form': form}
+        request, 'move_category.html', {'category': category, 'form': form}
     )
 
 
@@ -279,3 +280,19 @@ def delete_product(request, product_id):
         os.remove(os.getcwd() + '/' + product.image)
     product.delete()
     return redirect('category', category_id=category_id)
+
+
+def move_product(request, product_id):
+    if not request.user or not request.user.is_admin:
+        return redirect('product', product_id=product_id)
+    product = Product.objects.get(id=product_id)
+    form = MoveForm(request.POST or
+        {'parent': product.category.name, 'parent_id': product.category.id}
+    )
+    if request.POST and form.is_valid():
+        product.category = Category.objects.get(id=form.cleaned_data.get('parent_id'))
+        product.save()
+        return redirect('product', product_id=product_id)
+    return direct_to_template(
+        request, 'move_product.html', {'product': product, 'form': form}
+    )

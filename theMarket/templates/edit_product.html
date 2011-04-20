@@ -6,28 +6,29 @@
     <img src="/{{ product.image }}" alt="Buy me plz!" />
 </div>
 
-<p>Category: {{ category.name }}</p>
 {% if request.user.is_admin %}
     <form id="product" class="field_list" action="{% url product product.id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
         {% if message %}<p class="message">{{ message }}</p>{% endif %}
         <ul>
-            {{ form.as_ul }}
+            <li><label>Category:</label><a href="{% url category product.category.id %}">{{ product.category.name }}</a></li>
+        {{ form.as_ul }}
             <li>(image will be reloaded)</li>
-            <li><input type="submit" value="Save" /></li>
+            <li><input class="edit_button" type="submit" value="Save" /></li>
         </ul>
     </form>
     <form action="{% url delete_product product.id %}" method="POST">
     {% csrf_token %}
-        <input type="submit" value="Delete" />
+        <input class="edit_button" type="submit" value="Delete" />
     </form>
-    <form action="{% url move_product product.id category_id %}" method="GET">
+    <form action="{% url move_product product.id %}" method="GET">
     {% csrf_token %}
-        <input type="submit" value="Move to category..." />
+        <input class="edit_button" type="submit" value="Move to category..." />
     </form>
 {% else %}
     <div class="field_list regular_user">
         <ul>
+            <li><label>Category:</label><a href="{% url category product.category.id %}">{{ product.category.name }}</a></li>
             <li><label>Name:</label><p>{{ product.name }}</p></li>
             <li>
                 <label>Description:</label>
