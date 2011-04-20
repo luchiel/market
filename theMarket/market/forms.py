@@ -79,11 +79,14 @@ class MoveCategoryForm(forms.Form):
     parent_id = forms.IntegerField(widget=forms.HiddenInput)
 
 
-class AddProductForm(forms.Form):
-    name = forms.CharField(max_length=200)
-    image = forms.ImageField(required=False)
-    description = forms.CharField()
-
-
 class ProductForm(forms.Form):
-    pass
+    name = forms.CharField(max_length=200)
+    description = forms.CharField(widget=forms.Textarea)
+    image = forms.ImageField(required=False)
+    
+    def clean_image(self):
+        SIZE_CONST = 1024 * 1024
+        new_image = self.cleaned_data.get('image')
+        if new_image and new_image.size > SIZE_CONST:
+            raise forms.ValidationError('File is too big: size > 1Mb')
+        return new_image

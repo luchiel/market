@@ -3,6 +3,7 @@ body, div, p, img, ul, li
     margin: 0;
     border: 0;
     padding: 0;
+    list-style: none;
 }
 
 a
@@ -15,7 +16,7 @@ a
 
 div#content
 {
-    width: 600px;
+    width: 900px;
 }
 
 div#userinfo
@@ -28,26 +29,35 @@ div#userinfo
 
 form ul, #menu ul
 {
-    list-style: none;
     margin: 0;
     padding: 0;
 }
 
-form.field_list li
+.field_list li
 {
     margin-bottom: 5px;
 }
 
-form.field_list label
+.field_list label
 {
-    width: 160px;
+    width: 130px;
     display: block;
     float: left;
 }
 
-form.field_list input, form.field_list textarea
+.field_list input, .field_list textarea
 {
     display: block;
+}
+
+.field_list input.button
+{
+    clear: left !important;
+}
+
+.regular_user textarea
+{
+    border-style: none;
 }
 
 div#account
@@ -109,21 +119,6 @@ table#user_table tr.top td
     font-weight: bold;
 }
 
-li.menu_title
-{
-    font-style: italic;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: rgb(255, 255, 255);
-}
-
-li.menu_insert
-{
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: rgb(255, 255, 255);
-}
-
 ul#cat_menu li
 {
     float: left;
@@ -149,7 +144,7 @@ div#category_menu
     padding-bottom: 10px;
 }
 
-ul.marked
+.marked, .marked li
 {
     list-style: square;
     margin-left: 20px;
@@ -185,11 +180,6 @@ div#edit_category input#first_btn
     clear: left;
 }
 
-.field_list input.button
-{
-    clear: left !important;
-}
-
 #gbox_move_category
 {
     float: left;
@@ -198,4 +188,9 @@ div#edit_category input#first_btn
 #move_category_list, #move_category_submit
 {
     clear: left;
+}
+
+.image
+{
+    float: right;
 }

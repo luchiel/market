@@ -1,27 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+{% if request.user.is_admin %}
 <form id="product" class="field_list" action="{% url add_product category.id %}" method="POST" enctype="multipart/form-data">
 {% csrf_token %}
 <ul id="product_info">
-    <li>
-        {{ form.name.errors }}
-        <label for="name">Name:</label>
-        <input type="text" name="name" />
-    </li>
-    <li>
-        {{ form.image.errors }}
-        <label for="image">Image:</label>
-        <input id="id_image" type="file" name="image" />
-    </li>
-    <li>
-        {{ form.description.errors }}
-        <label for="description">Description:</label>
-        <textarea type="text" rows="3" cols="30" name="description"></textarea>
-    </li>
+    {{ form.as_ul }}    
 </ul>
 <input type="submit" value="Add" />
 </form>
-
+{% endif %}
 {% endblock content %}

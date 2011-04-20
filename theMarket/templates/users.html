@@ -2,7 +2,7 @@
 
 {% block content %}
 <table id="user_table">
-    {% if current.is_admin %}
+    {% if request.user.is_admin %}
     <tr class="top">
         <td colspan="4">
             <form action="{% url register %}" method="GET">
@@ -16,7 +16,7 @@
         <td>Login</td>
         <td>Email</td>
         <td>IsAdmin</td>
-        {% if current.is_admin %}
+        {% if request.user.is_admin %}
             <td></td>
         {% endif %}
     </tr>
@@ -25,7 +25,7 @@
             <td>{{ user.login }}</td>
             <td>{{ user.email }}</td>
             <td>{% if user.is_admin %}+{% else %}-{% endif %}</td>
-            {% if current.is_admin %}
+            {% if request.user.is_admin %}
             <td >
                 <form action="{% url edit_user user.id %}" method="GET">
                     {% csrf_token %}

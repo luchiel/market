@@ -19,7 +19,7 @@
 
 <div>
     <form class="field_list" action="{% url move_category category.id category.get_parent_category.id %}" method="POST">
-    {% if current.is_admin and not category.id == 1 %}
+    {% if request.user.is_admin and not category.id == 1 %}
         <ul id="move_category_list">
             {{ form.as_ul }}
         </ul>

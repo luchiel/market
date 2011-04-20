@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div id="category_goods" class="data_blocks">
+    <table id="goods_table"></table>
+    <div id="goods_pager"></div>
+</div>
+
 <div id="category_menu">
     <ul id="cat_menu">
         {% for cat in category.get_category_sequence %}
@@ -13,15 +18,15 @@
 
 <div id="category_info">
 
-{% if current.is_admin %}
+{% if request.user.is_admin %}
 <div id="edit_category" class="data_blocks">
     {% if not category.id == 1 %}
         <form class="field_list" id="category" action="{% url category category.id %}" method="POST">
         {% csrf_token %}
             <ul>
             {{ form.as_ul }}
+            <li><input class="button" type="submit" value="Save" /></li>
             </ul>
-            <input class="button" type="submit" value="Save" />
         </form>
     {% endif %}
     <form id="add_category" action="{% url add_category category.id %}" method="GET">
@@ -51,11 +56,6 @@
     </ul>
 </div>
 {% endif %}
-
-<div id="category_goods" class="data_blocks">
-    <table id="goods_table"></table>
-    <div id="goods_pager"></div>
-</div>
 
 </div>
 

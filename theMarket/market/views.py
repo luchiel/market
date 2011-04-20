@@ -10,10 +10,9 @@ from market.models import User, Category, Product
 from market.forms import LoginForm, RegistrationForm, AdminRegistrationForm
 from market.forms import AccountForm, AdminAccountForm
 from market.forms import CategoryForm, MoveCategoryForm
-from market.forms import AddProductForm, ProductForm
+from market.forms import ProductForm
 from market.shortcuts import direct_to_template
-from hashlib import md5
-
+from market.utils import save_image
 
 def index(request):
     return direct_to_template(request, 'index.html')
@@ -89,7 +88,7 @@ def users(request):
         return redirect('index')
     else:
         return direct_to_template(
-            request, 'users.html', {'users': User.objects.all(), 'current': request.user}
+            request, 'users.html', {'users': User.objects.all()}
         )
 
 
@@ -138,7 +137,7 @@ def category(request, category_id):
         cat.name = form.cleaned_data.get('name')
         cat.save()
     return direct_to_template(
-        request, 'category.html', {'form': form, 'category': cat, 'current': request.user}
+        request, 'category.html', {'form': form, 'category': cat}
     )
 
 
@@ -172,13 +171,8 @@ def category_tree(request, location, category_id):
         cats.append({
             'id': node.id,
             'cell': [
-                node.id,
-                node.name,
-                node.id,
-                node.depth,
-                parent_id,
-                len(children) == 0,
-                node in category_path,
+                node.id, node.name, node.id, node.depth,
+                parent_id, len(children) == 0, node in category_path,
             ],
         })
         map(add, children)
@@ -189,13 +183,8 @@ def category_tree(request, location, category_id):
             cats.append({
                 'id': cat.id,
                 'cell': [
-                    cat.id,
-                    cat.name,
-                    cat.id,
-                    0,
-                    0,
-                    True,
-                    False,
+                    cat.id, cat.name, cat.id, 0,
+                    0, True, False,
                 ],
             })
 
@@ -218,7 +207,7 @@ def category_tree(request, location, category_id):
 
 
 def move_category(request, category_id, parent_id):
-    if not request.user.is_admin:
+    if not request.user or not request.user.is_admin:
         return redirect('category', category_id=category_id)
     category = Category.objects.get(id=category_id)
     form = MoveCategoryForm(request.POST or
@@ -229,30 +218,43 @@ def move_category(request, category_id, parent_id):
         return redirect('category', category_id=category_id)
     return direct_to_template(
         request, 'move_category.html',
-        {'category': category, 'current': request.user, 'form': form}
+        {'category': category, 'form': form}
     )
 
 
 def product(request, product_id):
     product = Product.objects.get(id=product_id)
-    form = ProductForm(request.POST or {'name': product.name, 'category': category, 'image': product.image})
-    return direct_to_template(request, 'edit_product.html', {'current': request.user, 'product': product, 'form': form})
-#onPOST!
+    form = ProductForm(request.POST, request.FILES) if request.POST else ProductForm(
+            {
+                'name': product.name,
+                'category': category,
+                'image': product.image,
+                'description': product.description,
+            }
+        )
+    if request.POST and (not request.user or not request.user.is_admin):
+        return redirect('product', product_id=product.id)
+    msg = ''
+    if request.POST and form.is_valid():
+        product.name = form.cleaned_data.get('name')
+        product.description = form.cleaned_data.get('description')
+        if 'image' in request.FILES:
+            if product.image != '' and os.path.exists(os.getcwd() + '/' + product.image):
+                os.remove(os.getcwd() + '/' + product.image)
+            product.image = save_image(request.FILES['image'])
+        product.save()
+        msg = 'Data saved'
+        
+    return direct_to_template(
+        request, 'edit_product.html', {'message': msg, 'product': product, 'form': form}
+    )
+
 
 def add_product(request, category_id):
-    IMAGE_PATH = 'media/img/'
-    def save_image(i):
-        hash = md5()
-        map(hash.update, i.chunks())
-        iname = IMAGE_PATH + hash.hexdigest() + '.' + i.name.rpartition('.')[2]
-        with open(iname, 'wb+') as dest:
-            map(dest.write, i.chunks())
-        return iname
-
-    if not request.user.is_admin:
+    if not request.user or not request.user.is_admin:
         return redirect('category', category_id=category_id)
     category = Category.objects.get(id=category_id)
-    form = AddProductForm(request.POST, request.FILES) if request.POST else AddProductForm()
+    form = ProductForm(request.POST, request.FILES) if request.POST else ProductForm()
     if request.POST and form.is_valid():
         image = save_image(request.FILES['image']) if 'image' in request.FILES else ''
         product = Product(
@@ -264,17 +266,16 @@ def add_product(request, category_id):
         product.save()
         return redirect('product', product_id=product.id)
     return direct_to_template(
-        request, 'add_product.html',
-        {'current': request.user, 'form': form, 'category': category}
+        request, 'add_product.html', {'form': form, 'category': category}
     )
 
 
 def delete_product(request, product_id):
-    if not request.user.is_admin:
+    if not request.user or not request.user.is_admin:
         return redirect('category', category_id=category_id)
     product = Product.objects.get(id=product_id)
     category_id = product.category.id
-    if product.image != '' and os.path.exists(os.getcwd() + product.image):
-        os.remove(os.getcwd() + product.image)
+    if product.image != '' and os.path.exists(os.getcwd() + '/' + product.image):
+        os.remove(os.getcwd() + '/' + product.image)
     product.delete()
     return redirect('category', category_id=category_id)
