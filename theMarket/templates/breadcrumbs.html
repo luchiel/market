@@ -1,9 +1,9 @@
 <div id="category_menu">
     <ul id="cat_menu">
         {% for cat in category.get_category_sequence %}
-        <li><a class="small_margin underlined" href="{% url category cat.id %}">{{ cat.name }}</a></li>
+        <li><a class="small_margin" href="{% url category cat.id %}">{{ cat.name }}</a></li>
         <li><p class="small_margin">&gt;</p></li>
         {% endfor %}
-        <li><p class="small_margin">{{ category.name }}</p></li>
+        <li><a class="small_margin" href="{% url category category.id %}">{{ category.name }}</a></li>
     </ul>
 </div>

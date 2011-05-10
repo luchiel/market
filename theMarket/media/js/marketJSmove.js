@@ -10,7 +10,7 @@ $('#move_to_category').jqGrid({
     colNames: ['id', 'name', 'true_id'],
     colModel: [
         { name: 'id', hidden: true, key: true },
-        { name: 'name', width: 400 },
+        { name: 'name', width: 400, search: true },
         { name: 'true_id', hidden: true }
     ],
     ExpandColumn: 'name',
@@ -25,6 +25,8 @@ $('#move_to_category').jqGrid({
         $('#id_parent_id').attr('value', $('td[aria-describedby=categories_true_id]', row).attr('title'));
     }
 });
+
+$('#move_to_category').jqGrid('filterToolbar', { stringResult: true, searchOnEnter: false });
 
 $('.ui-jqgrid-titlebar-close').remove();
 $('.ui-jqgrid-labels').remove();

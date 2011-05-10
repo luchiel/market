@@ -1,26 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div id="category_goods" class="data_blocks">
-    <table id="goods_table"></table>
-    <div id="goods_pager"></div>
-</div>
 
-<!--{   include 'breadcrumbs.html' with category=category %}-->
-<div id="category_menu">
-    <ul id="cat_menu">
-        {% for cat in category.get_category_sequence %}
-        <li><a class="small_margin underlined" href="{% url category cat.id %}">{{ cat.name }}</a></li>
-        <li><p class="small_margin">&gt;</p></li>
+{% include 'breadcrumbs.html' %}
+
+<div id="category_goods" class="data_blocks">
+<!--
+    <table id="products_table"></table>
+    <div id="products_pager"></div>
+-->
+    {% if category.get_products %}
+    <table class="item_table">
+        <tr class="top"><td>Name</td><td>Price</td><td>Quantity</td><td></td></tr>
+        {% for product in category.get_products %}
+            <tr>
+                <form action="{% url add_to_basket product.id %}" method="POST">
+                {% csrf_token %}
+                    <td><a href="{% url product product.id %}">{{ product.name }}</a></td>
+                    <td>{{ product.price }} santiks</td>
+                    <td>{{ product_form.quantity }}</td>
+                    <td>
+                        <input class="ui-icon ui-icon-cart img_button" type="submit" value="To basket" />
+                    </td>
+                </form>
+            </tr>
         {% endfor %}
-        <li><p class="small_margin">{{ category.name }}</p></li>
-    </ul>
+    </table>
+    {% else %}
+    <p class="message">The category is empty</p>
+    {% endif %}
+    
+    {% if request.user.is_admin %}
+    <form id="add_product" action="{% url add_product category.id %}" method="GET">
+        <input class="edit_button" type="submit" value="Add product" />
+    </form>
+    {% endif %}
 </div>
 
 <div id="category_info">
 
 {% if request.user.is_admin %}
 <div id="edit_category" class="data_blocks">
+    <hr/>
     {% if not category.id == 1 %}
         <form class="field_list" id="category" action="{% url category category.id %}" method="POST">
         {% csrf_token %}
@@ -47,6 +68,7 @@
 
 {% if category.get_direct_child_categories %}
 <div id="child_categories" class="data_blocks">
+    <hr/>
     <p>Child categories:</p>
     <ul class="marked">
         {% for cat in category.get_direct_child_categories %}

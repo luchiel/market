@@ -75,14 +75,15 @@ class CategoryForm(forms.Form):
 
 
 class MoveForm(forms.Form):
-    parent = forms.CharField(max_length=200, widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    parent    = forms.CharField(max_length=200, widget = forms.TextInput(attrs={'readonly':'readonly'}))
     parent_id = forms.IntegerField(widget=forms.HiddenInput)
 
 
 class ProductForm(forms.Form):
-    name = forms.CharField(max_length=200)
+    name        = forms.CharField(max_length=200)
+    price       = forms.IntegerField()
     description = forms.CharField(widget=forms.Textarea)
-    image = forms.ImageField(required=False)
+    image       = forms.ImageField(required=False)
     
     def clean_image(self):
         SIZE_CONST = 1024 * 1024
@@ -90,3 +91,17 @@ class ProductForm(forms.Form):
         if new_image and new_image.size > SIZE_CONST:
             raise forms.ValidationError('File is too big: size > 1Mb')
         return new_image
+
+
+class ProductChoiceForm(forms.Form):
+    INTEGER_CHOICES = (
+        (1, 1), (2, 2), (3, 3), (4, 4), (5, 5),
+        (6, 6), (7, 7), (8, 8), (9, 9), (10, 10),
+        (11, 11), (12, 12), (13, 13), (14, 14), (15, 15),
+        (16, 16), (17, 17), (18, 18), (19, 19), (20, 20),
+    )
+    product_id   = forms.IntegerField(required=False, widget=forms.HiddenInput)
+    purchased_id = forms.IntegerField(required=False, widget=forms.HiddenInput)
+    name         = forms.CharField(max_length=200, required=False)
+    price        = forms.IntegerField(required=False)
+    quantity     = forms.TypedChoiceField(choices=INTEGER_CHOICES, empty_value=1, coerce=int)

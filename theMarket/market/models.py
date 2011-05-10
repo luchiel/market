@@ -7,10 +7,13 @@ class User(models.Model):
     email    = models.EmailField()
     salt     = models.CharField(max_length=10)
     is_admin = models.BooleanField(default=False)
+
     def __unicode__(self):
         return self.login
     def get_password_hash(self, password):
         return sha1(self.salt + password).hexdigest()
+    def get_address(self):
+        return Address.objects.get(user=self)
 
 class Category(models.Model):
     depth = models.IntegerField()
@@ -55,4 +58,41 @@ class Product(models.Model):
     description = models.TextField()
     image       = models.CharField(max_length=200)
     category    = models.ForeignKey(Category)
+    price       = models.IntegerField()
 
+
+class Basket(models.Model):
+    session_id = models.CharField(max_length=200, null=True)
+    user       = models.ForeignKey(User, null=True)
+
+    def get_basket_goods(self):
+        return Purchased.objects.filter(basket=self).filter(is_sent=False)
+
+    def get_basket_price(self):
+        counter = 0
+        for product in self.get_basket_goods():
+            counter = counter + product.quantity * product.product.price
+        return counter
+
+
+class Purchased(models.Model):
+    is_sent  = models.BooleanField(default=False)
+    product  = models.ForeignKey(Product)
+    basket   = models.ForeignKey(Basket)
+    quantity = models.IntegerField(default=1)
+    date     = models.DateField(auto_now=True)
+    
+    def get_max(self):
+        return 20
+        
+    def get_price(self):
+        return self.product.price * self.quantity
+
+
+class Address(models.Model):
+    session_id = models.CharField(max_length=200, null=True)
+    user   = models.ForeignKey(User, null=True)
+    city   = models.CharField(max_length=200)
+    street = models.CharField(max_length=200)
+    house  = models.IntegerField()
+    

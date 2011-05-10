@@ -6,24 +6,41 @@ body, div, p, img, ul, li
     list-style: none;
 }
 
+.upper_panel
+{
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    color: #FFFFFF;
+    font-weight: bold;
+    background-color: #AAAAAA;
+}
+
+#logo
+{
+    margin-top: 5px;
+    padding: 20px;
+    font-size: 40px;
+}
+
 a
 {
-    margin: 10px;
+    margin: 5px;
     margin-left: 0;
     color: black;
     font-weight: bold;
-    text-decoration: none;
 }
 
-div#content
+.buttonlike_href
 {
-    width: 900px;
+    text-decoration: none;
 }
 
 div#userinfo
 {
     background-color: rgb(140, 140, 225);
-    margin: 10px;
+    margin: 5px;
     margin-bottom: 0;
     padding: 10px;
 }
@@ -68,16 +85,16 @@ div#account
 
 #content
 {
-    padding: 10px;
+    padding: 5px;
     float: left;
+    width: 800px;
 }
 
 #menu
 {
     float: left;
-    margin: 10px;
-    /*width: 150px;*/
-    background-color: rgb(140, 140, 225);
+    margin: 5px;
+    background-color: #AAAAAA;
 }
 
 .errorlist, p.message
@@ -91,22 +108,22 @@ div#account
     color: red;
 }
 
-table#user_table
+.item_table
 {
-    border-color: rgb(255, 255, 255);
+    border-color: #FFFFFF;
     border-collapse: collapse;
 }
 
-table#user_table, table#user_table tr, table#user_table td
+.item_table, .item_table tr, .item_table td
 {
-    border-width: 3px;
-    background-color: rgb(200, 200, 240);
-    border-color: rgb(255, 255, 255);
+    border-width: 1px;
+    background-color: #DDDDDD;
+    border-color: #FFFFFF;
     border-style: solid;
     border-collapse: collapse;
 }
 
-table#user_table td
+.item_table td
 {
     padding: 10px;
     padding-left: 25px;
@@ -114,9 +131,9 @@ table#user_table td
     text-align: center;
 }
 
-table#user_table tr.top td
+.item_table tr.top td
 {
-    background-color: rgb(140, 140, 225); 
+    background-color: #AAAAAA; 
     font-weight: bold;
 }
 
@@ -189,4 +206,31 @@ div#edit_category input, input.edit_button
 .image
 {
     float: right;
+}
+
+#basket
+{
+    margin: 5px;
+    float: right;
+    background-color: #FFFFFF;
+    width: 200px;
+}
+
+#basket li
+{
+    border-style: solid;
+    border-width: 1px;
+    border-color: #AAAAAA;
+    border-collapse: collapse;
+}
+
+.basket_header, .basket_item li
+{
+    padding: 3px;
+}
+
+.img_button
+{
+    width: 21px !important;
+    height: 21px !important;
 }

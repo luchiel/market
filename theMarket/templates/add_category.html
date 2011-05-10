@@ -3,7 +3,7 @@
 {% block content %}
 <form class="field_list" id="add_category" action="{% url add_category parent_id %}" method="POST">
 {% csrf_token %}
-    <p class="message">Add subcategory to category {{ parent_name }}</p>
+    <p class="message">Add subcategory to category {{ parent_name }}:</p>
     <ul>
     {{ form.as_ul }}
     </ul>

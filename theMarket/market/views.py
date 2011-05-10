@@ -6,11 +6,11 @@ from django.utils import simplejson as json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.template import RequestContext
-from market.models import User, Category, Product
+from market.models import User, Category, Product, Basket, Purchased
 from market.forms import LoginForm, RegistrationForm, AdminRegistrationForm
 from market.forms import AccountForm, AdminAccountForm
 from market.forms import CategoryForm, MoveForm
-from market.forms import ProductForm
+from market.forms import ProductForm, ProductChoiceForm
 from market.shortcuts import direct_to_template
 from market.utils import save_image
 
@@ -26,14 +26,12 @@ def logout(request):
 
 def login(request):
     if request.user:
-        return redirect('index')
+        return direct_to_template(request, 'lorem.html')
     form = LoginForm(request.POST or None)
     if form.is_valid():
         request.session['user_id'] = form.user.id
         return redirect('index')
-    return direct_to_template(
-        request, 'login.html', {'form': form}
-    )
+    return direct_to_template(request, 'login.html', {'form': form})
 
 
 def edit_user(request, user_id):
@@ -79,13 +77,13 @@ def register(request):
         if 'is_admin' in form.cleaned_data:
             user.is_admin = form.cleaned_data.get('is_admin')
         user.save()
-        return redirect('users')
+        return redirect('index')
     return direct_to_template(request, 'registration.html', {'form': form})
 
 
 def users(request):
-    if not request.user:
-        return redirect('index')
+    if not request.user or not request.user.is_admin:
+        return 'Operation forbidden'
     else:
         return direct_to_template(
             request, 'users.html', {'users': User.objects.all()}
@@ -133,11 +131,12 @@ def category(request, category_id):
         return redirect('index')
     cat = Category.objects.get(id=category_id)
     form = CategoryForm(request.POST or {'name': cat.name})
+    product_form = ProductChoiceForm()
     if request.method == 'POST' and form.is_valid() and cat.id != 1 and request.user.is_admin:
         cat.name = form.cleaned_data.get('name')
         cat.save()
     return direct_to_template(
-        request, 'category.html', {'form': form, 'category': cat}
+        request, 'category.html', {'form': form, 'product_form': product_form, 'category': cat}
     )
 
 
@@ -156,12 +155,39 @@ def delete_category(request, category_id):
     return redirect('category', category_id=parent.id)
 
 
+def product_grid(request, location, category_id):
+    ps = []
+    #category_id?
+    def add(product):
+        '''ps.append({
+            'id': product.id,
+            'cell': [
+                product.id, product.name, product.id, product.image,
+                #?
+            ],
+        })'''
+        pass
+    products = Category.objects.get(id=category_id).get_products
+    map(add, products)
+    result = {
+        'records': len(ps),
+        'page': 1,
+        'total': 1,
+        'rows': ps,
+    }
+    return HttpResponse(json.dumps(result), mimetype='application/json')
+
+
 def category_tree(request, location, category_id):
     x = re.match(r'.*categories/(\d+)', location)
+    y = re.match(r'.*products/(\d+)', location)
     category_path = []
     cats = []
-    if x:
-        current_cat = Category.objects.get(id=int(x.group(1)))
+    if x or y:
+        if x:
+            current_cat = Category.objects.get(id=int(x.group(1)))
+        else:
+            current_cat = Product.objects.get(id=int(y.group(1))).category
         category_path = current_cat.get_category_sequence()
         category_path.append(current_cat)
 
@@ -174,7 +200,7 @@ def category_tree(request, location, category_id):
             'id': node.id,
             'cell': [
                 node.id, node.name, node.id, node.depth,
-                parent_id, len(children) == 0, node in category_path,
+                parent_id, len(children) == 0, node in category_path or node.depth == 0,
             ],
         })
         map(add, children)
@@ -225,14 +251,13 @@ def move_category(request, category_id):
 
 def product(request, product_id):
     product = Product.objects.get(id=product_id)
-    form = ProductForm(request.POST, request.FILES) if request.POST else ProductForm(
-            {
-                'name': product.name,
-                'category': category,
-                'image': product.image,
-                'description': product.description,
-            }
-        )
+    form = ProductForm(request.POST, request.FILES) if request.POST else ProductForm({
+            'name': product.name,
+            'price': product.price,
+            'category': category,
+            'image': product.image,
+            'description': product.description,
+        })
     if request.POST and (not request.user or not request.user.is_admin):
         return redirect('product', product_id=product.id)
     msg = ''
@@ -260,12 +285,13 @@ def add_product(request, category_id):
         image = save_image(request.FILES['image']) if 'image' in request.FILES else ''
         product = Product(
             name=form.cleaned_data.get('name'),
+            price = form.cleaned_data.get('price'),
             description=form.cleaned_data.get('description'),
             image=image,
             category=category,
         )
         product.save()
-        return redirect('product', product_id=product.id)
+        return redirect('category', category_id=category_id)
     return direct_to_template(
         request, 'add_product.html', {'form': form, 'category': category}
     )
@@ -296,3 +322,71 @@ def move_product(request, product_id):
     return direct_to_template(
         request, 'move_product.html', {'product': product, 'form': form}
     )
+
+
+def add_to_basket(request, product_id):
+    product = Product.objects.get(id=product_id)
+    category = product.category
+    form = ProductChoiceForm(request.POST or None)
+    if form.is_valid():
+        if Purchased.objects.filter(product=product, basket=request.basket, is_sent=False).exists():
+            p = Purchased.objects.get(product=product, basket=request.basket)
+            p.quantity = p.quantity + form.cleaned_data['quantity'] if p.quantity + form.cleaned_data['quantity'] < p.get_max() else p.get_max()
+            p.save()
+        else:
+            p = Purchased(product=product, basket=request.basket, quantity=form.cleaned_data['quantity'])
+            p.save()
+    return redirect('category', category_id=category.id)
+
+
+def update_basket(request, product_id):
+    product = Product.objects.get(id=product_id)
+    category = product.category
+    form = ProductChoiceForm(request.POST or None)
+    if form.is_valid():
+        if Purchased.objects.filter(product=product, basket=request.basket, is_sent=False).exists():
+            p = Purchased.objects.get(product=product, basket=request.basket, is_sent=False)
+            p.quantity = form.cleaned_data['quantity']
+            p.save()
+        else:
+            p = Purchased(product=product, basket=request.basket, quantity=form.cleaned_data['quantity'])
+            p.save()
+    return HttpResponse(json.dumps(''), mimetype='application/json')
+
+
+def remove_from_basket(request, product_id):
+    Purchased.objects.filter(basket=request.basket).get(product=Product.objects.get(id=product_id)).delete()
+    return redirect('basket', basket_id=request.basket.id)
+
+
+def basket(request, basket_id):
+    if int(basket_id) != request.basket.id:
+        return redirect('basket', basket_id=request.basket.id)
+    basket = Basket.objects.get(id=basket_id)
+    products = basket.get_basket_goods()
+    forms = []
+    for p in products:
+        forms.append(ProductChoiceForm({
+            'product_id': p.product.id,
+            'purchased_id': p.id,
+            'name': p.product.name,
+            'price': p.product.price,
+            'quantity': p.quantity
+        }))
+    return direct_to_template(
+        request, 'basket.html', { 'basket': basket, 'forms': forms }
+    )
+
+
+def order_basket(request, basket_id):
+    if int(basket_id) != request.basket.id:
+        return redirect('order_basket', basket_id=request.basket.id)
+    basket = Basket.objects.get(id=basket_id)
+    #if block is commented one can see that quantities are updated according to the final will
+    #block set is_sent
+    products = basket.get_basket_goods()
+    for p in products:
+        p.is_sent = True
+        p.save()
+    #endblock
+    return redirect('basket', basket_id=request.basket.id)

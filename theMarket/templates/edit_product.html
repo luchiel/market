@@ -2,16 +2,21 @@
 
 {% block content %}
 
+{%  include 'breadcrumbs.html' with category=product.category %}
+
+<div class="data_blocks">
+
+{% if product.image %}
 <div class="image">
     <img src="/{{ product.image }}" alt="Buy me plz!" />
 </div>
+{% endif %}
 
 {% if request.user.is_admin %}
     <form id="product" class="field_list" action="{% url product product.id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
         {% if message %}<p class="message">{{ message }}</p>{% endif %}
         <ul>
-            <li><label>Category:</label><a href="{% url category product.category.id %}">{{ product.category.name }}</a></li>
         {{ form.as_ul }}
             <li>(image will be reloaded)</li>
             <li><input class="edit_button" type="submit" value="Save" /></li>
@@ -28,7 +33,6 @@
 {% else %}
     <div class="field_list regular_user">
         <ul>
-            <li><label>Category:</label><a href="{% url category product.category.id %}">{{ product.category.name }}</a></li>
             <li><label>Name:</label><p>{{ product.name }}</p></li>
             <li>
                 <label>Description:</label>
@@ -37,5 +41,7 @@
         </ul>
     </div>
 {% endif %}
+
+</div>
 
 {% endblock content %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if forms %}
+<table class="item_table">
+    <tr class="top"><td>Name</td><td>Price</td><td>Quantity</td><td></td></tr>
+    {% for f in forms %}
+        <tr>
+            <td><a href="{% url product f.data.product_id %}">{{ f.data.name }}</a></td>
+            <td>{{ f.data.price }} santiks</td>
+            <td>
+                <form class="basket_product" product_id="{{ f.data.product_id }}" action="{% url update_basket f.data.product_id %}" method="POST">
+                {% csrf_token %}
+                    {{ f.quantity }}
+                </form>
+            </td>
+            <td>
+            <form action="{% url remove_from_basket f.data.product_id %}" method="POST">
+            {% csrf_token %}
+                <input class="ui-icon ui-icon-close img_button" type="submit" value="Remove" />
+            </td>
+            </form>
+        </tr>
+    {% endfor %}
+    <tr><td colspan="4">Total: {{ basket.get_basket_price }} santiks</td></tr>
+</table>
+<form action="{% url order_basket basket.id %}" onsubmit="saveBasketBeforeOrder()" method="POST">
+{% csrf_token %}
+    <input type="submit" value="Buy" />
+</form>
+{% else %}
+<p class="message">The basket is empty</p>
+{% endif %}
+{% endblock content %}
