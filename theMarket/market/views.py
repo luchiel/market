@@ -1,4 +1,4 @@
-import random
+﻿import random
 import string
 import re
 import os
@@ -6,13 +6,14 @@ from django.utils import simplejson as json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.template import RequestContext
-from market.models import User, Category, Product, Basket, Purchased
+from market.models import User, Category, Product, Basket, Purchased, Address
 from market.forms import LoginForm, RegistrationForm, AdminRegistrationForm
-from market.forms import AccountForm, AdminAccountForm
+from market.forms import AccountForm, AdminAccountForm, AddressForm
 from market.forms import CategoryForm, MoveForm
 from market.forms import ProductForm, ProductChoiceForm
 from market.shortcuts import direct_to_template
-from market.utils import save_image
+from market.image_utils import save_image
+from market.process_product import process_product
 
 def index(request):
     return direct_to_template(request, 'index.html')
@@ -61,6 +62,27 @@ def edit_user(request, user_id):
     form = select_form()
     return direct_to_template(
         request, 'edit_user.html', {'form': form, 'message': msg, 'current': edited_user}
+    )
+
+
+def edit_user_address(request, user_id):
+    if not request.user or (user_id != str(request.user.id) and not request.user.is_admin):
+        return redirect('index')
+
+    edited_user = User.objects.get(id=user_id)
+    if Address.objects.filter(user=edited_user).exists():
+        address = Address.objects.get(user=edited_user)
+    else:
+        address = Address(user=edited_user)
+    form = AddressForm(data=(request.POST or None), instance=address)
+
+    msg = ''
+    if form.is_valid():
+        msg = 'Data saved'
+        form.save()
+            
+    return direct_to_template(
+        request, 'edit_user_address.html', {'form': form, 'message': msg, 'current': edited_user}
     )
 
 
@@ -258,6 +280,7 @@ def product(request, product_id):
             'image': product.image,
             'description': product.description,
         })
+    product_form = ProductChoiceForm()
     if request.POST and (not request.user or not request.user.is_admin):
         return redirect('product', product_id=product.id)
     msg = ''
@@ -272,7 +295,7 @@ def product(request, product_id):
         msg = 'Data saved'
         
     return direct_to_template(
-        request, 'edit_product.html', {'message': msg, 'product': product, 'form': form}
+        request, 'edit_product.html', {'message': msg, 'product': product, 'form': form, 'product_form': product_form}
     )
 
 
@@ -325,32 +348,17 @@ def move_product(request, product_id):
 
 
 def add_to_basket(request, product_id):
-    product = Product.objects.get(id=product_id)
-    category = product.category
-    form = ProductChoiceForm(request.POST or None)
-    if form.is_valid():
-        if Purchased.objects.filter(product=product, basket=request.basket, is_sent=False).exists():
-            p = Purchased.objects.get(product=product, basket=request.basket)
-            p.quantity = p.quantity + form.cleaned_data['quantity'] if p.quantity + form.cleaned_data['quantity'] < p.get_max() else p.get_max()
-            p.save()
-        else:
-            p = Purchased(product=product, basket=request.basket, quantity=form.cleaned_data['quantity'])
-            p.save()
+    category = Product.objects.get(id=product_id).category
+    def quantity_update(previous, new, maximum):
+        return min(previous + new, maximum)
+    process_product(request, product_id, quantity_update)
     return redirect('category', category_id=category.id)
 
 
 def update_basket(request, product_id):
-    product = Product.objects.get(id=product_id)
-    category = product.category
-    form = ProductChoiceForm(request.POST or None)
-    if form.is_valid():
-        if Purchased.objects.filter(product=product, basket=request.basket, is_sent=False).exists():
-            p = Purchased.objects.get(product=product, basket=request.basket, is_sent=False)
-            p.quantity = form.cleaned_data['quantity']
-            p.save()
-        else:
-            p = Purchased(product=product, basket=request.basket, quantity=form.cleaned_data['quantity'])
-            p.save()
+    def quantity_update(previous, new, maximum):
+        return min(new, maximum)
+    process_product(request, product_id, quantity_update)
     return HttpResponse(json.dumps(''), mimetype='application/json')
 
 
@@ -390,3 +398,28 @@ def order_basket(request, basket_id):
         p.save()
     #endblock
     return redirect('basket', basket_id=request.basket.id)
+
+
+def office_map(request):
+    return direct_to_template(request, 'map.html')
+
+
+def map_data(request):
+    def make_address_str(a):
+        return u'г. ' + a.city + u', ул. ' + a.street + u', дом ' + str(a.house)
+
+    result = []
+    address = '';
+    if request.user:
+        if Address.objects.filter(user=request.user).exists():
+            user_address = Address.objects.get(user=request.user)
+            address = make_address_str(user_address)
+    else:
+        if Address.objects.filter(session_id=request.session.session_key).exists():
+            user_address = Address.objects.get(session_id=request.session.session_key)
+            address = make_address_str(user_address)
+    
+    result.append(address)
+    for a in Address.objects.filter(user=None, session_id=None):
+        result.append(make_address_str(a))
+    return HttpResponse(json.dumps(result), mimetype='application/json')

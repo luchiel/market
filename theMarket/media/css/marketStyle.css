@@ -1,9 +1,21 @@
-body, div, p, img, ul, li
+body, div, p, img, ul, li, td, tr, table
 {
     margin: 0;
     border: 0;
     padding: 0;
     list-style: none;
+}
+
+textarea
+{
+    width: 150px;
+    height: 60px;
+}
+
+.right
+{
+    float: right;
+    margin-top: 0;
 }
 
 .upper_panel
@@ -63,7 +75,7 @@ form ul, #menu ul
     float: left;
 }
 
-.field_list input, .field_list textarea
+.field_list input, .field_list textarea, .field_list select
 {
     display: block;
 }

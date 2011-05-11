@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form class="field_list" id="edit_user_address" action="{% url edit_user_address current.id %}" method="POST">
+{% csrf_token %}
+    {% if message %}<p class="message">{{ message }}</p>{% endif %}
+    <ul>
+    <li><a class="buttonlike_href" href="{% url edit_user current.id %}">{{ current.login }}'s account page</a></li>
+    {{ form.as_ul }}
+    </ul>
+    <input class="button" type="submit" value="Save" />
+</form>
+{% endblock content %}

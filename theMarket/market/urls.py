@@ -12,6 +12,7 @@ urlpatterns = patterns('theMarket.market.views',
     url(r'^users/$', 'users', name='users'),
     url(r'^users/delete/(?P<user_id>\d+)/$', 'delete_user', name='delete_user'),
     url(r'^users/edit/(?P<user_id>\d+)/$', 'edit_user', name='edit_user'),
+    url(r'^users/edit/(?P<user_id>\d+)/edit_user_address/$', 'edit_user_address', name='edit_user_address'),
 
     url(r'^.*category_tree/(?P<location>.*)/(?P<category_id>\d+)/$', 'category_tree', name='category_tree'),
     url(r'^categories/(?P<category_id>\d+)/movecategory/$', 'move_category', name='move_category'),
@@ -30,4 +31,7 @@ urlpatterns = patterns('theMarket.market.views',
     url(r'^products/(?P<product_id>\d+)/remove_from_basket/$', 'remove_from_basket', name='remove_from_basket'),
     url(r'^basket/(?P<basket_id>\d+)/$', 'basket', name='basket'),
     url(r'^basket/(?P<basket_id>\d+)/order_basket/$', 'order_basket', name='order_basket'),
+    
+    url(r'^office_map/$', 'office_map', name='office_map'),
+    url(r'^map_data/$', 'map_data', name='map_data'),
 )

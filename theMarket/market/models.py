@@ -90,8 +90,8 @@ class Purchased(models.Model):
 
 
 class Address(models.Model):
-    session_id = models.CharField(max_length=200, null=True)
-    user   = models.ForeignKey(User, null=True)
+    session_id = models.CharField(max_length=200, null=True, editable=False)
+    user   = models.ForeignKey(User, null=True, editable=False)
     city   = models.CharField(max_length=200)
     street = models.CharField(max_length=200)
     house  = models.IntegerField()

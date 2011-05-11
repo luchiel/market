@@ -1,5 +1,6 @@
 from django import forms
-from market.models import User
+from django.forms import ModelForm
+from market.models import User, Address
 
 
 class UserBaseForm(forms.Form):
@@ -105,3 +106,8 @@ class ProductChoiceForm(forms.Form):
     name         = forms.CharField(max_length=200, required=False)
     price        = forms.IntegerField(required=False)
     quantity     = forms.TypedChoiceField(choices=INTEGER_CHOICES, empty_value=1, coerce=int)
+
+
+class AddressForm(ModelForm):
+    class Meta:
+        model = Address

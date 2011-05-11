@@ -7,10 +7,22 @@
 <div class="data_blocks">
 
 {% if product.image %}
-<div class="image">
-    <img src="/{{ product.image }}" alt="Buy me plz!" />
-</div>
+    <div class="image">
+        <img src="/{{ product.image }}" alt="Buy me plz!" />
+    </div>
 {% endif %}
+
+<div class="data_blocks">
+    <form action="{% url add_to_basket product.id %}" method="POST">
+    {% csrf_token %}
+    
+        <span class="field_list"><label>Quantity:</label></span>
+        <table><tr>
+            <td>{{ product_form.quantity }}</td>
+            <td><input class="ui-icon ui-icon-cart img_button" type="submit" value="To basket" /></td>
+        </tr></table>
+    </form>
+</div>
 
 {% if request.user.is_admin %}
     <form id="product" class="field_list" action="{% url product product.id %}" method="POST" enctype="multipart/form-data">
@@ -41,7 +53,6 @@
         </ul>
     </div>
 {% endif %}
-
 </div>
 
 {% endblock content %}
