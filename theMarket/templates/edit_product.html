@@ -38,6 +38,10 @@
     {% csrf_token %}
         <input class="edit_button" type="submit" value="Delete" />
     </form>
+    <form action="{% url delete_product_image product.id %}" method="POST">
+    {% csrf_token %}
+        <input class="edit_button" type="submit" value="Delete image" />
+    </form>
     <form action="{% url move_product product.id %}" method="GET">
     {% csrf_token %}
         <input class="edit_button" type="submit" value="Move to category..." />

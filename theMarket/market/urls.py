@@ -22,6 +22,7 @@ urlpatterns = patterns('theMarket.market.views',
 
     url(r'^.*product_grid/(?P<location>.*)/(?P<category_id>\d+)/$', 'product_grid', name='product_grid'),
     url(r'^products/(?P<product_id>\d+)/moveproduct/$', 'move_product', name='move_product'),
+    url(r'^products/(?P<product_id>\d+)/deleteproductimage/$', 'delete_product_image', name='delete_product_image'),
     url(r'^products/(?P<category_id>\d+)/addproduct/$', 'add_product', name='add_product'),
     url(r'^products/(?P<product_id>\d+)/deleteproduct/$', 'delete_product', name='delete_product'),
     url(r'^products/(?P<product_id>\d+)/$', 'product', name='product'),
@@ -34,4 +35,7 @@ urlpatterns = patterns('theMarket.market.views',
     
     url(r'^office_map/$', 'office_map', name='office_map'),
     url(r'^map_data/$', 'map_data', name='map_data'),
+    url(r'^offices/$', 'offices', name='offices'),
+    url(r'^offices/(?P<office_id>\d+)/edit_office/$', 'edit_office', name='edit_office'),
+    url(r'^offices/(?P<office_id>\d+)/delete_office/$', 'delete_office', name='delete_office'),
 )

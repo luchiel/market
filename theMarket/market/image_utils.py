@@ -1,3 +1,4 @@
+import os
 from hashlib import md5
 from PIL import Image
 
@@ -22,3 +23,8 @@ def save_image(i):
     img.save(iname)
 
     return iname
+
+
+def remove_image(i):
+    if i != '' and os.path.exists(os.getcwd() + '/' + i):
+        os.remove(os.getcwd() + '/' + i)

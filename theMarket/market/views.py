@@ -1,7 +1,7 @@
 ﻿import random
 import string
 import re
-import os
+from django.db import connection, transaction
 from django.utils import simplejson as json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
@@ -12,7 +12,7 @@ from market.forms import AccountForm, AdminAccountForm, AddressForm
 from market.forms import CategoryForm, MoveForm
 from market.forms import ProductForm, ProductChoiceForm
 from market.shortcuts import direct_to_template
-from market.image_utils import save_image
+from market.image_utils import save_image, remove_image
 from market.process_product import process_product
 
 def index(request):
@@ -105,26 +105,58 @@ def register(request):
 
 def users(request):
     if not request.user or not request.user.is_admin:
-        return 'Operation forbidden'
-    else:
-        return direct_to_template(
-            request, 'users.html', {'users': User.objects.all()}
-        )
+        return redirect('index')
+    return direct_to_template(
+        request, 'users.html', { 'users': User.objects.all() }
+    )
+
+
+def offices(request):
+    if not request.user or not request.user.is_admin:
+        return redirect('index')
+    return direct_to_template(
+        request, 'offices.html', { 'offices': Address.objects.filter(user=None, session_id=None) }
+    )
+
+
+def add_office(request):
+    return redirect('edit_office', 0)
+
+
+def edit_office(request, office_id):
+    if not request.user or not request.user.is_admin:
+        return redirect('index')
+    address = Address() if office_id == '0' else Address.objects.get(id=office_id)
+    form = AddressForm(data=(request.POST or None), instance=address)
+    msg = ''
+    if form.is_valid():
+        msg = 'Data saved'
+        form.save()
+    return direct_to_template(request, 'edit_office.html', { 'office_id': office_id, 'form': form, 'message': msg })
+
+
+def delete_office(request, office_id):
+    if not request.user or not request.user.is_admin:
+        return redirect('index')
+    if request.method == 'POST':
+        office = Address.objects.get(id=office_id)
+        office.delete()
+    return redirect('offices')
 
 
 def delete_user(request, user_id):
+    if not request.user or not request.user.is_admin:
+        return redirect('index')
     if request.method == 'POST':
-        if not request.user or not request.user.is_admin:
-            return redirect('index')
         user = User.objects.get(id=user_id)
         #admin must live!
         if user.is_admin and User.objects.filter(is_admin=True).count() == 1:
-            return HttpResponseRedirect('/theMarket/users/')
+            return redirect('users')
         #end
         if user.id == request.user.id:
             del request.session['user_id']
         user.delete()
-    return HttpResponseRedirect('/theMarket/users/')
+    return redirect('users')
 
 
 def add_category(request, parent_id):
@@ -288,8 +320,7 @@ def product(request, product_id):
         product.name = form.cleaned_data.get('name')
         product.description = form.cleaned_data.get('description')
         if 'image' in request.FILES:
-            if product.image != '' and os.path.exists(os.getcwd() + '/' + product.image):
-                os.remove(os.getcwd() + '/' + product.image)
+            remove_image(product.image)
             product.image = save_image(request.FILES['image'])
         product.save()
         msg = 'Data saved'
@@ -325,10 +356,16 @@ def delete_product(request, product_id):
         return redirect('category', category_id=category_id)
     product = Product.objects.get(id=product_id)
     category_id = product.category.id
-    if product.image != '' and os.path.exists(os.getcwd() + '/' + product.image):
-        os.remove(os.getcwd() + '/' + product.image)
+    remove_image(product.image)
     product.delete()
     return redirect('category', category_id=category_id)
+
+
+def delete_product_image(request, product_id):
+    if not request.user or not request.user.is_admin:
+        return redirect('product', product_id=product_id)
+    remove_image(Product.objects.get(id=product_id).image)
+    return redirect('product', product_id=product_id)
 
 
 def move_product(request, product_id):
@@ -392,10 +429,9 @@ def order_basket(request, basket_id):
     basket = Basket.objects.get(id=basket_id)
     #if block is commented one can see that quantities are updated according to the final will
     #block set is_sent
-    products = basket.get_basket_goods()
-    for p in products:
-        p.is_sent = True
-        p.save()
+    cursor = connection.cursor()
+    cursor.execute('UPDATE market_purchased SET is_sent=1 WHERE basket_id=%s AND is_sent=0', [basket_id])
+    transaction.commit_unless_managed()
     #endblock
     return redirect('basket', basket_id=request.basket.id)
 

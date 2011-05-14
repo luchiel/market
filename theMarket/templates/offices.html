@@ -1,32 +1,30 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 <table class="item_table">
     <tr class="top">
-        <td colspan="4">
-            <form action="{% url register %}" method="GET">
+        <td colspan="2">
+            <form action="{% url edit_office 0 %}" method="GET">
                 {% csrf_token %}
                 <input type="submit" value="Add" />
             </form>
         </td>
     </tr>
     <tr class="top">
-        <td>Login</td>
-        <td>Email</td>
-        <td>IsAdmin</td>
+        <td>Address</td>
         <td></td>
     </tr>
-    {% for user in users %}
+    {% for o in offices %}
         <tr>
-            <td>{{ user.login }}</td>
-            <td>{{ user.email }}</td>
-            <td>{% if user.is_admin %}+{% else %}-{% endif %}</td>
             <td>
-                <form action="{% url edit_user user.id %}" method="GET">
+                г. {{ o.city }}, ул. {{ o.street }}, дом {{ o.house }}
+            </td>
+            <td >
+                <form action="{% url edit_office o.id %}" method="GET">
                     {% csrf_token %}
                     <input type="submit" value="Edit" />
                 </form>
-                <form action="{% url delete_user user.id %}" method="POST">
+                <form action="{% url delete_office o.id %}" method="POST">
                     {% csrf_token %}
                     <input type="submit" value="Delete" />
                 </form>
