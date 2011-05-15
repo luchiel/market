@@ -12,7 +12,9 @@ function addComment(productId) {
         '/theMarket/products/' + productId + '/comments/add_comment/', $('#new_comment').serialize(),
         function(data) {
             if(data['result'] == 'ok') {
-                //$('#comments').append(data);
+                $('#comments').append(data['page']);
+                $('#mark_errors').html('');
+                $('#comment_errors').html('');
             }
             else {
                 function addErrorListToField(errorField) {

@@ -11,7 +11,7 @@
 -->
     {% if category.get_products %}
     <table class="item_table">
-        <tr class="top"><td>Name</td><td>Price</td><td>Quantity</td><td></td></tr>
+        <tr class="top"><td>Name</td><td>Price</td><td>Quantity</td><td></td><td>Rating</td><td>Discussion</td></tr>
         {% for product in category.get_products %}
             <tr>
                 <form action="{% url add_to_basket product.id %}" method="POST">
@@ -22,6 +22,15 @@
                     <td>
                         <input class="ui-icon ui-icon-cart img_button" type="submit" value="To basket" />
                     </td>
+                    <td>
+                        {% if product.get_product_mark_by_most_users != 0 %}
+                            {{ product.get_product_mark_by_most_users }}
+                            <a class="buttonlike_href" href="{% url mark_details product.id %}">(details)</a>
+                        {% else %}
+                            ?
+                        {% endif %}
+                    </td>
+                    <td><a class="buttonlike_href" href="{% url comments product.id %}">{{ product.get_comment_count }} comments</a></td>
                 </form>
             </tr>
         {% endfor %}

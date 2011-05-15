@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Sum
 from hashlib import sha1
 
 class User(models.Model):
@@ -62,11 +62,17 @@ class Product(models.Model):
     price       = models.IntegerField()
 
     def get_product_marks(self):
-        return Comment.objects.filter(product=self).values('mark').annotate(mark_count=Count('id')).order_by('-mark')
+        #return Comment.objects.filter(product=self).values('mark').annotate(mark_count=Count('id'), rating_sum=Sum('rating')).order_by('-mark')
+        return Comment.objects.raw(
+            'SELECT id, mark, SUM(rating) + COUNT(ID) AS total from market_comment GROUP BY mark HAVING product_id = %s', [self.id]
+        )
 
     def get_product_mark_by_most_users(self):
-        marks = self.get_product_marks().order_by('-mark_count')
-        return marks[0]['mark'] if marks.exists() else 0
+        marks = Comment.objects.raw(
+            'SELECT id, mark, SUM(rating) + COUNT(ID) AS total from market_comment GROUP BY mark HAVING product_id = %s ORDER BY total DESC',
+            [self.id]
+        )
+        return marks[0].mark if len(list(marks)) else 0
 
     def get_comments(self):
         return Comment.objects.filter(product=self)

@@ -6,7 +6,7 @@
     {% for mark in product.get_product_marks %}
      <li>
         <span class="mark">{{ mark.mark }}</span> - 
-        <span class="message">{{ mark.mark_count }} user{% if mark.mark_count > 1 %}s{% endif %}</span>
+        <span class="message">{{ mark.total }} user{% if mark.total > 1 %}s{% endif %}</span>
     </li>
     {% endfor %}
 </ul>

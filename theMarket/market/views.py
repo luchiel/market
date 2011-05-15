@@ -5,7 +5,8 @@ from django.db import connection, transaction
 from django.utils import simplejson as json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
-from django.template import RequestContext
+from django.template import RequestContext, Template
+from django.template.loader import get_template
 from market.models import User, Category, Product, Basket, Purchased, Address, Comment
 from market.forms import LoginForm, RegistrationForm, AdminRegistrationForm
 from market.forms import AccountForm, AdminAccountForm, AddressForm
@@ -492,10 +493,12 @@ def add_comment(request, product_id):
                 'comment_error': form.errors.get('comment'),
             }), mimetype='application/json'
         )
+    page = get_template('single_comment.html')
+    context = RequestContext(request, { 'comment': form.instance })
     return HttpResponse(
         json.dumps({
             'result': 'ok',
-            'new_comment': 'here must be rendered template single comment',
+            'page': page.render(context),
         }), mimetype='application/json'
     )
 

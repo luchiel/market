@@ -63,7 +63,8 @@
     <p>
     Rating: 
     {% if product.get_product_mark_by_most_users != 0 %}
-        {{ product.get_product_mark_by_most_users }} <a class="buttonlike_href" href="{% url mark_details product.id %}">(details)</a>
+        {{ product.get_product_mark_by_most_users }}
+        <a class="buttonlike_href" href="{% url mark_details product.id %}">(details)</a>
     {% else %}
         ?
     {% endif %}
