@@ -2,3 +2,4 @@
 *.sqlite3
 theMarket/media/development-bundle/*
 theMarket/media/js/src/*
+theMarket/media/css/images/*
