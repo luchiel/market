@@ -33,9 +33,16 @@ urlpatterns = patterns('theMarket.market.views',
     url(r'^basket/(?P<basket_id>\d+)/$', 'basket', name='basket'),
     url(r'^basket/(?P<basket_id>\d+)/order_basket/$', 'order_basket', name='order_basket'),
     
+    url(r'^products/(?P<product_id>\d+)/comments/$', 'comments', name='comments'),
+    url(r'^products/(?P<product_id>\d+)/comments/add_comment/$', 'add_comment', name='add_comment'),
+    url(r'^products/comments/(?P<comment_id>\d+)/delete_comment/$', 'delete_comment', name='delete_comment'),
+    url(r'^products/(?P<product_id>\d+)/mark_details/$', 'mark_details', name='mark_details'),
+
     url(r'^office_map/$', 'office_map', name='office_map'),
     url(r'^map_data/$', 'map_data', name='map_data'),
     url(r'^offices/$', 'offices', name='offices'),
     url(r'^offices/(?P<office_id>\d+)/edit_office/$', 'edit_office', name='edit_office'),
     url(r'^offices/(?P<office_id>\d+)/delete_office/$', 'delete_office', name='delete_office'),
+
+    url(r'^add_vote/(?P<comment_id>\d+)/$', 'add_vote', name='add_vote'),
 )

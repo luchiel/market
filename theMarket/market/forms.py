@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from market.models import User, Address
+from market.models import User, Address, Comment
 
 
 class UserBaseForm(forms.Form):
@@ -95,12 +95,9 @@ class ProductForm(forms.Form):
 
 
 class ProductChoiceForm(forms.Form):
-    INTEGER_CHOICES = (
-        (1, 1), (2, 2), (3, 3), (4, 4), (5, 5),
-        (6, 6), (7, 7), (8, 8), (9, 9), (10, 10),
-        (11, 11), (12, 12), (13, 13), (14, 14), (15, 15),
-        (16, 16), (17, 17), (18, 18), (19, 19), (20, 20),
-    )
+    INTEGER_CHOICES = []
+    for i in range(20):
+        INTEGER_CHOICES.append((i + 1, i + 1));
     product_id   = forms.IntegerField(required=False, widget=forms.HiddenInput)
     purchased_id = forms.IntegerField(required=False, widget=forms.HiddenInput)
     name         = forms.CharField(max_length=200, required=False)
@@ -111,3 +108,9 @@ class ProductChoiceForm(forms.Form):
 class AddressForm(ModelForm):
     class Meta:
         model = Address
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+

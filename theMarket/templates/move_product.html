@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block scripts %}
+    <script src="/media/js/marketJSmove.js" type="text/javascript"></script>
+{% endblock scripts %}
+
 {% block content %}
 {%  include 'breadcrumbs.html' with category=product.category %}
 

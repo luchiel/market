@@ -10,14 +10,7 @@
         <script src="/media/js/grid.locale-en.js" type="text/javascript"></script>
         <script src="/media/js/jquery.jqGrid.min.js" type="text/javascript"></script>
         <script src="/media/js/src/grid.custom.js" type="text/javascript"></script>
-        <script src="/media/js/marketJSmain.js" type="text/javascript"></script>
-        <script src="/media/js/marketJStree.js" type="text/javascript"></script>
-        <script src="/media/js/marketJSmove.js" type="text/javascript"></script>
-        <script src="/media/js/marketJSproducts.js" type="text/javascript"></script>
-        <script
-            src="http://api-maps.yandex.ru/1.1/index.xml?key=AOOAyk0BAAAAI8HLJQIABvWk7cYGWBu8_DFXcjpEBn-an40AAAAAAAAAAACA2ubHpV4s4u-xYE4mHW3z9VgVXw=="
-            type="text/javascript">
-        </script>
+        <script src="/media/js/marketJStree.js" type="text/javascript"></script>        
         {% block scripts %}
         {% endblock scripts %}
         <title>theMarket</title>
@@ -38,12 +31,6 @@
                 <a class="buttonlike_href" href="{% url edit_user request.user.id %}">{{ request.user.login }}'s account</a>
                 <a class="buttonlike_href" href="{% url logout %}">Log out</a>
             {% else %}
-                <!--
-                <script>var url_login = '{% url login %}';</script>
-                <input id="login_button" type="submit" onclick="login()" value="Log in" />
-                <script>var url_register = '{% url register %}';</script>
-                <input id="login_button" type="submit" onclick="register()" value="Registration" />
-                -->
                 <a class="buttonlike_href" href="{% url login %}">Log in</a>
                 <a class="buttonlike_href" href="{% url register %}">Register</a>
             {% endif %}

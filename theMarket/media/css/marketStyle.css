@@ -109,7 +109,7 @@ div#account
     background-color: #AAAAAA;
 }
 
-.errorlist, p.message
+.errorlist, .message
 {
     font-style: italic;
     margin-bottom: 5px;
@@ -245,4 +245,64 @@ div#edit_category input, input.edit_button
 {
     width: 21px !important;
     height: 21px !important;
+}
+
+#new_comment_block
+{
+    width: 580px;
+    padding: 10px;
+    background-color: #DDDDDD;
+}
+
+.comment_blocks
+{
+    margin-bottom: 2px;
+}
+
+.mark_list
+{
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+.mark
+{
+    font-weight: bold;
+}
+
+.mark_single
+{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.signature_single
+{
+    font-weight: bold;
+    font-style: italic;
+}
+
+.comment_table
+{
+    width: 600px;
+}
+
+.comment_table, .comment_table tr, .comment_table td
+{
+    background-color: #DDDDDD;
+
+    border-width: 1px;
+    border-style: solid;
+    border-collapse: collapse;
+    border-color: #FFFFFF;
+    
+    padding: 10px;
+    
+    vertical-align: top;
+}
+
+.mark_rate
+{
+    width: 100px;
+    text-align: center;
 }

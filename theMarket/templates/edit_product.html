@@ -59,4 +59,18 @@
 {% endif %}
 </div>
 
+<div class="data_blocks">
+    <p>
+    Rating: 
+    {% if product.get_product_mark_by_most_users != 0 %}
+        {{ product.get_product_mark_by_most_users }} <a class="buttonlike_href" href="{% url mark_details product.id %}">(details)</a>
+    {% else %}
+        ?
+    {% endif %}
+    </p>
+    <p><a class="buttonlike_href" href="{% url comments product.id %}">
+    {% if product.get_comment_count > 0 %}Comments ({{ product.get_comment_count }}){% else %}Add comment...{% endif %}
+    </a></p>
+</div>
+
 {% endblock content %}

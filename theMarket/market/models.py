@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 from hashlib import sha1
 
 class User(models.Model):
@@ -60,6 +61,19 @@ class Product(models.Model):
     category    = models.ForeignKey(Category)
     price       = models.IntegerField()
 
+    def get_product_marks(self):
+        return Comment.objects.filter(product=self).values('mark').annotate(mark_count=Count('id')).order_by('-mark')
+
+    def get_product_mark_by_most_users(self):
+        marks = self.get_product_marks().order_by('-mark_count')
+        return marks[0]['mark'] if marks.exists() else 0
+
+    def get_comments(self):
+        return Comment.objects.filter(product=self)
+
+    def get_comment_count(self):
+        return self.get_comments().count()
+
 
 class Basket(models.Model):
     session_id = models.CharField(max_length=200, null=True)
@@ -95,4 +109,14 @@ class Address(models.Model):
     city   = models.CharField(max_length=200)
     street = models.CharField(max_length=200)
     house  = models.IntegerField()
-    
+
+
+class Comment(models.Model):
+    MARK_CHOICES = []
+    for i in range(10):
+        MARK_CHOICES.append((i + 1, i + 1));
+    user    = models.ForeignKey(User, null=True, editable=False)
+    product = models.ForeignKey(Product, editable=False)
+    mark    = models.IntegerField(choices=MARK_CHOICES)
+    comment = models.TextField()
+    rating  = models.IntegerField(default=0, editable=False)

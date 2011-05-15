@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block scripts %}
+    <script src="/media/js/marketJScomments.js" type="text/javascript"></script>
+{% endblock scripts %}
+
+{% block content %}
+
+<div class="data_blocks">
+    Disscussion on product <a href="{% url product product.id %}">{{ product.name }}</a>
+</div>
+
+<div class="data_blocks">
+
+<div id="comments">
+{% for comment in product.get_comments %}
+    {% include 'single_comment.html' %}
+{% endfor %}
+</div>
+
+<div id="new_comment_block" class="comment_blocks">
+    <form id="new_comment" class="field_list">
+    {% csrf_token %}
+        {% if not request.user %}<p class="message">You are not logged in. You won't be able to delete your comments</p>{% endif %}
+        <ul>
+            <li id="mark_errors"></li>
+            <li>{{ form.mark.label_tag }} {{ form.mark }}</li>
+            <li id="comment_errors"></li>
+            <li>{{ form.comment.label_tag }} {{ form.comment }}</li>
+        </ul>
+    </form>
+    <input type="submit" onclick="addComment({{ product.id }});" value="Add comment" />
+</div>
+
+</div>
+
+{% endblock content %}
