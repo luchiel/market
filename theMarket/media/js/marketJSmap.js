@@ -22,6 +22,10 @@
             .click({ point: i }, function(eventObject) {
                 map.setCenter(eventObject.data.point.getGeoPoint(), 8);
             })
+            .hover(
+                function() { $(this).css('cursor','pointer'); },
+                function() { (this).css('cursor','auto'); }
+            )
             .appendTo(list);
     }
     
