@@ -18,17 +18,23 @@
 {% endfor %}
 </div>
 
-<div id="new_comment_block" class="comment_blocks">
-    <form id="new_comment" class="field_list">
-    {% csrf_token %}
-        {% if not request.user %}<p class="message">You are not logged in. You won't be able to delete your comments</p>{% endif %}
-        <ul>
-            <li id="mark_errors"></li>
-            <li>{{ form.mark.label_tag }} {{ form.mark }}</li>
-            <li id="comment_errors"></li>
-            <li>{{ form.comment.label_tag }} {{ form.comment }}</li>
-        </ul>
-    </form>
+<div class="comment_blocks">
+    {% if not request.user %}<p class="message">You are not logged in. You won't be able to delete your comments</p>{% endif %}
+    <table id="{{ comment.id }}_table" class="comment_table">
+        <form id="new_comment">
+        {% csrf_token %}
+        <tr>
+            <td class="mark_single mark_rate">
+                <div id="mark_errors"></div>
+                {{ form.mark }}
+            </td>
+            <td>
+                <div id="comment_errors"></div>
+                {{ form.comment }}
+            </td>
+        </tr>
+        </form>
+    </table>
     <input type="submit" onclick="addComment({{ product.id }});" value="Add comment" />
 </div>
 

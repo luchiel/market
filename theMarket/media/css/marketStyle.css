@@ -112,6 +112,8 @@ div#account
 .errorlist, .message
 {
     font-style: italic;
+    font-size: 16px;
+    font-weight: normal;
     margin-bottom: 5px;
 }
 
@@ -247,13 +249,6 @@ div#edit_category input, input.edit_button
     height: 21px !important;
 }
 
-#new_comment_block
-{
-    width: 580px;
-    padding: 10px;
-    background-color: #DDDDDD;
-}
-
 .comment_blocks
 {
     margin-bottom: 2px;
@@ -301,8 +296,30 @@ div#edit_category input, input.edit_button
     vertical-align: top;
 }
 
+#id_comment
+{
+    width: 450px;
+}
+
 .mark_rate
 {
     width: 100px;
     text-align: center;
+}
+
+#YMapsID
+{
+    float: left;
+    width: 400px;
+    height: 400px;
+}
+
+#office_addresses
+{
+    float: left;
+}
+
+#office_addresses li
+{
+    list-style-type: decimal;
 }
