@@ -1,4 +1,4 @@
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
 $('#move_to_category').jqGrid({
     url: 'category_tree' + window.location.pathname + $('#category_id').attr('value') + '/',

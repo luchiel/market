@@ -13,6 +13,10 @@
 <div class="data_blocks">
 
 <div id="comments">
+    <form id="comment_form" hidden="hidden" method="POST">
+    {% csrf_token %}
+        <input hidden="hidden" value="1" name="vote" />
+    </form>
 {% for comment in product.get_comments %}
     {% include 'single_comment.html' %}
 {% endfor %}

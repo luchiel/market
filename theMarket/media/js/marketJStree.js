@@ -1,4 +1,4 @@
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
 $('#categories').jqGrid({
     url: 'category_tree' + window.location.pathname + '0/',

@@ -26,9 +26,5 @@
                 -->
             </td>
         </tr>
-        <form id="{{ comment.id }}_comment_form" hidden="hidden" method="POST">
-        {% csrf_token %}
-            <input hidden="hidden" value="1" name="vote" />
-        </form>
     </table>
 </div>

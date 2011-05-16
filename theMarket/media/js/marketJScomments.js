@@ -1,6 +1,6 @@
-function changeRating(commentId) {
+﻿function changeRating(commentId) {
     $.post(
-        '/theMarket/add_vote/' + commentId + '/', $('#' + commentId + '_comment_form').serialize(),
+        '/theMarket/add_vote/' + commentId + '/', $('#comment_form').serialize(),
         function(data) {
             $('#' + commentId + '_rating').html('(+' + data + ')');
         }
@@ -38,7 +38,7 @@ function addComment(productId) {
 
 function deleteComment(commentId) {
     $.post(
-        '/theMarket/products/comments/' + commentId + '/delete_comment/', $('#' + commentId + '_comment_form').serialize(),
+        '/theMarket/products/comments/' + commentId + '/delete_comment/', $('#comment_form').serialize(),
         function(data) {
             if(data['result'] == 'ok') {
                 $('#' + commentId + '_table').remove();

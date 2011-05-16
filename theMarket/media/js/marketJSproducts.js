@@ -1,4 +1,4 @@
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
 $('#products_table').jqGrid({
     //http://www.trirand.com/blog/jqgrid/jqgrid.html

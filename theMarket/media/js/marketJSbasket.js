@@ -1,4 +1,4 @@
-function saveBasketBeforeOrder() {
+﻿function saveBasketBeforeOrder() {
     formCounter = 0;
     successCounter = 0;
     $('.basket_product').each(function(index) {
