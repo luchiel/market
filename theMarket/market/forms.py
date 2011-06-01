@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from market.models import User, Address, Comment
+from market.report_utils import REPORT_CHOICES
 
 
 class UserBaseForm(forms.Form):
@@ -114,3 +115,7 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
 
+
+class ReportForm(forms.Form):
+    row    = forms.TypedChoiceField(choices=REPORT_CHOICES, empty_value=0, coerce=int)
+    column = forms.TypedChoiceField(choices=REPORT_CHOICES, empty_value=0, coerce=int)	

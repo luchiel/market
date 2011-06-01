@@ -5,6 +5,7 @@ from django.template.loader import get_template
 from market.models import Product, Comment
 from market.forms import CommentForm
 from market.shortcuts import direct_to_template
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def mark_details(request, product_id):
@@ -12,9 +13,21 @@ def mark_details(request, product_id):
 
 
 def comments(request, product_id):
+    product = Product.objects.get(id=product_id)
+    paginator = Paginator(product.get_comments(), 5)
+    page = request.GET.get('page')
+    if not page:
+        page = 1
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
     return direct_to_template(
         request, 'comments.html', {
-            'product': Product.objects.get(id=product_id),
+            'product': product,
+            'comments': comments,
             'form': CommentForm(),
         }
     )

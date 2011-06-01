@@ -15,6 +15,7 @@ function addComment(productId) {
                 $('#comments').append(data['page']);
                 $('#mark_errors').html('');
                 $('#comment_errors').html('');
+                $('#id_comment').val('');
             }
             else {
                 function addErrorListToField(errorField) {

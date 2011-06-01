@@ -24,7 +24,7 @@
             })
             .hover(
                 function() { $(this).css('cursor','pointer'); },
-                function() { (this).css('cursor','auto'); }
+                function() { $(this).css('cursor','auto'); }
             )
             .appendTo(list);
     }

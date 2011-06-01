@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block scripts %}
+<script src="/media/js/marketJSreports.js" type="text/javascript"></script>        
+{% endblock scripts %}
+
+{% block content %}
+
+<p class="message">Select report parameters:</p>
+
+<form id="parameters" action="POST" class="field_list">
+{% csrf_token %}
+<ul>
+    <li>
+        {{ form.row.label_tag }}
+        {{ form.row }}
+    </li>
+    <li id="row_parameters" class="subitem">
+    </li>
+    <li>
+        {{ form.column.label_tag }}
+        {{ form.column }}
+    </li>
+    <li id="column_parameters" class="subitem">
+    </li>
+</ul>
+<input type="submit" value="Output report" />
+</form>
+
+{% endblock content %}

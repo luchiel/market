@@ -54,3 +54,9 @@ urlpatterns += patterns('theMarket.market.category_views',
     url(r'^categories/(?P<category_id>\d+)/deletecategory/$', 'delete_category', name='delete_category'),
     url(r'^categories/(?P<category_id>\d+)/$', 'category', name='category'),
 )
+
+urlpatterns += patterns('theMarket.market.report_views',
+    url(r'^reports/$', 'reports', name='reports'),
+    url(r'^reports/extend_params/(?P<is_column>\d+)/$', 'extend_params', name='extend_params'),
+    url(r'^reports/output/$', 'output_report', name='output_report'),
+)

@@ -323,3 +323,9 @@ div#edit_category input, input.edit_button
 {
     list-style-type: decimal;
 }
+
+.subitem label
+{
+    padding-left: 20px;
+    width: 110px;
+}
