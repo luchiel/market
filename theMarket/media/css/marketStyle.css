@@ -44,6 +44,21 @@ a
     font-weight: bold;
 }
 
+.ui-datepicker
+{
+    width: 12em !important;
+}
+
+.ui-datepicker-title select, .ui-datepicker table, .ui-datepicker a, .ui-datepicker th
+{
+    margin: 0;
+    padding: 1px !important;
+    margin-left: 0;
+    color: black;
+    font-size: 12px !important;
+    font-weight: normal;
+}
+
 .buttonlike_href
 {
     text-decoration: none;

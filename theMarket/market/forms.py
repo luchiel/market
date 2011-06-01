@@ -116,6 +116,9 @@ class CommentForm(ModelForm):
         model = Comment
 
 
-class ReportForm(forms.Form):
-    row    = forms.TypedChoiceField(choices=REPORT_CHOICES, empty_value=0, coerce=int)
-    column = forms.TypedChoiceField(choices=REPORT_CHOICES, empty_value=0, coerce=int)	
+class ReportForm(MoveForm):
+    DATE_FORMATS = ['%d.%m.%Y', '%d.%m.%y', '%d/%m/%Y', '%d/%m/%y']
+    row        = forms.TypedChoiceField(choices=REPORT_CHOICES, empty_value=0, coerce=int)
+    column     = forms.TypedChoiceField(choices=REPORT_CHOICES, empty_value=0, coerce=int)
+    start_date = forms.DateField(input_formats=DATE_FORMATS)
+    end_date   = forms.DateField(input_formats=DATE_FORMATS)
