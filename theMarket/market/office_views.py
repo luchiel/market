@@ -44,7 +44,7 @@ def office_map(request):
 
 def map_data(request):
     def make_address_str(a):
-        return u'г. ' + a.city + u', ул. ' + a.street + u', дом ' + str(a.house)
+        return u'г. {0}, ул. {1}, дом {2}'.format(a.city, a.street, a.house)
 
     result = []
     address = '';

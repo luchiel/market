@@ -64,6 +64,17 @@ a
     text-decoration: none;
 }
 
+#time
+{
+    margin-bottom: 3px;
+}
+
+#time input
+{
+    margin-left: 14px;
+    margin-right: 14px;
+}
+
 div#userinfo
 {
     background-color: rgb(140, 140, 225);

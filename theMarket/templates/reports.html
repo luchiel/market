@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 
 {% block scripts %}
-<script src="/media/js/marketJSreports.js" type="text/javascript"></script>        
+<script src="/media/js/marketJSreports.js" type="text/javascript"></script>
+<script src="/media/js/marketJSmove.js" type="text/javascript"></script>
 {% endblock scripts %}
 
 {% block content %}
 
 <p class="message">Select report parameters:</p>
 
-<form id="parameters" action="POST">
+<form id="parameters" action="{% url output_report %}" method="POST">
 {% csrf_token %}
 <div id="time">{{ form.start_date.label_tag }}: {{ form.start_date }} {{ form.end_date.label_tag }}: {{ form.end_date }}</div>
 <ul class="field_list">
@@ -16,15 +17,21 @@
         {{ form.row.label_tag }}
         {{ form.row }}
     </li>
-    <li id="row_parameters" class="subitem">
-    </li>
+    <li id="row_parameters" class="subitem"></li>
     <li>
         {{ form.column.label_tag }}
         {{ form.column }}
     </li>
-    <li id="column_parameters" class="subitem">
+    <li id="column_parameters" class="subitem"></li>
+    <li>{{ form.parent_id }}<label>Use products from:</label>{{ form.parent }}</li>
+    <li>
+        <input id="category_id" type="hidden" value="0">
+        <table id="category_additional_tree">
+        </table>
     </li>
 </ul>
+
+
 <input type="submit" value="Output report" />
 </form>
 

@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-$('#move_to_category').jqGrid({
+$('#category_additional_tree').jqGrid({
     url: 'category_tree' + window.location.pathname + $('#category_id').attr('value') + '/',
     datatype: 'json',
     height: 'auto',
@@ -26,7 +26,7 @@ $('#move_to_category').jqGrid({
     }
 });
 
-$('#move_to_category').jqGrid('filterToolbar', { stringResult: true, searchOnEnter: false });
+$('#category_additional_tree').jqGrid('filterToolbar', { stringResult: true, searchOnEnter: false });
 
 $('.ui-jqgrid-titlebar-close').remove();
 $('.ui-jqgrid-labels').remove();

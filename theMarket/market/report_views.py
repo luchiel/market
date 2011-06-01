@@ -32,13 +32,11 @@ def extend_params(request, is_column):
     else:
         if param_id == 2:
             parameters = { 'options': REPORT_PRICE_SLICES, 'comment': 'Group by' }
-        else:
-            if param_id == 3:
-                level = Category.objects.aggregate(Max('depth'))['depth__max']
-                parameters = { 'options': range(level + 1), 'comment': 'Group by level'}
-            else:
-                if param_id == 4:
-                    parameters = { 'options': REPORT_TIME_PERIODS, 'comment': 'Group by' }
+        elif param_id == 3:
+            level = Category.objects.aggregate(Max('depth'))['depth__max']
+            parameters = { 'options': range(level + 1), 'comment': 'Group by level'}
+        elif param_id == 4:
+            parameters = { 'options': REPORT_TIME_PERIODS, 'comment': 'Group by' }
         response = { 'extendable': 'true', 'parameters': parameters }
     return HttpResponse(json.dumps(response), mimetype='application/json')
 
