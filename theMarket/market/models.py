@@ -1,6 +1,18 @@
 from django.db import models
 from django.db.models import Count, Sum
 from hashlib import sha1
+from scheduler.models import connect
+from datetime import datetime, timedelta
+
+
+def update_correlations(sender, instance, **kwargs):
+    # Do correlation here!
+    instance.delete()
+    next_event = datetime.now() + timedelta(hours=2)
+    sender.objects.create(signal='correlate', timestamp=next_event)
+
+connect('correlate', update_correlations, dispatch_uid='scheduler.update_correlations')
+
 
 class User(models.Model):
     login    = models.CharField(max_length=200, unique=True)
