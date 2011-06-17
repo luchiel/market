@@ -43,51 +43,6 @@ def extend_params(request, is_column):
     return HttpResponse(json.dumps(response), mimetype='application/json')
 
 
-SQL_PIECES = [
-    #(select, join, group, order)
-    ('p.name AS product_name', '', 'p.id', ''), #products
-    (
-        'a.city', [
-            ('market_Basket b', 'b.id = ph.basket_id'),
-            (
-                'market_Address a', (
-                'a.user_id = b.user_id OR ' +
-                'a.session_id = b.session_id'
-            )),
-        ], 'a.city', ''
-    ), #cities
-    ('p.price', '', '', 'p.price'), #prices
-    ('c.name AS category_name, c.depth', '', '', 'c.name'), #categories
-    ('ph.date', '', 'ph.date', 'ph.date'), #time
-]
-
-
-def get_query(template, row, col):
-    row_sql = SQL_PIECES[row]
-    col_sql = SQL_PIECES[col]
-
-    def compose_line(index):
-        line = ''
-        if row_sql[index]:
-            line += ', {0}'.format(row_sql[index]) 
-        if col_sql[index]:
-            line += ', {0}'.format(col_sql[index])
-        return line
-    
-    select = compose_line(0)
-    
-    def compose_joins(join_list):
-        joins = ''
-        if join_list:
-            for join in join_list:
-                joins += 'INNER JOIN {0} ON {1} '.format(join[0], join[1])
-        return joins
-        
-    joins = compose_joins(row_sql[1]) + compose_joins(col_sql[1])
-    group_by = compose_line(2).replace(',', 'GROUP BY', 1)
-    order_by = compose_line(3).replace(',', 'ORDER BY', 1)
-    return template.format(select=select, join=joins, group=group_by, order=order_by)
-
 
 def output_report(request):
     TODAY = datetime.datetime.today().strftime('%d.%m.%Y')
@@ -95,37 +50,37 @@ def output_report(request):
     def set_not_empty_value(param, default):
         return param or default
 
-    start_date = set_not_empty_value(request.POST['start_date'], TODAY)
-    end_date = set_not_empty_value(request.POST['end_date'], TODAY)
+    #extract data from request.POST
     root_cat_id = set_not_empty_value(request.POST['parent_id'], '1')
     root_cat_path = Category.objects.get(id=root_cat_id).path
     row = int(request.POST['row'])
     col = int(request.POST['column'])
-    
     row_param = int(request.POST.get('detail0', '0'))
     col_param = int(request.POST.get('detail1', '0'))
+    start_date = set_not_empty_value(request.POST['start_date'], TODAY)
+    end_date = set_not_empty_value(request.POST['end_date'], TODAY)
+    #change request params if needed
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
 
-    query = get_query(QUERY_TEMPLATE, row, col)
-    dataset = Purchased.objects.raw(query, [start_date, end_date, root_cat_path + '%'])
+    #dataset
+    dataset = Purchased.objects.raw(get_query(QUERY_TEMPLATE, row, col), [start_date, end_date, root_cat_path + '%'])
+
+    #make headers
+    row_header = MAKE_HEADER[row](row_param, start_date, end_date, root_cat_path)
+    col_header = MAKE_HEADER[col](col_param, start_date, end_date, root_cat_path)
+
     current_col = 0
     current_row = 0
     grid = [[0]]
-    row_header = []
-    col_header = []
-    #row_field
-    #col_field
+
+    #fill grid
     while item in dataset:
-        row_header.append(item[row_field])
-        for CHECK_FOR_CHANGE[row](cur, prev, row_param) in [True]:
-            col_header.append(item[col_field])
-            for CHECK_FOR_CHANGE[col](cur, prev, col_param) in [True]:
+        for CHECK_FOR_CHANGE[row](item, row_header[current_row], row_param) in [True]:
+            for CHECK_FOR_CHANGE[col](item, col_header[current_col], col_param) in [True]:
                 grid[current_row][current_col] += item['quantity_sum']
                 next(dataset.iterator())
                 #dataset.iterator().next()
-            #if item in dataset:
-            current_col = CHANGE[col](grid[current_row], 0, col_header, cur, prev, col_param)
-        #if item in dataset:
-        current_row = CHANGE[row](grid, [0], row_header, cur, prev, row_param)
 
     return HttpResponse(json.dumps(''), mimetype='application/json')
 
