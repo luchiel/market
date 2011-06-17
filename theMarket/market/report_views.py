@@ -1,25 +1,45 @@
 # coding: utf-8
 from reportlab.pdfgen import canvas
-import datetime
+from datetime import datetime
 import string
+import threading
 from django.utils import simplejson as json
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.db.models import Max
 from market.models import Category, Purchased
 from market.shortcuts import direct_to_template
 from market.forms import ReportForm
 from market.report_utils import *
+from market.shortcuts import direct_to_template
 
 
-def some_view(request):
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=' + somefilename + '.pdf'
-    
-    p = canvas.Canvas(response)
-    p.drawString(100, 100, "Hello world.")
-    p.showPage()
-    p.save()
-    return response
+class report_thread(threading.Thread):
+    def run(self):
+        pass
+'''
+class threading.Thread(group=None, target=None, name=None, args=(), kwargs={}) 
+This constructor should always be called with keyword arguments. Arguments are:
+
+group should be None; reserved for future extension when a ThreadGroup class is implemented.
+
+target is the callable object to be invoked by the run() method. Defaults to None, meaning nothing is called.
+
+name is the thread name. By default, a unique name is constructed of the form “Thread-N” where N is a small decimal number.
+
+args is the argument tuple for the target invocation. Defaults to ().
+
+kwargs is a dictionary of keyword arguments for the target invocation. Defaults to {}.
+
+'''
+
+'''
+Thread.run() 
+Method representing the thread’s activity.
+
+You may override this method in a subclass. The standard run() method invokes the callable object passed to the object’s constructor as the target 
+argument, if any, with sequential and keyword arguments taken from the args and kwargs arguments, respectively.
+'''
 
 
 def reports(request):
@@ -29,7 +49,7 @@ def reports(request):
 def extend_params(request, is_column):
     param_id = request.GET['row'] if is_column == '0' else request.GET['column']
     param_id = int(param_id)
-    if param_id in range(2):
+    if param_id < 2:
         response = { 'extendable': 'false' }
     else:
         if param_id == 2:
@@ -43,9 +63,10 @@ def extend_params(request, is_column):
     return HttpResponse(json.dumps(response), mimetype='application/json')
 
 
-
 def output_report(request):
-    TODAY = datetime.datetime.today().strftime('%d.%m.%Y')
+    if not request.POST:
+        return redirect('reports')
+    today = datetime.today().strftime('%d.%m.%Y')
 
     def set_not_empty_value(param, default):
         return param or default
@@ -57,8 +78,8 @@ def output_report(request):
     col = int(request.POST['column'])
     row_param = int(request.POST.get('detail0', '0'))
     col_param = int(request.POST.get('detail1', '0'))
-    start_date = set_not_empty_value(request.POST['start_date'], TODAY)
-    end_date = set_not_empty_value(request.POST['end_date'], TODAY)
+    start_date = datetime.strptime(set_not_empty_value(request.POST['start_date'], today), '%d.%m.%Y')
+    end_date = datetime.strptime(set_not_empty_value(request.POST['end_date'], today), '%d.%m.%Y')
     #change request params if needed
     if start_date > end_date:
         start_date, end_date = end_date, start_date
@@ -70,19 +91,50 @@ def output_report(request):
     row_header = MAKE_HEADER[row](row_param, start_date, end_date, root_cat_path)
     col_header = MAKE_HEADER[col](col_param, start_date, end_date, root_cat_path)
 
-    current_col = 0
-    current_row = 0
     grid = [[0]]
 
     #fill grid
-    while item in dataset:
-        for CHECK_FOR_CHANGE[row](item, row_header[current_row], row_param) in [True]:
-            for CHECK_FOR_CHANGE[col](item, col_header[current_col], col_param) in [True]:
-                grid[current_row][current_col] += item['quantity_sum']
-                next(dataset.iterator())
-                #dataset.iterator().next()
+    if not list(dataset):
+        return redirect('reports')
+    i = 0
+    item = dataset[i]
+    current_row = 0
+    dataset = list(dataset)
 
-    return HttpResponse(json.dumps(''), mimetype='application/json')
+    while i < len(list(dataset)):
+        while current_row < len(row_header) and not CHECK_FOR_CHANGE[row](item, row_header[current_row], row_param):
+            current_row = current_row + 1
+            grid.append([0])
+        if current_row == len(row_header):
+            break
+        current_col = 0
+        while CHECK_FOR_CHANGE[row](item, row_header[current_row], row_param):
+            while current_col < len(col_header) and not CHECK_FOR_CHANGE[col](item, col_header[current_col], col_param):
+                current_col += 1
+                grid[current_row].append(0)
+            if current_col == len(col_header):
+                break
+            while CHECK_FOR_CHANGE[col](item, col_header[current_col], col_param):
+                grid[current_row][current_col] += item.quantity
+                i += 1
+                if i == len(list(dataset)):
+                    break
+                item = dataset[i]
+            if i == len(list(dataset)):
+                break
+
+    print grid
+    print row_header
+    print col_header
+    #output data
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + 'report' + '.pdf'
+
+    p = canvas.Canvas(response)
+    p.drawString(100, 100, "Hello world.")
+    p.showPage()
+    p.save()
+    return response
 
 
 '''

@@ -1,4 +1,4 @@
-import datetime
+from datetime import date, timedelta
 from market.models import Purchased, Category
 
 REPORT_CHOICES = [(0, 'Products'), (1, 'Cities'), (2, 'Prices'), (3, 'Categories'), (4, 'Time')]
@@ -6,7 +6,7 @@ REPORT_TIME_PERIODS = ['Days', 'Months', 'Years']
 REPORT_PRICE_SLICES = [10, 30, 50, 100, 500]
 
 QUERY_TEMPLATE = '''
-    SELECT ph.ID, SUM(ph.quantity) AS quantity_sum {select}
+    SELECT ph.ID, ph.quantity {select}
     FROM market_Purchased ph
     INNER JOIN market_Product p ON p.id = ph.product_id
     INNER JOIN market_Category c ON c.id = p.category_id
@@ -16,13 +16,12 @@ QUERY_TEMPLATE = '''
         ph.date >= %s AND
         ph.date <= %s AND
         c.path LIKE %s
-    {group}
     {order}
 '''
 
 SQL_PIECES = [
-    #(select, join, group, order)
-    ('p.name AS product_name', '', 'p.id', 'p.name'), #products
+    #(select, join, order)
+    ('p.name AS product_name', [], 'p.name'), #products
     (
         'a.city', [
             ('market_Basket b', 'b.id = ph.basket_id'),
@@ -31,12 +30,12 @@ SQL_PIECES = [
                 'a.user_id = b.user_id OR ' +
                 'a.session_id = b.session_id'
             )),
-        ], 'a.city', 'a.city'
+        ], 'a.city'
     ), #cities
-    ('p.price', '', '', 'p.price DESC'), #prices
-    ('c.name AS category_name, c.path', '', '', 'c.path'), #categories
-    ('ph.date', '', 'ph.date', 'ph.date'), #time
-    ('', '', '', ''), #zero: for headers
+    ('p.price', [], 'p.price'), #prices
+    ('c.name AS category_name, c.path', [], 'c.path'), #categories
+    ('ph.date', [], 'ph.date'), #time
+    ('', [], ''), #zero: for headers
 ]
 
 
@@ -55,84 +54,61 @@ def get_query(template, row, col):
     select = compose_line(0)
 
     def compose_joins(join_list):
-        joins = ''
-        if join_list:
-            for join in join_list:
-                joins += 'INNER JOIN {0} ON {1} '.format(join[0], join[1])
-        return joins
+        return ' '.join(['INNER JOIN {0} ON {1}'.format(join[0], join[1]) for join in join_list])
 
     joins = compose_joins(row_sql[1]) + compose_joins(col_sql[1])
-    group_by = compose_line(2).replace(',', 'GROUP BY', 1)
-    order_by = compose_line(3).replace(',', 'ORDER BY', 1)
-    return template.format(select=select, join=joins, group=group_by, order=order_by)
+    order_by = compose_line(2).replace(',', 'ORDER BY', 1)
+    return template.format(select=select, join=joins, order=order_by)
 
 
 def check_product(current, header, param):
-    return current['product_name'] == previous
+    return current.product_name == header
 
 
 def check_city(current, header, param):
-    return current['city'] == previous
+    return current.city == header
 
 
 def check_price(current, header, param):
-    return current['price'] <= header
+    return current.price <= header
 
 
 def check_category(current, header, param):
-    r = current['path'].find('.' + str(header[1]) + '.') != -1 or
-        current['path'].startswith(str(header[1]) + '.') or
-        current['path'].endswith('.' + str(header[1]))
-    return r
+    return str(header[1]) in current.path.split('.')
 
 
 def check_time(current, header, param):
-    #not sure about convertion of queryset value to datetime.date
     if param == 0:
-        return current['date'].day == header.day
+        return current.date.day == header.day
     elif param == 1:
-        return current['date'].month == header.month
-    else:
-        return current['date'].year == header.year
+        return current.date.month == header.month
+    return current.date.year == header.year
 
 
 CHECK_FOR_CHANGE = [check_product, check_city, check_price, check_category, check_time]
 
 
-def make_grouped_header(ds, field_name):
-    l = []
-    for item in ds:
-        if l[-1] != item[field_name]:
-            l.append(item[field_name])
-    return l
-
-
 def make_product_header(param, start_date, end_date, root_cat_path):
     ds = Purchased.objects.raw(get_query(QUERY_TEMPLATE, 0, 5), [start_date, end_date, root_cat_path + '%'])
-    return make_grouped_header(ds, 'product_name')
+    return sorted(list(set([item.product_name for item in ds])))
 
 
 def make_city_header(param, start_date, end_date, root_cat_path):
     ds = Purchased.objects.raw(get_query(QUERY_TEMPLATE, 1, 5), [start_date, end_date, root_cat_path + '%'])
-    return make_grouped_header(ds, 'city')
+    return sorted(list(set([item.city for item in ds])))
 
 
 def make_price_header(param, start_date, end_date, root_cat_path):
-    l = []
+    p = REPORT_PRICE_SLICES[param]
     ds = Purchased.objects.raw(get_query(QUERY_TEMPLATE, 2, 5), [start_date, end_date, root_cat_path + '%'])
-    if ds:
-        l = range(0, (ds[0]['price'] / param + 1) * param, param)
-    return l
+    return range(p, (ds[-1].price / p + 1) * p + 1, p) if list(ds) else []
 
 
 def make_category_header(param, start_date, end_date, root_cat_path):
-    l = []
-    root_cats = Category.objects.filter(depth=param, path__startswith=root_cat_path).order_by(id)
+    root_cats = Category.objects.filter(depth=str(param), path__startswith=root_cat_path).order_by('id')
     if not root_cats:
         root_cats = Category.objects.get(path=root_cat_path)
-    for item in root_cats:
-        l.append(item['name'], item['ID'])
-    return l
+    return [(item.name, item.id) for item in root_cats]
 
 
 def make_time_header(param, start_date, end_date, root_cat_path):
@@ -144,22 +120,19 @@ def make_time_header(param, start_date, end_date, root_cat_path):
     me = end_date.month if param < 2 else 1
     ys = start_date.year
     ye = end_date.year
-    sd = datetime.date(ys, ms, ds)
-    ed = datetime.date(ye, me, de)
+    sd = date(ys, ms, ds)
+    ed = date(ye, me, de)
 
     def move(d):
         if param == 0:
-            return d + datetime.timedelta(1)
-        elif param = 1:
-            t = datetime.date(d.year, d.month + 1, d.day) - d
-            return d + t
-        else:
-            t = datetime.date(d.year + 1, d.month, d.day) - d
-            return d + t
+            return d + timedelta(1)
+        elif param == 1:
+            return date(d.year, d.month + 1, d.day)
+        return date(d.year + 1, d.month, d.day)
 
     while sd <= ed:
         l.append(sd)
-        move(sd)
+        sd = move(sd)
     return l
 
 
