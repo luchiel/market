@@ -98,6 +98,7 @@ def output_report(request):
         start_date, end_date = end_date, start_date
 
     #dataset
+    #print get_query(QUERY_TEMPLATE, row, col)
     dataset = Purchased.objects.raw(get_query(QUERY_TEMPLATE, row, col), [start_date, end_date, root_cat.path + '%'])
 
     #make headers
@@ -116,7 +117,7 @@ def output_report(request):
 
     while i < len(dataset):
         while current_row < len(row_header) and not CHECK_FOR_CHANGE[row](item, row_header[current_row], row_param):
-            current_row = current_row + 1
+            current_row += 1
             grid.append([0])
         if current_row == len(row_header):
             break
@@ -127,7 +128,10 @@ def output_report(request):
                 grid[current_row].append(0)
             if current_col == len(col_header):
                 break
-            while CHECK_FOR_CHANGE[col](item, col_header[current_col], col_param):
+            while(
+                CHECK_FOR_CHANGE[col](item, col_header[current_col], col_param) and
+                CHECK_FOR_CHANGE[row](item, row_header[current_row], row_param)
+            ):
                 grid[current_row][current_col] += item.quantity
                 i += 1
                 if i == len(dataset):
@@ -142,85 +146,103 @@ def output_report(request):
     #output data
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + 'report' + '.pdf'
-
-    #doc = SimpleDocTemplate('report.pdf', pagesize=A4)
-    #elements = []
     p = canvas.Canvas(response)
     font_name = 'Arial'
     font = ttfonts.TTFont(font_name, os.path.join(os.environ['WINDIR'], 'fonts', 'arial.ttf'))
     pdfmetrics.registerFont(font)
-    width, height = A4
-    p.translate(2 * cm, 3 * cm)
-    width -= 4 * cm
-    height -= 6 * cm
-    line_height = 1 * cm
-    line_count = 0
-
-    def drawLine(line, count):
-        p.drawString(0, height - line_height * count, line)
-
-    #header
-    p.setFont(font_name, 20)
-    drawLine('Report from ' + datetime.strftime(datetime.today(), '%d.%m.%Y'), line_count)
-    line_count += 1
-    p.setFont(font_name, 14)
-    drawLine(
-        'Sales from {0} to {1}, products from category {2}.'.format(
-            datetime.strftime(start_date, '%d.%m.%Y'),
-            datetime.strftime(end_date, '%d.%m.%Y'),
-            root_cat.name
-        ),
-        line_count
-    )
-    height -= line_height * line_count
-    p.setFont(font_name, 8)
+    
     #titles
     output_row_header = [OUTPUT_HEADER[row](row_param, header) for header in row_header]
     row_header_width = max([p.stringWidth(header, font_name, 8) for header in output_row_header])
     output_col_header = [OUTPUT_HEADER[col](col_param, header) for header in col_header]
     col_header_height = max([p.stringWidth(header, font_name, 8) for header in output_col_header])
-    #grid
+
     INDENT = 0.2 * cm
-    p.translate(0, -0.5 * cm)
-    height -= 0.5 * cm
+    line_height = 1 * cm
+    #grid
+    t_width, t_height = A4
+    t_width -= 4 * cm
+    t_height -= 6.5 * cm + line_height
     xlines = [0, row_header_width + INDENT * 2]
-    while xlines[-1] < width:
+    while xlines[-1] < t_width:
         xlines.append(xlines[-1] + line_height)
-    ylines = [height, height - col_header_height - INDENT * 2]
+    ylines = [t_height, t_height - col_header_height - INDENT * 2]
     while ylines[-1] > 0:
         ylines.append(ylines[-1] - line_height)
-    p.grid(xlines, ylines)
-    #output titles
-    line_count = 1
-    for header in output_row_header:
-        p.drawRightString(
-            xlines[1] - INDENT,
-            ylines[1] + INDENT - line_height * line_count,
-            header
-        )
+
+    def new_page():
+        width, height = A4
+        p.translate(2 * cm, 3 * cm)
+        width -= 4 * cm
+        height -= 6 * cm
+        line_count = 0
+
+        def draw_line(line, count):
+            p.drawString(0, height - line_height * count, line)
+
+        #header
+        p.setFont(font_name, 20)
+        draw_line('Report from ' + datetime.strftime(datetime.today(), '%d.%m.%Y'), line_count)
         line_count += 1
-    p.rotate(-90)
-    line_count = 0
-    for header in output_col_header:
-        p.drawRightString(
-            -(ylines[1] + INDENT),
-            xlines[1] + INDENT + line_height * line_count,
-            header
+        p.setFont(font_name, 14)
+        draw_line(
+            'Sales from {0} to {1}, products from category {2}.'.format(
+                datetime.strftime(start_date, '%d.%m.%Y'),
+                datetime.strftime(end_date, '%d.%m.%Y'),
+                root_cat.name
+            ),
+            line_count
         )
-        line_count += 1
-    p.rotate(90)
-    #grid data
-    c_row = 1
-    for row in grid:
-        c_col = 1
-        for val in row:
-            p.drawString(
-                0, 0,
-                str(val)
+        height -= line_height * line_count
+        p.setFont(font_name, 8)
+        #grid
+        p.translate(0, -0.5 * cm)
+        height -= 0.5 * cm
+        p.grid(xlines, ylines)
+        #titles
+        line_count = 1
+        for header in output_row_header:
+            p.drawRightString(
+                xlines[1] - INDENT,
+                ylines[1] + INDENT - line_height * line_count,
+                header
             )
-            c_col += 1
-        c_row += 1
-    p.showPage()
+            line_count += 1
+        p.rotate(-90)
+        line_count = 0
+        for header in output_col_header:
+            p.drawRightString(
+                -(ylines[1] + INDENT),
+                xlines[1] + INDENT + line_height * line_count,
+                header
+            )
+            line_count += 1
+        p.rotate(90)
+
+    #grid data
+    row_count = len(ylines) - 2
+    col_count = len(xlines) - 2
+    last_list_row = 0
+    last_list_col = 0
+    new_page()
+    c_row = 0
+    c_col = 0
+    while c_row + last_list_row < len(grid) and c_col + last_list_col < len(grid[-1]):
+        c_row = 0
+        while c_row < row_count and c_row + last_list_row < len(grid):
+            c_col = 0
+            while c_col < col_count and c_col + last_list_col < len(grid[c_row]):
+                if grid[c_row + last_list_row][c_col + last_list_col] != 0:
+                    p.drawRightString(
+                        xlines[c_col + 2] - INDENT,
+                        ylines[c_row + 2] + INDENT,
+                        str(grid[c_row + last_list_row][c_col + last_list_col])
+                    )
+                c_col += 1
+            last_list_col += col_count if c_col == col_count else 0
+            c_row += 1
+        last_list_row += row_count if c_row == row_count else 0
+        p.showPage()
     p.save()
     return response
 
