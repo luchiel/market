@@ -10,7 +10,7 @@
         </tr>
         <tr>
             <td class="mark_single mark_rate">{{ comment.mark }}</td>
-            <td rowspan="2">{{ comment.comment }}</td>
+            <td rowspan="3">{{ comment.comment }}</td>
         </tr>
         <tr>
             <td class="mark_rate">
@@ -24,6 +24,11 @@
                     <span onclick="changeRating({{ comment.id }}, -1)">-</span>
                 { endif %}
                 -->
+            </td>
+        </tr>
+        <tr>
+            <td class="mark_rate">
+                <input type="submit" onclick="addResponse({{ product.id }}, {{ comment.id }})" value="Respond" />
             </td>
         </tr>
     </table>

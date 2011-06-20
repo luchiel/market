@@ -34,28 +34,14 @@
         <input hidden="hidden" value="1" name="vote" />
     </form>
 {% for comment in comments.object_list %}
+<div id="comment{{ comment.id }}">
     {% include 'single_comment.html' %}
+</div>
 {% endfor %}
 </div>
 
 <div class="comment_blocks">
-    {% if not request.user %}<p class="message">You are not logged in. You won't be able to delete your comments</p>{% endif %}
-    <table id="{{ comment.id }}_table" class="comment_table">
-        <form id="new_comment">
-        {% csrf_token %}
-        <tr>
-            <td class="mark_single mark_rate">
-                <div id="mark_errors"></div>
-                {{ form.mark }}
-            </td>
-            <td>
-                <div id="comment_errors"></div>
-                {{ form.comment }}
-            </td>
-        </tr>
-        </form>
-    </table>
-    <input type="submit" onclick="addComment({{ product.id }});" value="Add comment" />
+{% include 'single_comment_field.html' %}
 </div>
 
 </div>

@@ -1,5 +1,7 @@
 # coding: utf-8
 from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
 from datetime import datetime
 import string
 import threading
@@ -43,6 +45,8 @@ argument, if any, with sequential and keyword arguments taken from the args and 
 
 
 def reports(request):
+    if not request.user or not request.user.is_admin:
+        return redirect('index')
     return direct_to_template(request, 'reports.html', { 'form': ReportForm() })
 
 
@@ -66,30 +70,37 @@ def extend_params(request, is_column):
 def output_report(request):
     if not request.POST:
         return redirect('reports')
-    today = datetime.today().strftime('%d.%m.%Y')
 
     def set_not_empty_value(param, default):
         return param or default
 
     #extract data from request.POST
     root_cat_id = set_not_empty_value(request.POST['parent_id'], '1')
-    root_cat_path = Category.objects.get(id=root_cat_id).path
+    root_cat = Category.objects.get(id=root_cat_id)
     row = int(request.POST['row'])
     col = int(request.POST['column'])
+    if row == col:
+        return redirect('reports')
     row_param = int(request.POST.get('detail0', '0'))
     col_param = int(request.POST.get('detail1', '0'))
-    start_date = datetime.strptime(set_not_empty_value(request.POST['start_date'], today), '%d.%m.%Y')
-    end_date = datetime.strptime(set_not_empty_value(request.POST['end_date'], today), '%d.%m.%Y')
+    #partical validation
+    start_date = datetime.today()
+    end_date = datetime.today()
+    form = ReportForm(request.POST)
+    if not form.errors.get('start_date'):
+        start_date = datetime.strptime(form.data['start_date'], '%d.%m.%Y')
+    if not form.errors.get('end_date'):
+        end_date = datetime.strptime(form.data['end_date'], '%d.%m.%Y')
     #change request params if needed
     if start_date > end_date:
         start_date, end_date = end_date, start_date
 
     #dataset
-    dataset = Purchased.objects.raw(get_query(QUERY_TEMPLATE, row, col), [start_date, end_date, root_cat_path + '%'])
+    dataset = Purchased.objects.raw(get_query(QUERY_TEMPLATE, row, col), [start_date, end_date, root_cat.path + '%'])
 
     #make headers
-    row_header = MAKE_HEADER[row](row_param, start_date, end_date, root_cat_path)
-    col_header = MAKE_HEADER[col](col_param, start_date, end_date, root_cat_path)
+    row_header = MAKE_HEADER[row](row_param, start_date, end_date, root_cat.path)
+    col_header = MAKE_HEADER[col](col_param, start_date, end_date, root_cat.path)
 
     grid = [[0]]
 
@@ -101,7 +112,7 @@ def output_report(request):
     current_row = 0
     dataset = list(dataset)
 
-    while i < len(list(dataset)):
+    while i < len(dataset):
         while current_row < len(row_header) and not CHECK_FOR_CHANGE[row](item, row_header[current_row], row_param):
             current_row = current_row + 1
             grid.append([0])
@@ -117,21 +128,51 @@ def output_report(request):
             while CHECK_FOR_CHANGE[col](item, col_header[current_col], col_param):
                 grid[current_row][current_col] += item.quantity
                 i += 1
-                if i == len(list(dataset)):
+                if i == len(dataset):
                     break
                 item = dataset[i]
-            if i == len(list(dataset)):
+            if i == len(dataset):
                 break
-
-    print grid
-    print row_header
-    print col_header
+    #test_output
+    #print grid
+    #print row_header
+    #print col_header
     #output data
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + 'report' + '.pdf'
 
+    font_name = 'Helvetica'
+    width, height = A4
+    mleft = 2 * cm
+    mtop = 3 * cm
+    linew = 1 * cm
+    line_count = 0
     p = canvas.Canvas(response)
-    p.drawString(100, 100, "Hello world.")
+
+    def drawLine(line, count):
+        p.drawString(mleft, height - mtop - linew * count, line)
+
+    p.setFont(font_name, 20)
+    drawLine('Report from ' + datetime.strftime(datetime.today(), '%d.%m.%Y'), line_count)
+    line_count += 1
+    p.setFont(font_name, 14)
+    drawLine(
+        'Sales from {0} to {1}, products from category {2}.'.format(
+            datetime.strftime(start_date, '%d.%m.%Y'),
+            datetime.strftime(end_date, '%d.%m.%Y'),
+            root_cat.name
+        ),
+        line_count
+    )
+    line_count += 1
+
+    row_header_width = 2 * cm
+    col_header_height = 2 * cm
+    xlines = range(int(mleft + row_header_width), int(width - mleft), int(linew) + 1)
+    xlines[0] -= row_header_width
+    ylines = range(int(mtop), int(height - mtop - linew * line_count - col_header_height), int(linew) + 1)
+    ylines[-1] += col_header_height
+    p.grid(xlines, ylines)
     p.showPage()
     p.save()
     return response
