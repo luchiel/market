@@ -93,9 +93,17 @@ def make_product_header(param, start_date, end_date, root_cat_path):
     return sorted(list(set([item.product_name for item in ds])))
 
 
+def output_product_header(param, element):
+    return element
+
+
 def make_city_header(param, start_date, end_date, root_cat_path):
     ds = Purchased.objects.raw(get_query(QUERY_TEMPLATE, 1, 5), [start_date, end_date, root_cat_path + '%'])
     return sorted(list(set([item.city for item in ds])))
+
+
+def output_city_header(param, element):
+    return element
 
 
 def make_price_header(param, start_date, end_date, root_cat_path):
@@ -104,11 +112,19 @@ def make_price_header(param, start_date, end_date, root_cat_path):
     return range(p, (ds[-1].price / p + 1) * p + 1, p) if list(ds) else []
 
 
+def output_price_header(param, element):
+    return '{0}-{1}'.format(element - REPORT_PRICE_SLICES[param] + 1, element)
+
+
 def make_category_header(param, start_date, end_date, root_cat_path):
     root_cats = Category.objects.filter(depth=str(param), path__startswith=root_cat_path).order_by('id')
     if not root_cats:
         root_cats = Category.objects.get(path=root_cat_path)
     return [(item.name, item.id) for item in root_cats]
+
+
+def output_category_header(param, element):
+    return element[0]
 
 
 def make_time_header(param, start_date, end_date, root_cat_path):
@@ -136,4 +152,14 @@ def make_time_header(param, start_date, end_date, root_cat_path):
     return l
 
 
+def output_time_header(param, element):
+    h = element.year
+    if param > 2:
+        h = '{0}.{1}'.format(element.month, h)
+    if param > 1:
+        h = '{0}.{1}'.format(element.day, h)
+    return h
+
+
 MAKE_HEADER = [make_product_header, make_city_header, make_price_header, make_category_header, make_time_header]
+OUTPUT_HEADER = [output_product_header, output_city_header, output_price_header, output_category_header, output_time_header]

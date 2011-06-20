@@ -2,7 +2,9 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
+from reportlab.pdfbase import ttfonts, pdfmetrics
 from datetime import datetime
+import os
 import string
 import threading
 from django.utils import simplejson as json
@@ -141,17 +143,23 @@ def output_report(request):
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + 'report' + '.pdf'
 
-    font_name = 'Helvetica'
-    width, height = A4
-    mleft = 2 * cm
-    mtop = 3 * cm
-    linew = 1 * cm
-    line_count = 0
+    #doc = SimpleDocTemplate('report.pdf', pagesize=A4)
+    #elements = []
     p = canvas.Canvas(response)
+    font_name = 'Arial'
+    font = ttfonts.TTFont(font_name, os.path.join(os.environ['WINDIR'], 'fonts', 'arial.ttf'))
+    pdfmetrics.registerFont(font)
+    width, height = A4
+    p.translate(2 * cm, 3 * cm)
+    width -= 4 * cm
+    height -= 6 * cm
+    line_height = 1 * cm
+    line_count = 0
 
     def drawLine(line, count):
-        p.drawString(mleft, height - mtop - linew * count, line)
+        p.drawString(0, height - line_height * count, line)
 
+    #header
     p.setFont(font_name, 20)
     drawLine('Report from ' + datetime.strftime(datetime.today(), '%d.%m.%Y'), line_count)
     line_count += 1
@@ -164,15 +172,33 @@ def output_report(request):
         ),
         line_count
     )
-    line_count += 1
-
-    row_header_width = 2 * cm
-    col_header_height = 2 * cm
-    xlines = range(int(mleft + row_header_width), int(width - mleft), int(linew) + 1)
+    height -= line_height * line_count
+    p.setFont(font_name, 8)
+    #titles
+    output_row_header = [OUTPUT_HEADER[row](row_param, header) for header in row_header]
+    row_header_width = max([p.stringWidth(header, font_name, 8) for header in output_row_header])
+    output_col_header = [OUTPUT_HEADER[col](col_param, header) for header in col_header]
+    col_header_height = max([p.stringWidth(header, font_name, 8) for header in output_col_header])
+    #grid
+    xlines = range(int(row_header_width), int(width), int(line_height) + 1)
     xlines[0] -= row_header_width
-    ylines = range(int(mtop), int(height - mtop - linew * line_count - col_header_height), int(linew) + 1)
+    ylines = range(0, int(height - col_header_height), int(line_height) + 1)
     ylines[-1] += col_header_height
     p.grid(xlines, ylines)
+    #output titles
+    INDENT = 0.2 * cm
+    line_count = 1
+    for header in output_row_header:
+        p.drawString(INDENT, height - line_height * line_count - col_header_height * 2, header)
+        line_count += 1
+    p.rotate(-90)
+    line_count = 1
+    for header in output_col_header:
+        p.drawRightString(-(height - col_header_height * 2), row_header_width + line_count * line_height + INDENT * 2, header)
+        line_count += 1
+    p.drawString(-200, 100, 'Hey')
+    p.rotate(90)
+    #grid data
     p.showPage()
     p.save()
     return response
