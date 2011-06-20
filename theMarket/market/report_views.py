@@ -169,8 +169,10 @@ def output_report(request):
     ylines = [t_height, t_height - col_header_height - INDENT * 2]
     while ylines[-1] > 0:
         ylines.append(ylines[-1] - line_height)
+    row_count = len(ylines) - 2
+    col_count = len(xlines) - 2
 
-    def new_page():
+    def new_page(ll_row, ll_col):
         width, height = A4
         p.translate(2 * cm, 3 * cm)
         width -= 4 * cm
@@ -200,30 +202,57 @@ def output_report(request):
         height -= 0.5 * cm
         p.grid(xlines, ylines)
         #titles
-        line_count = 1
-        for header in output_row_header:
+        line_count = 0
+        while line_count < row_count and line_count + ll_row < len(output_row_header):
+        #for header in output_row_header:
             p.drawRightString(
                 xlines[1] - INDENT,
-                ylines[1] + INDENT - line_height * line_count,
-                header
+                ylines[1] + INDENT - line_height * (line_count + 1),
+                output_row_header[line_count + ll_row]
             )
             line_count += 1
         p.rotate(-90)
         line_count = 0
-        for header in output_col_header:
+        while line_count < col_count and line_count + ll_col < len(output_col_header):
+        #for header in output_col_header:
             p.drawRightString(
                 -(ylines[1] + INDENT),
                 xlines[1] + INDENT + line_height * line_count,
-                header
+                output_col_header[line_count + ll_col]
             )
             line_count += 1
         p.rotate(90)
 
     #grid data
-    row_count = len(ylines) - 2
-    col_count = len(xlines) - 2
     last_list_row = 0
     last_list_col = 0
+
+    #try
+    def output_page(ll_row, ll_col):
+        new_page(ll_row, ll_col)
+        c_row = 0
+        while c_row < row_count and c_row + ll_row < len(grid):
+            c_col = 0
+            while c_col < col_count and c_col + ll_col < len(grid[c_row + ll_row]):
+                if grid[c_row + ll_row][c_col + ll_col] != 0:
+                    p.drawRightString(
+                        xlines[c_col + 2] - INDENT,
+                        ylines[c_row + 2] + INDENT,
+                        str(grid[c_row + ll_row][c_col + ll_col])
+                    )
+                c_col += 1
+            c_row += 1
+        p.showPage()
+
+    while last_list_row < len(row_header):
+        last_list_col = 0
+        while last_list_col < len(col_header):
+            output_page(last_list_row, last_list_col)
+            last_list_col += col_count
+        last_list_row += row_count
+    #this
+    '''
+    #this piece works
     new_page()
     c_row = 0
     c_col = 0
@@ -243,48 +272,6 @@ def output_report(request):
             c_row += 1
         last_list_row += row_count if c_row == row_count else 0
         p.showPage()
+    '''
     p.save()
     return response
-
-
-'''
-To add data to events, like the timedelta until the next event, or other parameters, subclass Event (don't forget to register your subclass with 
-admin.site:
-
-from scheduler.models import Event
-
-class RepeatingEvent(Event):
-    repeat_delta = models.PositiveIntegerField(help_text="In minutes")
-
-def update_correlations(sender, instance, **kwargs):
-    # Do correlation here!
-    instance.delete()
-    if issubclass(sender, RepeatingEvent):
-        repeat(sender, instance, **kwargs)
-
-def repeat(sender, instance, **kwargs):
-    next_event = datetime.now() + timedelta(minutes=instance.repeat_delta)
-    sender.objects.create(signal=instance.signal, timestamp=next_event)
-
-connect('correlate', update_correlations, dispatch_uid='scheduler.update_correlations')
-
-...or if you don't want to change your handler:
-
-def repeat(handler):
-    def new_handler(sender, instance, **kwargs):
-        handler(sender=sender, instance=instance, **kwargs)
-        if isinstance(instance, RepeatingEvent):
-            next_event = datetime.now() + timedelta(minutes=instance.repeat_delta)
-            sender.objects.create(signal=instance.signal, timestamp=next_event)
-    return new_handler
-
-connect('correlate', repeat(update_correlations), dispatch_uid='scheduler.update_correlations')
-
-Starting a thread in your signal handler:
-
-from threading import Thread
-
-def threaded_update_correlations(sender, instance, **kwargs):
-    Thread(target=update_correlations, args=(sender, instance)).start()
-
-connect('correlate', threaded_update_correlations, dispatch_uid='scheduler.update_correlations')'''
