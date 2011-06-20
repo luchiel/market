@@ -18,32 +18,14 @@ from market.report_utils import *
 from market.shortcuts import direct_to_template
 
 
-class report_thread(threading.Thread):
+class ReportThread(threading.Thread):
+    def __init__(self, request, canvas):
+        threading.Thread.__init__(self)
+        self.request = request
+        self.canvas = canvas
+
     def run(self):
-        pass
-'''
-class threading.Thread(group=None, target=None, name=None, args=(), kwargs={}) 
-This constructor should always be called with keyword arguments. Arguments are:
-
-group should be None; reserved for future extension when a ThreadGroup class is implemented.
-
-target is the callable object to be invoked by the run() method. Defaults to None, meaning nothing is called.
-
-name is the thread name. By default, a unique name is constructed of the form “Thread-N” where N is a small decimal number.
-
-args is the argument tuple for the target invocation. Defaults to ().
-
-kwargs is a dictionary of keyword arguments for the target invocation. Defaults to {}.
-
-'''
-
-'''
-Thread.run() 
-Method representing the thread’s activity.
-
-You may override this method in a subclass. The standard run() method invokes the callable object passed to the object’s constructor as the target 
-argument, if any, with sequential and keyword arguments taken from the args and kwargs arguments, respectively.
-'''
+        create_report(self.request, self.canvas)
 
 
 def reports(request):
@@ -70,9 +52,20 @@ def extend_params(request, is_column):
 
 
 def output_report(request):
-    if not request.POST:
+    if not request.POST or request.POST['row'] == request.POST['column']:
         return redirect('reports')
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + 'report' + '.pdf'
+    c = canvas.Canvas(response)
 
+    t = ReportThread(request, c)
+    t.start()
+    t.join()
+
+    return response
+
+
+def create_report(request, p):
     def set_not_empty_value(param, default):
         return param or default
 
@@ -81,8 +74,6 @@ def output_report(request):
     root_cat = Category.objects.get(id=root_cat_id)
     row = int(request.POST['row'])
     col = int(request.POST['column'])
-    if row == col:
-        return redirect('reports')
     row_param = int(request.POST.get('detail0', '0'))
     col_param = int(request.POST.get('detail1', '0'))
     #partical validation
@@ -108,12 +99,13 @@ def output_report(request):
     grid = [[0]]
 
     #fill grid
-    if not list(dataset):
-        return redirect('reports')
-    i = 0
-    item = dataset[i]
-    current_row = 0
+    #if not list(dataset):
+    #    return redirect('reports')
     dataset = list(dataset)
+    i = 0
+    if dataset:
+        item = dataset[i]
+    current_row = 0
 
     while i < len(dataset):
         while current_row < len(row_header) and not CHECK_FOR_CHANGE[row](item, row_header[current_row], row_param):
@@ -144,18 +136,17 @@ def output_report(request):
     #print row_header
     #print col_header
     #output data
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=' + 'report' + '.pdf'
-    p = canvas.Canvas(response)
     font_name = 'Arial'
     font = ttfonts.TTFont(font_name, os.path.join(os.environ['WINDIR'], 'fonts', 'arial.ttf'))
     pdfmetrics.registerFont(font)
     
     #titles
     output_row_header = [OUTPUT_HEADER[row](row_param, header) for header in row_header]
-    row_header_width = max([p.stringWidth(header, font_name, 8) for header in output_row_header])
+    sizes = [p.stringWidth(header, font_name, 8) for header in output_row_header]
+    row_header_width = max(sizes) if sizes else 0
     output_col_header = [OUTPUT_HEADER[col](col_param, header) for header in col_header]
-    col_header_height = max([p.stringWidth(header, font_name, 8) for header in output_col_header])
+    sizes = [p.stringWidth(header, font_name, 8) for header in output_col_header]
+    col_header_height = max(sizes) if sizes else 0
 
     INDENT = 0.2 * cm
     line_height = 1 * cm
@@ -274,4 +265,3 @@ def output_report(request):
         p.showPage()
     '''
     p.save()
-    return response
