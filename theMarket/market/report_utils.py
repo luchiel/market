@@ -153,12 +153,8 @@ def make_time_header(param, start_date, end_date, root_cat_path):
 
 
 def output_time_header(param, element):
-    h = element.year
-    if param > 2:
-        h = '{0}.{1}'.format(element.month, h)
-    if param > 1:
-        h = '{0}.{1}'.format(element.day, h)
-    return h
+    format = '%Y' if param == 2 else '%m.%Y' if param == 1 else '%d.%m.%Y'
+    return element.strftime(format)
 
 
 MAKE_HEADER = [make_product_header, make_city_header, make_price_header, make_category_header, make_time_header]

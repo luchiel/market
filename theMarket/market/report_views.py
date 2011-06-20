@@ -180,25 +180,46 @@ def output_report(request):
     output_col_header = [OUTPUT_HEADER[col](col_param, header) for header in col_header]
     col_header_height = max([p.stringWidth(header, font_name, 8) for header in output_col_header])
     #grid
-    xlines = range(int(row_header_width), int(width), int(line_height) + 1)
-    xlines[0] -= row_header_width
-    ylines = range(0, int(height - col_header_height), int(line_height) + 1)
-    ylines[-1] += col_header_height
+    INDENT = 0.2 * cm
+    p.translate(0, -0.5 * cm)
+    height -= 0.5 * cm
+    xlines = [0, row_header_width + INDENT * 2]
+    while xlines[-1] < width:
+        xlines.append(xlines[-1] + line_height)
+    ylines = [height, height - col_header_height - INDENT * 2]
+    while ylines[-1] > 0:
+        ylines.append(ylines[-1] - line_height)
     p.grid(xlines, ylines)
     #output titles
-    INDENT = 0.2 * cm
     line_count = 1
     for header in output_row_header:
-        p.drawString(INDENT, height - line_height * line_count - col_header_height * 2, header)
+        p.drawRightString(
+            xlines[1] - INDENT,
+            ylines[1] + INDENT - line_height * line_count,
+            header
+        )
         line_count += 1
     p.rotate(-90)
-    line_count = 1
+    line_count = 0
     for header in output_col_header:
-        p.drawRightString(-(height - col_header_height * 2), row_header_width + line_count * line_height + INDENT * 2, header)
+        p.drawRightString(
+            -(ylines[1] + INDENT),
+            xlines[1] + INDENT + line_height * line_count,
+            header
+        )
         line_count += 1
-    p.drawString(-200, 100, 'Hey')
     p.rotate(90)
     #grid data
+    c_row = 1
+    for row in grid:
+        c_col = 1
+        for val in row:
+            p.drawString(
+                0, 0,
+                str(val)
+            )
+            c_col += 1
+        c_row += 1
     p.showPage()
     p.save()
     return response
