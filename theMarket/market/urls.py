@@ -61,4 +61,6 @@ urlpatterns += patterns('theMarket.market.report_views',
     url(r'^reports/extend_params/(?P<is_column>\d+)/$', 'extend_params', name='extend_params'),
     url(r'^reports/output/$', 'output_report', name='output_report'),
     url(r'^reports/output/(?P<report_index>\d+)/$', 'report', name='report'),
+    url(r'^reports/histo/$', 'output_histo', name='output_histo'),
+    url(r'^reports/histo/(?P<histogram_index>\d+)/$', 'histogram', name='histogram'),
 )

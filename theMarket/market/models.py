@@ -135,7 +135,7 @@ class Comment(models.Model):
     def make_path_and_depth(self, parent_id):
         self.path = str(self.id)
         if Comment.objects.filter(id=parent_id).exists():
-            self.path = Comment.objects.get(id=parent_id).path + '.' + self.path
+            self.path = '.'.join(Comment.objects.get(id=parent_id).path, self.path)
             self.depth = Comment.objects.get(id=parent_id).depth + 1
 
     def get_responds(self):

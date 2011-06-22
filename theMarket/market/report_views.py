@@ -13,6 +13,8 @@ from django.utils import simplejson as json
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.db.models import Max
+#import matplotlib.mlab as mlab
+#import matplotlib.pyplot as plt
 from market.models import Category, Purchased, Report
 from market.shortcuts import direct_to_template
 from market.forms import ReportForm
@@ -85,9 +87,6 @@ def report(request, report_index):
 
 
 def create_report(request, p):
-    def set_not_empty_value(param, default):
-        return param or default
-
     #extract data from request.POST
     root_cat_id = set_not_empty_value(request.POST['parent_id'], '1')
     root_cat = Category.objects.get(id=root_cat_id)
@@ -236,8 +235,6 @@ def create_report(request, p):
     #grid data
     last_list_row = 0
     last_list_col = 0
-
-    #try
     def output_page(ll_row, ll_col):
         new_page(ll_row, ll_col)
         c_row = 0
@@ -260,27 +257,27 @@ def create_report(request, p):
             output_page(last_list_row, last_list_col)
             last_list_col += col_count
         last_list_row += row_count
-    #this
-    '''
-    #this piece works
-    new_page()
-    c_row = 0
-    c_col = 0
-    while c_row + last_list_row < len(grid) and c_col + last_list_col < len(grid[-1]):
-        c_row = 0
-        while c_row < row_count and c_row + last_list_row < len(grid):
-            c_col = 0
-            while c_col < col_count and c_col + last_list_col < len(grid[c_row]):
-                if grid[c_row + last_list_row][c_col + last_list_col] != 0:
-                    p.drawRightString(
-                        xlines[c_col + 2] - INDENT,
-                        ylines[c_row + 2] + INDENT,
-                        str(grid[c_row + last_list_row][c_col + last_list_col])
-                    )
-                c_col += 1
-            last_list_col += col_count if c_col == col_count else 0
-            c_row += 1
-        last_list_row += row_count if c_row == row_count else 0
-        p.showPage()
-    '''
     p.save()
+
+
+def output_histo(request):
+    root_cat_id = set_not_empty_value(request.POST['parent_id'], '1')
+    root_cat = Category.objects.get(id=root_cat_id)
+    row = int(request.POST['row'])
+    row_param = int(request.POST.get('detail0', '0'))
+    #partical validation
+    start_date = datetime.today()
+    end_date = datetime.today()
+    form = ReportForm(request.POST)
+    if not form.errors.get('start_date'):
+        start_date = datetime.strptime(form.data['start_date'], '%d.%m.%Y')
+    if not form.errors.get('end_date'):
+        end_date = datetime.strptime(form.data['end_date'], '%d.%m.%Y')
+    #change request params if needed
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+    pass
+
+
+def histogram(request, histogram_index):
+    pass

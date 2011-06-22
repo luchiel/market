@@ -40,10 +40,9 @@
 {% endfor %}
 </div>
 
-<div class="comment_blocks">
-{% include 'single_comment_field.html' %}
+<div id="comment0" class="comment_blocks">
 </div>
-
+<input id="add_root_comment" type="submit" onclick="addResponse({{ product.id }}, 0)" value="Add comment" hidden="" />
 </div>
 
 {% endblock content %}

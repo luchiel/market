@@ -33,15 +33,31 @@ def comments(request, product_id):
     )
 
 
+def add_comment_field(request, product_id, comment_id):
+    form = CommentForm()#data=({ 'response_to': int(comment_id) }))
+    comment_depth = -1 if comment_id == '0' else Comment.objects.get(id=comment_id).depth
+    product = Product.objects.get(id=product_id)
+    page = get_template('single_comment_field.html')
+    context = RequestContext(request, { 'form': form, 'product': product })
+    return HttpResponse(
+        json.dumps({
+            'form': page.render(context), 'depth': comment_depth + 1
+        }), mimetype='application/json'
+    )
+
+
 def add_comment(request, product_id):
+    product = Product.objects.get(id=product_id)
     form = CommentForm(
         data=(request.POST or None),
         instance=Comment(
-            product=Product.objects.get(id=product_id),
+            product=product,
             user = request.user if request.user else None,
         ),
     )
     if form.is_valid():
+        form.save()
+        form.instance.make_path_and_depth(request.POST['response_to_id'])
         form.save()
     else:
         return HttpResponse(
@@ -52,11 +68,11 @@ def add_comment(request, product_id):
             }), mimetype='application/json'
         )
     page = get_template('single_comment.html')
-    context = RequestContext(request, { 'comment': form.instance })
+    context = RequestContext(request, { 'comment': form.instance, 'product': product })
     return HttpResponse(
         json.dumps({
             'result': 'ok',
-            'page': page.render(context),
+            'comment': page.render(context),
         }), mimetype='application/json'
     )
 

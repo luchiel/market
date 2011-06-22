@@ -324,7 +324,7 @@ div#edit_category input, input.edit_button
 
 #id_comment
 {
-    width: 450px;
+    /*width: 450px;*/
 }
 
 .mark_rate

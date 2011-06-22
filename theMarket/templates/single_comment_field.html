@@ -1,18 +1,32 @@
-{% if not request.user %}<p class="message">You are not logged in. You won't be able to delete your comments</p>{% endif %}
-<table class="comment_table">
+<table id="new_comment_table" class="comment_table">
+    {% if not request.user %}
+    <tr>
+        <td>
+            <p class="message">
+                You are not logged in. You won't be able to delete your comments
+            </p>
+        </td>
+    </tr>
+    {% endif %}
     <form id="new_comment">
     {% csrf_token %}
+
     <tr>
         <td class="mark_single mark_rate">
             <div id="mark_errors"></div>
             {{ form.mark }}
         </td>
-        <td>
+        <td rowspan="2">
             <div id="comment_errors"></div>
             {{ form.comment }}
-            <input hidden="hidden" value="" name="response_to_id" />
+            <input id="response_to_id" hidden="hidden" value="" name="response_to_id" />
+        </td>
+    </tr>
+    <tr>
+        <td class="mark_rate">
+            <input type="submit" onclick="return addComment({{ product.id }});" value="Add" />
         </td>
     </tr>
     </form>
+
 </table>
-<input type="submit" onclick="addComment({{ product.id }});" value="Add comment" />

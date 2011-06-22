@@ -44,6 +44,10 @@ def get_report_name(index):
     return os.path.join(settings.MEDIA_ROOT, 'pdf', 'report' + index + '.pdf')
 
 
+def set_not_empty_value(param, default):
+    return param or default
+
+
 def get_query(template, row, col):
     row_sql = SQL_PIECES[row]
     col_sql = SQL_PIECES[col]
@@ -79,6 +83,9 @@ def check_price(current, header, param):
 
 
 def check_category(current, header, param):
+    #print header[1]
+    #print current.path
+    #print current.category_name
     return str(header[1]) in current.path.split('.')
 
 
@@ -104,7 +111,7 @@ def output_product_header(param, element):
 
 def make_city_header(param, start_date, end_date, root_cat_path):
     ds = Purchased.objects.raw(get_query(QUERY_TEMPLATE, 1, 5), [start_date, end_date, root_cat_path + '%'])
-    return sorted(list(set([item.city for item in ds])))
+    return sorted(list(set(item.city for item in ds)))
 
 
 def output_city_header(param, element):
@@ -124,7 +131,7 @@ def output_price_header(param, element):
 def make_category_header(param, start_date, end_date, root_cat_path):
     root_cats = Category.objects.filter(depth=str(param), path__startswith=root_cat_path).order_by('id')
     if not root_cats:
-        root_cats = Category.objects.get(path=root_cat_path)
+        root_cats = [Category.objects.get(path=root_cat_path)]
     return [(item.name, item.id) for item in root_cats]
 
 
