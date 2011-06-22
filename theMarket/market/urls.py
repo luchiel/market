@@ -41,6 +41,7 @@ urlpatterns += patterns('theMarket.market.basket_views',
 
 urlpatterns += patterns('theMarket.market.comment_views',
     url(r'^products/(?P<product_id>\d+)/comments/$', 'comments', name='comments'),
+    url(r'^products/(?P<product_id>\d+)/comments/add_comment_field/(?P<comment_id>\d+)/$', 'add_comment_field', name='add_comment_field'),
     url(r'^products/(?P<product_id>\d+)/comments/add_comment/$', 'add_comment', name='add_comment'),
     url(r'^products/comments/(?P<comment_id>\d+)/delete_comment/$', 'delete_comment', name='delete_comment'),
     url(r'^products/(?P<product_id>\d+)/mark_details/$', 'mark_details', name='mark_details'),
@@ -59,4 +60,5 @@ urlpatterns += patterns('theMarket.market.report_views',
     url(r'^reports/$', 'reports', name='reports'),
     url(r'^reports/extend_params/(?P<is_column>\d+)/$', 'extend_params', name='extend_params'),
     url(r'^reports/output/$', 'output_report', name='output_report'),
+    url(r'^reports/output/(?P<report_index>\d+)/$', 'report', name='report'),
 )

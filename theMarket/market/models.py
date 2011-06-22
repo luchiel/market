@@ -1,17 +1,7 @@
 from django.db import models
 from django.db.models import Count, Sum
 from hashlib import sha1
-from scheduler.models import connect
 from datetime import datetime, timedelta
-
-
-def update_correlations(sender, instance, **kwargs):
-    # Do correlation here!
-    instance.delete()
-    next_event = datetime.now() + timedelta(hours=2)
-    sender.objects.create(signal='correlate', timestamp=next_event)
-
-connect('correlate', update_correlations, dispatch_uid='scheduler.update_correlations')
 
 
 class User(models.Model):
@@ -87,7 +77,7 @@ class Product(models.Model):
         return marks[0].mark if len(list(marks)) else 0
 
     def get_comments(self):
-        return Comment.objects.filter(product=self)
+        return Comment.objects.filter(product=self).order_by('date')
 
     def get_comment_count(self):
         return self.get_comments().count()
@@ -132,9 +122,25 @@ class Address(models.Model):
 class Comment(models.Model):
     MARK_CHOICES = []
     for i in range(10):
-        MARK_CHOICES.append((i + 1, i + 1));
+        MARK_CHOICES.append((i + 1, i + 1))
     user    = models.ForeignKey(User, null=True, editable=False)
     product = models.ForeignKey(Product, editable=False)
     mark    = models.IntegerField(choices=MARK_CHOICES)
     comment = models.TextField()
     rating  = models.IntegerField(default=0, editable=False)
+    date    = models.DateField(auto_now_add=True)
+    path    = models.CharField(max_length=40, default='', editable=False)
+    depth   = models.IntegerField(default=0, editable=False)
+
+    def make_path_and_depth(self, parent_id):
+        self.path = str(self.id)
+        if Comment.objects.filter(id=parent_id).exists():
+            self.path = Comment.objects.get(id=parent_id).path + '.' + self.path
+            self.depth = Comment.objects.get(id=parent_id).depth + 1
+
+    def get_responds(self):
+        return Comment.objects.filter(path__startswith=self.path + '.')
+
+
+class Report(models.Model):
+    is_completed = models.BooleanField(default=False)

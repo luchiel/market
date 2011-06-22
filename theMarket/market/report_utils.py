@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from datetime import date, timedelta
 from market.models import Purchased, Category
 
@@ -37,6 +39,9 @@ SQL_PIECES = [
     ('ph.date', [], 'ph.date'), #time
     ('', [], ''), #zero: for headers
 ]
+
+def get_report_name(index):
+    return os.path.join(settings.MEDIA_ROOT, 'pdf', 'report' + index + '.pdf')
 
 
 def get_query(template, row, col):

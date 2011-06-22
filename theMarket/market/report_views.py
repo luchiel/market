@@ -7,11 +7,13 @@ from datetime import datetime
 import os
 import string
 import threading
+from django.conf import settings
+from django.core.servers.basehttp import FileWrapper
 from django.utils import simplejson as json
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.db.models import Max
-from market.models import Category, Purchased
+from market.models import Category, Purchased, Report
 from market.shortcuts import direct_to_template
 from market.forms import ReportForm
 from market.report_utils import *
@@ -19,13 +21,18 @@ from market.shortcuts import direct_to_template
 
 
 class ReportThread(threading.Thread):
-    def __init__(self, request, canvas):
+    def __init__(self, request):
         threading.Thread.__init__(self)
         self.request = request
-        self.canvas = canvas
+        self.report = Report()
+        self.report.save()
+        self.name = str(self.report.id)
+        self.canvas = canvas.Canvas(get_report_name(self.name))
 
     def run(self):
         create_report(self.request, self.canvas)
+        self.report.is_completed = True
+        self.report.save()
 
 
 def reports(request):
@@ -47,6 +54,8 @@ def extend_params(request, is_column):
             parameters = { 'options': range(level + 1), 'comment': 'Group by level'}
         elif param_id == 4:
             parameters = { 'options': REPORT_TIME_PERIODS, 'comment': 'Group by' }
+        else:
+            parameters = {}
         response = { 'extendable': 'true', 'parameters': parameters }
     return HttpResponse(json.dumps(response), mimetype='application/json')
 
@@ -54,14 +63,24 @@ def extend_params(request, is_column):
 def output_report(request):
     if not request.POST or request.POST['row'] == request.POST['column']:
         return redirect('reports')
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=' + 'report' + '.pdf'
-    c = canvas.Canvas(response)
 
-    t = ReportThread(request, c)
+    t = ReportThread(request)
+    result = { 'report': t.report.id }
     t.start()
-    t.join()
 
+    return HttpResponse(json.dumps(result), mimetype='application/json')
+
+
+def report(request, report_index):
+    if not Report.objects.filter(id=report_index).exists():
+        return HttpResponse('No file')
+    if not Report.objects.get(id=report_index).is_completed:
+        return HttpResponse('Update page')
+    filename = get_report_name(report_index)
+    wrapper = FileWrapper(open(filename, 'rb'))
+    response = HttpResponse(wrapper, content_type='application/pdf')
+    response['Content-Length'] = os.path.getsize(filename)
+    response['Content-Disposition'] = 'attachment; filename=report.pdf'
     return response
 
 

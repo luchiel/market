@@ -355,3 +355,10 @@ div#edit_category input, input.edit_button
     padding-left: 20px;
     width: 110px;
 }
+
+.report_link
+{
+    margin-left: 10px;
+    font-weight: normal;
+    color: #0000FF;
+}
