@@ -13,8 +13,9 @@ function addComment(productId) {
         //mark, comment, response_to_id
         function(data) {
             if(data['result'] == 'ok') {
-                $('#comments').append(data['comment']);
-                //look where to append!
+                commentId = $('#response_to_id').val();
+                $('#comment' + commentId).after(data['comment']);
+                //$('#comments').append(data['comment']);
                 $('#new_comment_table').remove();
                 $('#add_root_comment').attr('hidden', '');
             }
