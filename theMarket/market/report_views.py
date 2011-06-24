@@ -1,4 +1,4 @@
-# coding: utf-8
+﻿# -*- coding: utf-8 -*-
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
@@ -13,8 +13,9 @@ from django.utils import simplejson as json
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.db.models import Max
-#import matplotlib.mlab as mlab
-#import matplotlib.pyplot as plt
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plot
+from matplotlib import font_manager
 from market.models import Category, Purchased, Report
 from market.shortcuts import direct_to_template
 from market.forms import ReportForm
@@ -22,19 +23,30 @@ from market.report_utils import *
 from market.shortcuts import direct_to_template
 
 
-class ReportThread(threading.Thread):
-    def __init__(self, request):
+class TaskThread(threading.Thread):
+    def __init__(self, request, run_function):
         threading.Thread.__init__(self)
         self.request = request
-        self.report = Report()
-        self.report.save()
-        self.name = str(self.report.id)
-        self.canvas = canvas.Canvas(get_report_name(self.name))
+        self.task = Report()
+        self.task.save()
+        self.name = str(self.task.id)
+        self.function = run_function
 
     def run(self):
-        create_report(self.request, self.canvas)
-        self.report.is_completed = True
-        self.report.save()
+        self.function(self.request, self.canvas)
+        self.task.is_completed = True
+        self.task.save()
+
+class ReportThread(TaskThread):
+    def __init__(self, request, run_function):
+        TaskThread.__init__(self, request, run_function)
+        self.canvas = canvas.Canvas(get_report_name(self.name))
+
+
+class HistoThread(TaskThread):
+    def __init__(self, request, run_function):
+        TaskThread.__init__(self, request, run_function)
+        self.canvas = self.name
 
 
 def reports(request):
@@ -66,8 +78,8 @@ def output_report(request):
     if not request.POST or request.POST['row'] == request.POST['column']:
         return redirect('reports')
 
-    t = ReportThread(request)
-    result = { 'report': t.report.id }
+    t = ReportThread(request, create_report)
+    result = { 'report': t.task.id }
     t.start()
 
     return HttpResponse(json.dumps(result), mimetype='application/json')
@@ -94,17 +106,7 @@ def create_report(request, p):
     col = int(request.POST['column'])
     row_param = int(request.POST.get('detail0', '0'))
     col_param = int(request.POST.get('detail1', '0'))
-    #partical validation
-    start_date = datetime.today()
-    end_date = datetime.today()
-    form = ReportForm(request.POST)
-    if not form.errors.get('start_date'):
-        start_date = datetime.strptime(form.data['start_date'], '%d.%m.%Y')
-    if not form.errors.get('end_date'):
-        end_date = datetime.strptime(form.data['end_date'], '%d.%m.%Y')
-    #change request params if needed
-    if start_date > end_date:
-        start_date, end_date = end_date, start_date
+    start_date, end_date = get_dates_from_request(request)
 
     #dataset
     #print get_query(QUERY_TEMPLATE, row, col)
@@ -260,11 +262,7 @@ def create_report(request, p):
     p.save()
 
 
-def output_histo(request):
-    root_cat_id = set_not_empty_value(request.POST['parent_id'], '1')
-    root_cat = Category.objects.get(id=root_cat_id)
-    row = int(request.POST['row'])
-    row_param = int(request.POST.get('detail0', '0'))
+def get_dates_from_request(request):
     #partical validation
     start_date = datetime.today()
     end_date = datetime.today()
@@ -276,8 +274,66 @@ def output_histo(request):
     #change request params if needed
     if start_date > end_date:
         start_date, end_date = end_date, start_date
-    pass
+    return (start_date, end_date)
+
+
+def output_histo(request):
+    if not request.POST:
+        return redirect('reports')
+
+    t = HistoThread(request, create_histo)
+    result = { 'histogram': t.task.id }
+    t.start()
+
+    return HttpResponse(json.dumps(result), mimetype='application/json')
+
+
+def create_histo(request, p):
+    root_cat_id = set_not_empty_value(request.POST['parent_id'], '1')
+    root_cat = Category.objects.get(id=root_cat_id)
+    row = int(request.POST['row'])
+    param = int(request.POST.get('detail0', '0'))
+    start_date, end_date = get_dates_from_request(request)
+    #dataset
+    dataset = Purchased.objects.raw(get_query(QUERY_TEMPLATE, row, 5), [start_date, end_date, root_cat.path + '%'])
+    header = MAKE_HEADER[row](param, start_date, end_date, root_cat.path)
+    dataset = list(dataset)
+    current_row = 0
+    y = [0]
+    for item in dataset:
+        while current_row < len(header) and not CHECK_FOR_CHANGE[row](item, header[current_row], param):
+            y.append(0)
+            current_row += 1
+        y[current_row] += item.quantity
+    plot.rcParams['font.sans-serif'] = 'Verdana'
+    #vertical
+    plot.xticks(range(len(header)), [OUTPUT_HEADER[row](param, item) for item in header], rotation=45)
+    plot.bar(range(len(header)), y, align='center')
+    #horizontal
+    #plot.yticks(range(len(header)), [OUTPUT_HEADER[row](param, item) for item in header])
+    #plot.legend([OUTPUT_HEADER[row](param, item) for item in header])
+    #plot.barh(range(len(header)), y, height=0.5, align='center')
+    #switch labels
+    #plot.ylabel(REPORT_CHOICES[row][1])
+    #plot.xlabel('Quantity')
+    plot.title('{0}. Category: {1}, {2}-{3}'.format(
+        REPORT_CHOICES[row][1],
+        root_cat.name,
+        start_date.strftime('%d.%m.%Y'),
+        end_date.strftime('%d.%m.%Y')
+    ))
+    plot.grid(True)
+    plot.savefig(get_histogram_name(p))
 
 
 def histogram(request, histogram_index):
-    pass
+    if not Report.objects.filter(id=histogram_index).exists():
+        return HttpResponse('No file')
+    if not Report.objects.get(id=histogram_index).is_completed:
+        return HttpResponse('Update page')
+    filename = get_histogram_name(histogram_index)
+    wrapper = FileWrapper(open(filename, 'rb'))
+    response = HttpResponse(wrapper, content_type='application/png')
+    response['Content-Length'] = os.path.getsize(filename)
+    response['Content-Disposition'] = 'attachment; filename=histogram.png'
+    return response

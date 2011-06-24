@@ -1,6 +1,6 @@
 import os
 from django.conf import settings
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from market.models import Purchased, Category
 
 REPORT_CHOICES = [(0, 'Products'), (1, 'Cities'), (2, 'Prices'), (3, 'Categories'), (4, 'Time')]
@@ -42,6 +42,10 @@ SQL_PIECES = [
 
 def get_report_name(index):
     return os.path.join(settings.MEDIA_ROOT, 'pdf', 'report' + index + '.pdf')
+
+
+def get_histogram_name(index):
+    return os.path.join(settings.MEDIA_ROOT, 'histograms', 'histogram' + index + '.png')
 
 
 def set_not_empty_value(param, default):
