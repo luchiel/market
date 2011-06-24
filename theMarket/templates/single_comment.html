@@ -10,16 +10,13 @@
         </tr>
         <tr>
             <td class="mark_rate">
-                {% if request.user and comment.user.id != request.user.id %}
-                    <input type="submit" onclick="changeRating({{ comment.id }})" value="+" />
+                {% if request.user and comment.user.id != request.user.id and request.user.can_vote_today %}
+                    <input class="vote_input" type="submit" onclick="changeRating({{ comment.id }}, 1)" value="+" />
                 {% endif %}
-                <span id="{{ comment.id }}_rating">(+{{ comment.rating }})</span>
-                <!--
-                dec comment rating
-                { if not request.user or comment.user.id != request.user.id %}
-                    <span onclick="changeRating({{ comment.id }}, -1)">-</span>
-                { endif %}
-                -->
+                <span id="{{ comment.id }}_rating">({{ comment.rating }})</span>
+                {% if request.user and comment.user.id != request.user.id and request.user.can_vote_today %}
+                    <input class="vote_input" type="submit" onclick="changeRating({{ comment.id }}, -1)" value="-" />
+                {% endif %}
             </td>
             <td rowspan="2">{{ comment.comment }}</td>
         </tr>

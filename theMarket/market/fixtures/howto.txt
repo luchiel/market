@@ -1,6 +1,6 @@
 
     Создал необходимые данные для этой модели через админку.
-    Перешел в директорию проекта набрал ./manage.py dumpdata --indent=2  yyy > ./data/fixtures/xxx.json
+    Перешел в директорию проекта набрал ./manage.py dumpdata --indent=2  > ./data/fixtures/xxx.json
     Прописал в settings.py FIXTURE_DIRS = (  PROJECT_ROOT + '/data/fixtures/',)
     И уже при установке сначала ./manage syncdb
     Затем ./manage.py loaddata xxx

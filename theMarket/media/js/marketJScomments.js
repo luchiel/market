@@ -1,8 +1,16 @@
-﻿function changeRating(commentId) {
+﻿function changeRating(commentId, value) {
+    $('#vote_input').val(value);
     $.post(
         '/theMarket/add_vote/' + commentId + '/', $('#comment_form').serialize(),
         function(data) {
-            $('#' + commentId + '_rating').html('(+' + data + ')');
+            if(data['result'] == 'ok') {
+                $('#' + commentId + '_rating').html('(' + data['rating'] + ')');
+                if(!data['votes_ok'])
+                    $('.vote_input').hide();
+            }
+            else if(data['result'] != '') {
+                alert(data['result']);
+            }
         }
     );
 }
@@ -22,7 +30,6 @@ $(document).ready(function () {
 function addComment(productId) {
     $.post(
         '/theMarket/products/' + productId + '/comments/add_comment/', $('#new_comment').serialize(),
-        //comment, response_to_id
         function(data) {
             if(data['result'] == 'ok') {
                 commentId = $('#response_to_id').val();

@@ -1,1 +1,3563 @@
-[{"pk": 13, "model": "contenttypes.contenttype", "fields": {"model": "address", "name": "address", "app_label": "market"}}, {"pk": 11, "model": "contenttypes.contenttype", "fields": {"model": "basket", "name": "basket", "app_label": "market"}}, {"pk": 9, "model": "contenttypes.contenttype", "fields": {"model": "category", "name": "category", "app_label": "market"}}, {"pk": 5, "model": "contenttypes.contenttype", "fields": {"model": "contenttype", "name": "content type", "app_label": "contenttypes"}}, {"pk": 2, "model": "contenttypes.contenttype", "fields": {"model": "group", "name": "group", "app_label": "auth"}}, {"pk": 4, "model": "contenttypes.contenttype", "fields": {"model": "message", "name": "message", "app_label": "auth"}}, {"pk": 1, "model": "contenttypes.contenttype", "fields": {"model": "permission", "name": "permission", "app_label": "auth"}}, {"pk": 10, "model": "contenttypes.contenttype", "fields": {"model": "product", "name": "product", "app_label": "market"}}, {"pk": 12, "model": "contenttypes.contenttype", "fields": {"model": "purchased", "name": "purchased", "app_label": "market"}}, {"pk": 6, "model": "contenttypes.contenttype", "fields": {"model": "session", "name": "session", "app_label": "sessions"}}, {"pk": 7, "model": "contenttypes.contenttype", "fields": {"model": "site", "name": "site", "app_label": "sites"}}, {"pk": 3, "model": "contenttypes.contenttype", "fields": {"model": "user", "name": "user", "app_label": "auth"}}, {"pk": 8, "model": "contenttypes.contenttype", "fields": {"model": "user", "name": "user", "app_label": "market"}}, {"pk": "c3a03b743cf089765bc9b63eb0cf35df", "model": "sessions.session", "fields": {"expire_date": "2011-04-04 04:49:15", "session_data": "gAJ9cQFVB3VzZXJfaWRxAksKcy5jNmFhNThiYmNhZmRmMzhiNjUwMzA4MDc2MWE1ZDQ3Zg==\n"}}, {"pk": "b25c3d1375e6b5a28324a9a61fd9e62f", "model": "sessions.session", "fields": {"expire_date": "2011-03-17 11:04:47", "session_data": "gAJ9cQFVB3VzZXJfaWRxAksNcy4xN2JmOGZiMTdmOWI3ZTRiYjQzNzZlM2FlMmNkYjQ0Mw==\n"}}, {"pk": "0cbee23147beaec2ad4ab33dc4a093d6", "model": "sessions.session", "fields": {"expire_date": "2011-03-17 09:49:53", "session_data": "gAJ9cQEuYWIxYzhlNTg1ZGZkNzdiNTE1ZTVjY2Q5ZDU2OGViMjM=\n"}}, {"pk": "619e8d59e2148ff73461ab88e0f9669a", "model": "sessions.session", "fields": {"expire_date": "2011-05-25 03:49:37", "session_data": "NjM4NmVmZTVkYTQ0OTkxYmRkN2FhMDNmODk4YzIwZDgxOGRlN2ZhMzqAAn1xAVUHdXNlcl9pZHEC\nSw1zLg==\n"}}, {"pk": 1, "model": "sites.site", "fields": {"domain": "example.com", "name": "example.com"}}, {"pk": 10, "model": "market.user", "fields": {"is_admin": false, "login": "some_dude", "password": "087907276cb0b88f857fc804d10128ee8973f3f7", "salt": "rvGIQPIgla", "email": "11@1.ru"}}, {"pk": 12, "model": "market.user", "fields": {"is_admin": false, "login": "new_newbie", "password": "96808386d35ee73d8f8470fc6179c0e5e1ea130a", "salt": "IODyetxwqi", "email": "1@1.ru"}}, {"pk": 13, "model": "market.user", "fields": {"is_admin": true, "login": "Inquizitor", "password": "cf55df891385919b5f3c840e427d3f96c661d6fc", "salt": "KkFJzLCKgW", "email": "lu@yandex.ru"}}, {"pk": 14, "model": "market.user", "fields": {"is_admin": false, "login": "test", "password": "6afd1ebf8218e9da9efd739445f5d7d308d2b126", "salt": "ExAyaPdjqf", "email": "t@a.com"}}, {"pk": 1, "model": "market.category", "fields": {"path": "1", "depth": 0, "name": "Souls"}}, {"pk": 2, "model": "market.category", "fields": {"path": "1.5.2", "depth": 2, "name": "Saints"}}, {"pk": 4, "model": "market.category", "fields": {"path": "1.5.4", "depth": 2, "name": "Elves"}}, {"pk": 5, "model": "market.category", "fields": {"path": "1.5", "depth": 1, "name": "Immortal"}}, {"pk": 7, "model": "market.category", "fields": {"path": "1.7", "depth": 1, "name": "Fallen"}}, {"pk": 10, "model": "market.category", "fields": {"path": "1.10", "depth": 1, "name": "Otherworld"}}, {"pk": 12, "model": "market.category", "fields": {"path": "1.7.12", "depth": 2, "name": "Circle 1: Limbo"}}, {"pk": 13, "model": "market.category", "fields": {"path": "1.7.13", "depth": 2, "name": "Circle 2: Lust"}}, {"pk": 14, "model": "market.category", "fields": {"path": "1.7.14", "depth": 2, "name": "Circle 3: Gluttony"}}, {"pk": 15, "model": "market.category", "fields": {"path": "1.7.15", "depth": 2, "name": "Circle 4: Greed"}}, {"pk": 16, "model": "market.category", "fields": {"path": "1.7.16", "depth": 2, "name": "Circle 5: Anger"}}, {"pk": 17, "model": "market.category", "fields": {"path": "1.7.17", "depth": 2, "name": "Circle 6: Heresy"}}, {"pk": 18, "model": "market.category", "fields": {"path": "1.7.18", "depth": 2, "name": "Circle 7: Violence"}}, {"pk": 19, "model": "market.category", "fields": {"path": "1.7.18.19", "depth": 3, "name": "Outer ring: People"}}, {"pk": 20, "model": "market.category", "fields": {"path": "1.7.18.20", "depth": 3, "name": "Middle ring: Self"}}, {"pk": 21, "model": "market.category", "fields": {"path": "1.7.18.21", "depth": 3, "name": "Inner ring: Nature"}}, {"pk": 22, "model": "market.category", "fields": {"path": "1.7.22", "depth": 2, "name": "Circle 8: Fraud"}}, {"pk": 23, "model": "market.category", "fields": {"path": "1.7.22.23", "depth": 3, "name": "Bolgia 1: Panderers"}}, {"pk": 24, "model": "market.category", "fields": {"path": "1.7.22.24", "depth": 3, "name": "Bolgia 2: Flatterers"}}, {"pk": 25, "model": "market.category", "fields": {"path": "1.7.22.25", "depth": 3, "name": "Bolgia 3: Simonists"}}, {"pk": 26, "model": "market.category", "fields": {"path": "1.7.22.26", "depth": 3, "name": "Bolgia 4: Sorcerers"}}, {"pk": 27, "model": "market.category", "fields": {"path": "1.7.22.27", "depth": 3, "name": "Bolgia 5: Corrupt politicians"}}, {"pk": 28, "model": "market.category", "fields": {"path": "1.7.22.28", "depth": 3, "name": "Bolgia 6: Hypocrites"}}, {"pk": 29, "model": "market.category", "fields": {"path": "1.7.22.29", "depth": 3, "name": "Bolgia 7: Thieves"}}, {"pk": 30, "model": "market.category", "fields": {"path": "1.7.22.30", "depth": 3, "name": "Bolgia 8: Fraudulent advisers"}}, {"pk": 31, "model": "market.category", "fields": {"path": "1.7.22.31", "depth": 3, "name": "Bolgia 9: Sowers of discord"}}, {"pk": 32, "model": "market.category", "fields": {"path": "1.7.22.32", "depth": 3, "name": "Bolgia 10: Falsifiers"}}, {"pk": 33, "model": "market.category", "fields": {"path": "1.7.33", "depth": 2, "name": "Circle 9: Treachery"}}, {"pk": 34, "model": "market.category", "fields": {"path": "1.7.33.34", "depth": 3, "name": "Round 1: Relatives"}}, {"pk": 35, "model": "market.category", "fields": {"path": "1.7.33.35", "depth": 3, "name": "Round 2: Homeland"}}, {"pk": 1, "model": "market.product", "fields": {"category": 4, "image": "", "price": 400, "name": "Feanor", "description": "I noldo calima"}}, {"pk": 2, "model": "market.product", "fields": {"category": 4, "image": "", "price": 300, "name": "Arwen", "description": "The Lady of the Everning"}}, {"pk": 3, "model": "market.product", "fields": {"category": 4, "image": "", "price": 350, "name": "Luthien", "description": "The Lady of the Morning Twilight and of the nightingale's songs"}}, {"pk": 4, "model": "market.product", "fields": {"category": 4, "image": "", "price": 90, "name": "Veganna", "description": "Good old friend. Dark elf"}}, {"pk": 5, "model": "market.product", "fields": {"category": 4, "image": "", "price": 800, "name": "Luchiel", "description": "Creator costs a lot. Alpha-version of creator is much cheaper"}}, {"pk": 6, "model": "market.product", "fields": {"category": 13, "image": "media/img/28827066b502fb5b60c6e5ab41933379.jpg", "price": 40, "name": "Lusty Girl", "description": "Seven Sins Collection"}}, {"pk": 7, "model": "market.product", "fields": {"category": 14, "image": "media/img/3c2f34c2fa2f703bb3d91f148a312e7a.jpg", "price": 40, "name": "Hungry Girl", "description": "Seven Sins Collection"}}, {"pk": 8, "model": "market.product", "fields": {"category": 15, "image": "media/img/7ee164507bfc61c8d38d4157ff5147a6.jpg", "price": 40, "name": "Golden Girl", "description": "Definitely gorgeous"}}, {"pk": 9, "model": "market.product", "fields": {"category": 16, "image": "media/img/8c8bd35065921a24e2381865856b8a2e.jpg", "price": 50, "name": "Angry Girl", "description": "Seven Sins Collection"}}, {"pk": 10, "model": "market.product", "fields": {"category": 17, "image": "media/img/9ddc9f03ae1034dc169c8f10fefda974.jpg", "price": 60, "name": "Heretic", "description": "In safety capsule. Dangerous if outside"}}, {"pk": 11, "model": "market.product", "fields": {"category": 17, "image": "media/img/3ee50a42e97ce40460d3608535b8245f.jpg", "price": 60, "name": "Heretic 2", "description": "Is sold with cucumbers"}}, {"pk": 12, "model": "market.product", "fields": {"category": 18, "image": "media/img/da1d24384fc42eee1168c9e48c69bcf2.jpg", "price": 55, "name": "Mad Photographer", "description": "Hunted people with a camera. Got beaten, went to Circle 7 for making girls cry."}}, {"pk": 13, "model": "market.product", "fields": {"category": 2, "image": "", "price": 33, "name": "\u0423\u0433\u043e\u043b\u043e\u0432\u043d\u044b\u0439 \u043a\u043e\u0434\u0435\u043a\u0441", "description": "\u041f\u0440\u0435\u0434\u043f\u043e\u043b\u0430\u0433\u0430\u0435\u0442\u0441\u044f, \u0447\u0442\u043e \u0438\u043c\u0435\u043d\u043d\u043e \u0437\u0434\u0435\u0441\u044c \u043c\u043e\u0436\u043d\u043e \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u0442\u044c \u043d\u0430\u043a\u0430\u0437\u0430\u043d\u0438\u0435 \u0437\u0430 \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u044e \u0441\u0432\u044f\u0442\u044b\u043c\u0438. \u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0441\u0442\u043e\u0440\u043e\u043d\u0430 \u043e\u0431\u043b\u043e\u0436\u043a\u0438, \u043a\u0430\u0440\u0430\u043d\u0434\u0430\u0448."}}, {"pk": 14, "model": "market.product", "fields": {"category": 2, "image": "", "price": 1, "name": "\u0414\u043d\u0435\u0432\u043d\u0438\u043a", "description": "\u0416\u0438\u0442\u0438\u0435 \u0441\u0440\u0435\u0434\u043d\u0435\u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0433\u043e \u0441\u0432\u044f\u0442\u043e\u0433\u043e. \u041a\u043e\u0433\u043e \u0438\u043c\u0435\u043d\u043d\u043e - \u0437\u0430\u0432\u0438\u0441\u0438\u0442 \u043e\u0442 \u0443\u0434\u0430\u0447\u0438"}}, {"pk": 15, "model": "market.product", "fields": {"category": 2, "image": "", "price": 236, "name": "\u041f\u043e\u0440\u0442\u0440\u0435\u0442 \u0432\u0435\u0434\u044c\u043c\u044b", "description": "\u041e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d \u0432 \u043c\u043e\u043d\u0430\u0441\u0442\u044b\u0440\u0435 \u0431\u043b\u0438\u0437 \u0433\u043e\u0440\u043e\u0434\u0430 N."}}, {"pk": 16, "model": "market.product", "fields": {"category": 5, "image": "", "price": 700, "name": "\u0410\u043b\u0443\u043a\u0430\u0440\u0434", "description": "\u041a\u0430\u043a \u043d\u0438 \u043a\u0440\u0443\u0442\u0438, \u0431\u0435\u0441\u0441\u043c\u0435\u0440\u0442\u0435\u043d."}}, {"pk": 1, "model": "market.basket", "fields": {"user": null, "session_id": "619e8d59e2148ff73461ab88e0f9669a"}}, {"pk": 2, "model": "market.basket", "fields": {"user": 13, "session_id": null}}, {"pk": 4, "model": "auth.permission", "fields": {"codename": "add_group", "name": "Can add group", "content_type": 2}}, {"pk": 5, "model": "auth.permission", "fields": {"codename": "change_group", "name": "Can change group", "content_type": 2}}, {"pk": 6, "model": "auth.permission", "fields": {"codename": "delete_group", "name": "Can delete group", "content_type": 2}}, {"pk": 10, "model": "auth.permission", "fields": {"codename": "add_message", "name": "Can add message", "content_type": 4}}, {"pk": 11, "model": "auth.permission", "fields": {"codename": "change_message", "name": "Can change message", "content_type": 4}}, {"pk": 12, "model": "auth.permission", "fields": {"codename": "delete_message", "name": "Can delete message", "content_type": 4}}, {"pk": 1, "model": "auth.permission", "fields": {"codename": "add_permission", "name": "Can add permission", "content_type": 1}}, {"pk": 2, "model": "auth.permission", "fields": {"codename": "change_permission", "name": "Can change permission", "content_type": 1}}, {"pk": 3, "model": "auth.permission", "fields": {"codename": "delete_permission", "name": "Can delete permission", "content_type": 1}}, {"pk": 7, "model": "auth.permission", "fields": {"codename": "add_user", "name": "Can add user", "content_type": 3}}, {"pk": 8, "model": "auth.permission", "fields": {"codename": "change_user", "name": "Can change user", "content_type": 3}}, {"pk": 9, "model": "auth.permission", "fields": {"codename": "delete_user", "name": "Can delete user", "content_type": 3}}, {"pk": 13, "model": "auth.permission", "fields": {"codename": "add_contenttype", "name": "Can add content type", "content_type": 5}}, {"pk": 14, "model": "auth.permission", "fields": {"codename": "change_contenttype", "name": "Can change content type", "content_type": 5}}, {"pk": 15, "model": "auth.permission", "fields": {"codename": "delete_contenttype", "name": "Can delete content type", "content_type": 5}}, {"pk": 37, "model": "auth.permission", "fields": {"codename": "add_address", "name": "Can add address", "content_type": 13}}, {"pk": 38, "model": "auth.permission", "fields": {"codename": "change_address", "name": "Can change address", "content_type": 13}}, {"pk": 39, "model": "auth.permission", "fields": {"codename": "delete_address", "name": "Can delete address", "content_type": 13}}, {"pk": 31, "model": "auth.permission", "fields": {"codename": "add_basket", "name": "Can add basket", "content_type": 11}}, {"pk": 32, "model": "auth.permission", "fields": {"codename": "change_basket", "name": "Can change basket", "content_type": 11}}, {"pk": 33, "model": "auth.permission", "fields": {"codename": "delete_basket", "name": "Can delete basket", "content_type": 11}}, {"pk": 25, "model": "auth.permission", "fields": {"codename": "add_category", "name": "Can add category", "content_type": 9}}, {"pk": 26, "model": "auth.permission", "fields": {"codename": "change_category", "name": "Can change category", "content_type": 9}}, {"pk": 27, "model": "auth.permission", "fields": {"codename": "delete_category", "name": "Can delete category", "content_type": 9}}, {"pk": 28, "model": "auth.permission", "fields": {"codename": "add_product", "name": "Can add product", "content_type": 10}}, {"pk": 29, "model": "auth.permission", "fields": {"codename": "change_product", "name": "Can change product", "content_type": 10}}, {"pk": 30, "model": "auth.permission", "fields": {"codename": "delete_product", "name": "Can delete product", "content_type": 10}}, {"pk": 34, "model": "auth.permission", "fields": {"codename": "add_purchased", "name": "Can add purchased", "content_type": 12}}, {"pk": 35, "model": "auth.permission", "fields": {"codename": "change_purchased", "name": "Can change purchased", "content_type": 12}}, {"pk": 36, "model": "auth.permission", "fields": {"codename": "delete_purchased", "name": "Can delete purchased", "content_type": 12}}, {"pk": 22, "model": "auth.permission", "fields": {"codename": "add_user", "name": "Can add user", "content_type": 8}}, {"pk": 23, "model": "auth.permission", "fields": {"codename": "change_user", "name": "Can change user", "content_type": 8}}, {"pk": 24, "model": "auth.permission", "fields": {"codename": "delete_user", "name": "Can delete user", "content_type": 8}}, {"pk": 16, "model": "auth.permission", "fields": {"codename": "add_session", "name": "Can add session", "content_type": 6}}, {"pk": 17, "model": "auth.permission", "fields": {"codename": "change_session", "name": "Can change session", "content_type": 6}}, {"pk": 18, "model": "auth.permission", "fields": {"codename": "delete_session", "name": "Can delete session", "content_type": 6}}, {"pk": 19, "model": "auth.permission", "fields": {"codename": "add_site", "name": "Can add site", "content_type": 7}}, {"pk": 20, "model": "auth.permission", "fields": {"codename": "change_site", "name": "Can change site", "content_type": 7}}, {"pk": 21, "model": "auth.permission", "fields": {"codename": "delete_site", "name": "Can delete site", "content_type": 7}}, {"pk": 1, "model": "auth.user", "fields": {"username": "admin", "first_name": "", "last_name": "", "is_active": true, "is_superuser": true, "is_staff": true, "last_login": "2011-03-07 01:08:29", "groups": [], "user_permissions": [], "password": "sha1$10baf$f18813373bbfcac345463c6e8fc37d1294c77a43", "email": "luchiella@yandex.ru", "date_joined": "2011-03-07 01:08:29"}}]
+[
+  {
+    "pk": 13, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "address", 
+      "name": "address", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "basket", 
+      "name": "basket", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "category", 
+      "name": "category", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "comment", 
+      "name": "comment", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "contenttype", 
+      "name": "content type", 
+      "app_label": "contenttypes"
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "event", 
+      "name": "event", 
+      "app_label": "scheduler"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "group", 
+      "name": "group", 
+      "app_label": "auth"
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "mark", 
+      "name": "mark", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "message", 
+      "name": "message", 
+      "app_label": "auth"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "permission", 
+      "name": "permission", 
+      "app_label": "auth"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "product", 
+      "name": "product", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "purchased", 
+      "name": "purchased", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "report", 
+      "name": "report", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "session", 
+      "name": "session", 
+      "app_label": "sessions"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "site", 
+      "name": "site", 
+      "app_label": "sites"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "user", 
+      "name": "user", 
+      "app_label": "auth"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "user", 
+      "name": "user", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "contenttypes.contenttype", 
+    "fields": {
+      "model": "vote", 
+      "name": "vote", 
+      "app_label": "market"
+    }
+  }, 
+  {
+    "pk": "c3a03b743cf089765bc9b63eb0cf35df", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2011-04-04 04:49:15", 
+      "session_data": "gAJ9cQFVB3VzZXJfaWRxAksKcy5jNmFhNThiYmNhZmRmMzhiNjUwMzA4MDc2MWE1ZDQ3Zg==\n"
+    }
+  }, 
+  {
+    "pk": "b25c3d1375e6b5a28324a9a61fd9e62f", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2011-03-17 11:04:47", 
+      "session_data": "gAJ9cQFVB3VzZXJfaWRxAksNcy4xN2JmOGZiMTdmOWI3ZTRiYjQzNzZlM2FlMmNkYjQ0Mw==\n"
+    }
+  }, 
+  {
+    "pk": "0cbee23147beaec2ad4ab33dc4a093d6", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2011-03-17 09:49:53", 
+      "session_data": "gAJ9cQEuYWIxYzhlNTg1ZGZkNzdiNTE1ZTVjY2Q5ZDU2OGViMjM=\n"
+    }
+  }, 
+  {
+    "pk": "619e8d59e2148ff73461ab88e0f9669a", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2011-05-25 03:49:37", 
+      "session_data": "NjM4NmVmZTVkYTQ0OTkxYmRkN2FhMDNmODk4YzIwZDgxOGRlN2ZhMzqAAn1xAVUHdXNlcl9pZHEC\nSw1zLg==\n"
+    }
+  }, 
+  {
+    "pk": "330ac55aa141519cb68e805982589874", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2011-05-26 09:55:34", 
+      "session_data": "Y2YwODRiNDBlZDE0MzVhYTBlZjkzNTFkMTE2YTI1MjE0YTJjNDc0MDqAAn1xAS4=\n"
+    }
+  }, 
+  {
+    "pk": "8af4c0c5c9e4f5acf76b6315ece9bec6", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2011-05-31 14:34:24", 
+      "session_data": "NjM4NmVmZTVkYTQ0OTkxYmRkN2FhMDNmODk4YzIwZDgxOGRlN2ZhMzqAAn1xAVUHdXNlcl9pZHEC\nSw1zLg==\n"
+    }
+  }, 
+  {
+    "pk": "4081478bcde6356469c152c59603f637", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2011-06-15 11:00:43", 
+      "session_data": "NjM4NmVmZTVkYTQ0OTkxYmRkN2FhMDNmODk4YzIwZDgxOGRlN2ZhMzqAAn1xAVUHdXNlcl9pZHEC\nSw1zLg==\n"
+    }
+  }, 
+  {
+    "pk": "6a1dfda1205f8d6cf70c29d8c69af727", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2011-06-15 13:01:07", 
+      "session_data": "NjM4NmVmZTVkYTQ0OTkxYmRkN2FhMDNmODk4YzIwZDgxOGRlN2ZhMzqAAn1xAVUHdXNlcl9pZHEC\nSw1zLg==\n"
+    }
+  }, 
+  {
+    "pk": "84db8a2921d3d1320c633ca21ec658a0", 
+    "model": "sessions.session", 
+    "fields": {
+      "expire_date": "2011-07-08 15:09:47", 
+      "session_data": "OWYyZjYwMmJjZDEzZDhlMjJjYzM1MTRkN2VlMzI3ZGU4NDMxMDMxMDqAAn1xAVUHdXNlcl9pZHEC\nSwpzLg==\n"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "sites.site", 
+    "fields": {
+      "domain": "example.com", 
+      "name": "example.com"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "market.user", 
+    "fields": {
+      "is_admin": false, 
+      "login": "some_dude", 
+      "password": "087907276cb0b88f857fc804d10128ee8973f3f7", 
+      "salt": "rvGIQPIgla", 
+      "email": "11@1.ru"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "market.user", 
+    "fields": {
+      "is_admin": false, 
+      "login": "new_newbie", 
+      "password": "96808386d35ee73d8f8470fc6179c0e5e1ea130a", 
+      "salt": "IODyetxwqi", 
+      "email": "1@1.ru"
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "market.user", 
+    "fields": {
+      "is_admin": true, 
+      "login": "Inquizitor", 
+      "password": "cf55df891385919b5f3c840e427d3f96c661d6fc", 
+      "salt": "KkFJzLCKgW", 
+      "email": "lu@yandex.ru"
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "market.user", 
+    "fields": {
+      "is_admin": false, 
+      "login": "test", 
+      "password": "6afd1ebf8218e9da9efd739445f5d7d308d2b126", 
+      "salt": "ExAyaPdjqf", 
+      "email": "t@a.com"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1", 
+      "depth": 0, 
+      "name": "Souls"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.5.2", 
+      "depth": 2, 
+      "name": "Saints"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.5.4", 
+      "depth": 2, 
+      "name": "Elves"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.5", 
+      "depth": 1, 
+      "name": "Immortal"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7", 
+      "depth": 1, 
+      "name": "Fallen"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.10", 
+      "depth": 1, 
+      "name": "Otherworld"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.12", 
+      "depth": 2, 
+      "name": "Circle 1: Limbo"
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.13", 
+      "depth": 2, 
+      "name": "Circle 2: Lust"
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.14", 
+      "depth": 2, 
+      "name": "Circle 3: Gluttony"
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.15", 
+      "depth": 2, 
+      "name": "Circle 4: Greed"
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.16", 
+      "depth": 2, 
+      "name": "Circle 5: Anger"
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.17", 
+      "depth": 2, 
+      "name": "Circle 6: Heresy"
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.18", 
+      "depth": 2, 
+      "name": "Circle 7: Violence"
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.18.19", 
+      "depth": 3, 
+      "name": "Outer ring: People"
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.18.20", 
+      "depth": 3, 
+      "name": "Middle ring: Self"
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.18.21", 
+      "depth": 3, 
+      "name": "Inner ring: Nature"
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22", 
+      "depth": 2, 
+      "name": "Circle 8: Fraud"
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.23", 
+      "depth": 3, 
+      "name": "Bolgia 1: Panderers"
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.24", 
+      "depth": 3, 
+      "name": "Bolgia 2: Flatterers"
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.25", 
+      "depth": 3, 
+      "name": "Bolgia 3: Simonists"
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.26", 
+      "depth": 3, 
+      "name": "Bolgia 4: Sorcerers"
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.27", 
+      "depth": 3, 
+      "name": "Bolgia 5: Corrupt politicians"
+    }
+  }, 
+  {
+    "pk": 28, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.28", 
+      "depth": 3, 
+      "name": "Bolgia 6: Hypocrites"
+    }
+  }, 
+  {
+    "pk": 29, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.29", 
+      "depth": 3, 
+      "name": "Bolgia 7: Thieves"
+    }
+  }, 
+  {
+    "pk": 30, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.30", 
+      "depth": 3, 
+      "name": "Bolgia 8: Fraudulent advisers"
+    }
+  }, 
+  {
+    "pk": 31, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.31", 
+      "depth": 3, 
+      "name": "Bolgia 9: Sowers of discord"
+    }
+  }, 
+  {
+    "pk": 32, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.22.32", 
+      "depth": 3, 
+      "name": "Bolgia 10: Falsifiers"
+    }
+  }, 
+  {
+    "pk": 33, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.33", 
+      "depth": 2, 
+      "name": "Circle 9: Treachery"
+    }
+  }, 
+  {
+    "pk": 34, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.33.34", 
+      "depth": 3, 
+      "name": "Round 1: Relatives"
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "market.category", 
+    "fields": {
+      "path": "1.7.33.35", 
+      "depth": 3, 
+      "name": "Round 2: Homeland"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "market.product", 
+    "fields": {
+      "category": 4, 
+      "image": "", 
+      "price": 400, 
+      "name": "Feanor", 
+      "description": "I noldo calima"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "market.product", 
+    "fields": {
+      "category": 4, 
+      "image": "", 
+      "price": 300, 
+      "name": "Arwen", 
+      "description": "The Lady of the Everning"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "market.product", 
+    "fields": {
+      "category": 4, 
+      "image": "", 
+      "price": 350, 
+      "name": "Luthien", 
+      "description": "The Lady of the Morning Twilight and of the nightingale's songs"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "market.product", 
+    "fields": {
+      "category": 4, 
+      "image": "", 
+      "price": 90, 
+      "name": "Veganna", 
+      "description": "Good old friend. Dark elf"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "market.product", 
+    "fields": {
+      "category": 4, 
+      "image": "", 
+      "price": 800, 
+      "name": "Luchiel", 
+      "description": "Creator costs a lot. Alpha-version of creator is much cheaper"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "market.product", 
+    "fields": {
+      "category": 13, 
+      "image": "media/img/28827066b502fb5b60c6e5ab41933379.jpg", 
+      "price": 40, 
+      "name": "Lusty Girl", 
+      "description": "Seven Sins Collection"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "market.product", 
+    "fields": {
+      "category": 14, 
+      "image": "media/img/3c2f34c2fa2f703bb3d91f148a312e7a.jpg", 
+      "price": 40, 
+      "name": "Hungry Girl", 
+      "description": "Seven Sins Collection"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "market.product", 
+    "fields": {
+      "category": 15, 
+      "image": "media/img/7ee164507bfc61c8d38d4157ff5147a6.jpg", 
+      "price": 40, 
+      "name": "Golden Girl", 
+      "description": "Definitely gorgeous"
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "market.product", 
+    "fields": {
+      "category": 16, 
+      "image": "media/img/8c8bd35065921a24e2381865856b8a2e.jpg", 
+      "price": 50, 
+      "name": "Angry Girl", 
+      "description": "Seven Sins Collection"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "market.product", 
+    "fields": {
+      "category": 17, 
+      "image": "media/img/9ddc9f03ae1034dc169c8f10fefda974.jpg", 
+      "price": 60, 
+      "name": "Heretic", 
+      "description": "In safety capsule. Dangerous if outside"
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "market.product", 
+    "fields": {
+      "category": 17, 
+      "image": "media/img/3ee50a42e97ce40460d3608535b8245f.jpg", 
+      "price": 60, 
+      "name": "Heretic 2", 
+      "description": "Is sold with cucumbers"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "market.product", 
+    "fields": {
+      "category": 18, 
+      "image": "media/img/da1d24384fc42eee1168c9e48c69bcf2.jpg", 
+      "price": 55, 
+      "name": "Mad Photographer", 
+      "description": "Hunted people with a camera. Got beaten, went to Circle 7 for making girls cry."
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "market.product", 
+    "fields": {
+      "category": 2, 
+      "image": "", 
+      "price": 33, 
+      "name": "\u0423\u0433\u043e\u043b\u043e\u0432\u043d\u044b\u0439 \u043a\u043e\u0434\u0435\u043a\u0441", 
+      "description": "\u041f\u0440\u0435\u0434\u043f\u043e\u043b\u0430\u0433\u0430\u0435\u0442\u0441\u044f, \u0447\u0442\u043e \u0438\u043c\u0435\u043d\u043d\u043e \u0437\u0434\u0435\u0441\u044c \u043c\u043e\u0436\u043d\u043e \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u0442\u044c \u043d\u0430\u043a\u0430\u0437\u0430\u043d\u0438\u0435 \u0437\u0430 \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u044e \u0441\u0432\u044f\u0442\u044b\u043c\u0438. \u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0441\u0442\u043e\u0440\u043e\u043d\u0430 \u043e\u0431\u043b\u043e\u0436\u043a\u0438, \u043a\u0430\u0440\u0430\u043d\u0434\u0430\u0448."
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "market.product", 
+    "fields": {
+      "category": 2, 
+      "image": "", 
+      "price": 1, 
+      "name": "\u0414\u043d\u0435\u0432\u043d\u0438\u043a", 
+      "description": "\u0416\u0438\u0442\u0438\u0435 \u0441\u0440\u0435\u0434\u043d\u0435\u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0433\u043e \u0441\u0432\u044f\u0442\u043e\u0433\u043e. \u041a\u043e\u0433\u043e \u0438\u043c\u0435\u043d\u043d\u043e - \u0437\u0430\u0432\u0438\u0441\u0438\u0442 \u043e\u0442 \u0443\u0434\u0430\u0447\u0438"
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "market.product", 
+    "fields": {
+      "category": 2, 
+      "image": "", 
+      "price": 236, 
+      "name": "\u041f\u043e\u0440\u0442\u0440\u0435\u0442 \u0432\u0435\u0434\u044c\u043c\u044b", 
+      "description": "\u041e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d \u0432 \u043c\u043e\u043d\u0430\u0441\u0442\u044b\u0440\u0435 \u0431\u043b\u0438\u0437 \u0433\u043e\u0440\u043e\u0434\u0430 N."
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "market.product", 
+    "fields": {
+      "category": 5, 
+      "image": "", 
+      "price": 700, 
+      "name": "\u0410\u043b\u0443\u043a\u0430\u0440\u0434", 
+      "description": "\u041a\u0430\u043a \u043d\u0438 \u043a\u0440\u0443\u0442\u0438, \u0431\u0435\u0441\u0441\u043c\u0435\u0440\u0442\u0435\u043d."
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "619e8d59e2148ff73461ab88e0f9669a"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "market.basket", 
+    "fields": {
+      "user": 13, 
+      "session_id": null
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "market.basket", 
+    "fields": {
+      "user": 10, 
+      "session_id": null
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "330ac55aa141519cb68e805982589874"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "66b39f3f3b14461535f46227943b7513"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "1aceb68f09af3d2589c7c72160c6f1f5"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "05e9e3cfec8cefe735d55695159cca32"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "73fe97825882c0cd22c6fb13fcc80f06"
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "746a051390a8c2d963b04ac3cc60d3d5"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "b666f727a648477cfe63bd5afb885cff"
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4b224b3d4a4d51aa3444330148315cf8"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "15722d658c6badb7642332586cbd959c"
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4620136cf711db69ae9f81de29987c31"
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "2ec6a7c9768f448f9606c4c186b0a499"
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "282aee5c673f16ad994be2ab2e3f014b"
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "88319da484aaf2b8b1f41f28111edd55"
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4aed80c9bf29fd9d2510cac14efca087"
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "135f130cacb0130b6c383240159a2698"
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "95b5c1d0b68a114c06aa466baddf9162"
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "b5fab6d452129e49a0d938c9c7b058ab"
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "822f77d2e17d131eb1109319219d5858"
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "da14d44f2d87561376a8a92d607ff714"
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "97e5eabde9ff68d2baff6ed21b583c85"
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ad0e9dc8b42fe2e057fc866347a8d8fa"
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "9c0d2dab87797c0cc3c97a1c5781c9dc"
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c669fdaa8b515a88cc03c53923341faf"
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "367e41a76d33fad25b657c724799c329"
+    }
+  }, 
+  {
+    "pk": 28, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "8b8781c3c44ac6ac74658699993d1cdb"
+    }
+  }, 
+  {
+    "pk": 29, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "91d7a65ee88a9a44e94384d5a2d00eff"
+    }
+  }, 
+  {
+    "pk": 30, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ad8e2a952c5d0138ea677b923936962f"
+    }
+  }, 
+  {
+    "pk": 31, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "97d38e0f18df885757327f4f65317d0c"
+    }
+  }, 
+  {
+    "pk": 32, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "d747dcaf19db9fb08de8dae2e48e400b"
+    }
+  }, 
+  {
+    "pk": 33, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "fcbcb2ef3830373dae5b5e08d52aa831"
+    }
+  }, 
+  {
+    "pk": 34, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "dd5b0afb8e34dcb6c3c3f419d7d0c4c2"
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "11004909574394be7b3c65002ca3116c"
+    }
+  }, 
+  {
+    "pk": 36, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "32d5b4bd8a63ede185e6119aa9c70841"
+    }
+  }, 
+  {
+    "pk": 37, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "3ba4c52551a3077beb5c334ac52954f7"
+    }
+  }, 
+  {
+    "pk": 38, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "21ace95b7b44b8049e902aab4c5c1392"
+    }
+  }, 
+  {
+    "pk": 39, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4cb512b5cac5558fc7d2812d93b21a16"
+    }
+  }, 
+  {
+    "pk": 40, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "a68c9f8482c40234a8b230c78b859362"
+    }
+  }, 
+  {
+    "pk": 41, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "5fdc415e82d65c85c097ecdf9bd1c2dd"
+    }
+  }, 
+  {
+    "pk": 42, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c0ac8ecf4582660a4c220576373c1d12"
+    }
+  }, 
+  {
+    "pk": 43, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "cd1966fd0c3018f479d35cfecf21545f"
+    }
+  }, 
+  {
+    "pk": 44, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4457425ba405601a51a6349333ef1298"
+    }
+  }, 
+  {
+    "pk": 45, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "d471e8b10f8f5aa93bcfac9304e111d5"
+    }
+  }, 
+  {
+    "pk": 46, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c23da2e5dba603c90bfcc293c7ebe86f"
+    }
+  }, 
+  {
+    "pk": 47, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "530adeb0b76a8945663ad8ad36ccccc6"
+    }
+  }, 
+  {
+    "pk": 48, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6c922ece1e44215c329567613a786743"
+    }
+  }, 
+  {
+    "pk": 49, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "b9cdc996be199563b14d9e5fdb7a90b9"
+    }
+  }, 
+  {
+    "pk": 50, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "efaa979f4b71c29c34c0cf0e70de8232"
+    }
+  }, 
+  {
+    "pk": 51, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "61c95e012b00ef0deeb41f243c0e6a37"
+    }
+  }, 
+  {
+    "pk": 52, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e650df39564297a24bc19e228413ddbb"
+    }
+  }, 
+  {
+    "pk": 53, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "88163eabd9bc22ce9d430ac8612303dc"
+    }
+  }, 
+  {
+    "pk": 54, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "5f1b09a03714896a861c7627f2097899"
+    }
+  }, 
+  {
+    "pk": 55, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "19cd9e1228b5656ecb78ae4d53f07581"
+    }
+  }, 
+  {
+    "pk": 56, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "1fb4d0838ee49fd0d7311e67d7c3611e"
+    }
+  }, 
+  {
+    "pk": 57, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6cdec133703aa3ac338fa0eff2717899"
+    }
+  }, 
+  {
+    "pk": 58, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "7d769a263cec8e3f1470bde5ced03b13"
+    }
+  }, 
+  {
+    "pk": 59, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "112f7930dfa7a67190d8611964a98a47"
+    }
+  }, 
+  {
+    "pk": 60, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "d27e52a4ef40d6093b6bc1b21e67b218"
+    }
+  }, 
+  {
+    "pk": 61, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4fc2fb0264f744a3581343833b5a08f0"
+    }
+  }, 
+  {
+    "pk": 62, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "879cfb4d3df5561d07bbe6f72be3030b"
+    }
+  }, 
+  {
+    "pk": 63, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "af39d847e65002ad954f5f7b1406595e"
+    }
+  }, 
+  {
+    "pk": 64, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "72c2e2c49be08e538d29e414e6f1bea8"
+    }
+  }, 
+  {
+    "pk": 65, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "04fd8a84068b33bf41895fe9976b48c1"
+    }
+  }, 
+  {
+    "pk": 66, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "d2ac6409dbd2b80051349e13e228d2e7"
+    }
+  }, 
+  {
+    "pk": 67, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "45af6a480b9d84783c04201ee7e8bdb0"
+    }
+  }, 
+  {
+    "pk": 68, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "5d402cd99b95c41f981b3149da0c06b3"
+    }
+  }, 
+  {
+    "pk": 69, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "f3f2fb7102d54af5b1a2c199febdde95"
+    }
+  }, 
+  {
+    "pk": 70, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "9c3cc4d0bec1361abd03fbab4e35491a"
+    }
+  }, 
+  {
+    "pk": 71, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "2fa12f0d975097ab6369ae56bf819965"
+    }
+  }, 
+  {
+    "pk": 72, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "adc00cdbf27e18534addaad4ab84149b"
+    }
+  }, 
+  {
+    "pk": 73, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "0cbb80ae826edecd076b0ccc2fcdac44"
+    }
+  }, 
+  {
+    "pk": 74, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "9019dcc4f2fc859ee6a751ab300bb4fc"
+    }
+  }, 
+  {
+    "pk": 75, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c3af96335f78f1a7c036253dff07b76e"
+    }
+  }, 
+  {
+    "pk": 76, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "d338d1cf505d239aa72f199fbf968864"
+    }
+  }, 
+  {
+    "pk": 77, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ef4762cd0f1da456ac4195f711fc731c"
+    }
+  }, 
+  {
+    "pk": 78, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "95fd7acf1c48ec9520cca0a1d02444fe"
+    }
+  }, 
+  {
+    "pk": 79, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "35ae738e1053c7a49f1669fb0b36726e"
+    }
+  }, 
+  {
+    "pk": 80, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "7aee9fc6c429180d8bc5a09482cf6a7d"
+    }
+  }, 
+  {
+    "pk": 81, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "72a7f495f8ff5d2f0c06cec6686b5127"
+    }
+  }, 
+  {
+    "pk": 82, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "0cb3d52d86ad56b8ada8f49ef39f7e09"
+    }
+  }, 
+  {
+    "pk": 83, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "39557e9b126c51a203416161685464d5"
+    }
+  }, 
+  {
+    "pk": 84, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ad0bfca30e57e997f71aa22b92f7adbd"
+    }
+  }, 
+  {
+    "pk": 85, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "5285cf27282bdc9d49e00dd70b8b6e76"
+    }
+  }, 
+  {
+    "pk": 86, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c00afdf1c5421149ee23239f5847cbbe"
+    }
+  }, 
+  {
+    "pk": 87, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "93ba74872063ca4c78aede45a422e6dd"
+    }
+  }, 
+  {
+    "pk": 88, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "5c1272dd8c3d54b5eac092df690687c6"
+    }
+  }, 
+  {
+    "pk": 89, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "920b40522031f5247df7a6a322cc08c2"
+    }
+  }, 
+  {
+    "pk": 90, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "1cf09e8237092d4c8e2193aa73f3c534"
+    }
+  }, 
+  {
+    "pk": 91, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "67a0a231e7a59f92fab43aa9264fc5b0"
+    }
+  }, 
+  {
+    "pk": 92, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "7e895ef1b0612b4ae85cb6466697e3da"
+    }
+  }, 
+  {
+    "pk": 93, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ae5b6411b187d3f8752b25bb0e84eaff"
+    }
+  }, 
+  {
+    "pk": 94, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4ac763d489c0c1c3dcc2c259bfcdf40b"
+    }
+  }, 
+  {
+    "pk": 95, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "2015a8030c375c019bc7eddcd8b625a5"
+    }
+  }, 
+  {
+    "pk": 96, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6a336677194e49b0c394eb02c9f1c6d7"
+    }
+  }, 
+  {
+    "pk": 97, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e7e3378e2381a22aae40f93d2b24846b"
+    }
+  }, 
+  {
+    "pk": 98, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c1e839c25716d3e819f49f6d848a019f"
+    }
+  }, 
+  {
+    "pk": 99, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "93e6101bb1a0343e32ce558f8f4171ed"
+    }
+  }, 
+  {
+    "pk": 100, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "8d77ba4c943692d336d871878a2fea6d"
+    }
+  }, 
+  {
+    "pk": 101, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ccba81614603a5671cbf6619dd33079a"
+    }
+  }, 
+  {
+    "pk": 102, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "44071ca4d0f62c53a2f3ace21f85b712"
+    }
+  }, 
+  {
+    "pk": 103, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "942995789f76326560f8a680ff19a341"
+    }
+  }, 
+  {
+    "pk": 104, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4a00cca45061555228b5b36d57fb61b2"
+    }
+  }, 
+  {
+    "pk": 105, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "668ffd23fc60cf9455c6925eecb6cee5"
+    }
+  }, 
+  {
+    "pk": 106, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "5a7a0e64b57101e53c9048fee04c451c"
+    }
+  }, 
+  {
+    "pk": 107, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ec80a0415d42a571b328129525151874"
+    }
+  }, 
+  {
+    "pk": 108, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "a4b8d905d462f2377e3f0c4491694180"
+    }
+  }, 
+  {
+    "pk": 109, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "39534d1e8b69113101ea2700f40f42bb"
+    }
+  }, 
+  {
+    "pk": 110, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "adbedf3a51e79875ad62931950344694"
+    }
+  }, 
+  {
+    "pk": 111, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "98c72248bed244963933a7181174fb2c"
+    }
+  }, 
+  {
+    "pk": 112, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "016b925e4711b1df281ca7ceddd205f8"
+    }
+  }, 
+  {
+    "pk": 113, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "342b1c626565a45724a4b220a9afd308"
+    }
+  }, 
+  {
+    "pk": 114, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4f18443f216d3bd9fa1190659a0ae303"
+    }
+  }, 
+  {
+    "pk": 115, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e384a03f3e79d7764845cd9aafcb59c5"
+    }
+  }, 
+  {
+    "pk": 116, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "3eb7aac8a47e294c660778e32c6ffbbe"
+    }
+  }, 
+  {
+    "pk": 117, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "449cf285a4c85ec67f0ceec2220ba3bd"
+    }
+  }, 
+  {
+    "pk": 118, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "33de80daff0852d19b58077af71db7a9"
+    }
+  }, 
+  {
+    "pk": 119, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "9f6908216ef33fcba50698a8d3b4be4f"
+    }
+  }, 
+  {
+    "pk": 120, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "59e397e74898337407f628f30a68264f"
+    }
+  }, 
+  {
+    "pk": 121, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "43defdde4abfb5649b229f8f1646e9c1"
+    }
+  }, 
+  {
+    "pk": 122, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e24187d75187dcbb10f6aa95ae44f808"
+    }
+  }, 
+  {
+    "pk": 123, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ef6eaf283f591f77e900684ac72665aa"
+    }
+  }, 
+  {
+    "pk": 124, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "16394b26163da47183b9bececdcbae85"
+    }
+  }, 
+  {
+    "pk": 125, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "1a1b68d7687c4048d7f8d16a9ac9d58c"
+    }
+  }, 
+  {
+    "pk": 126, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ef385798290f44608db09b2e046f4951"
+    }
+  }, 
+  {
+    "pk": 127, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "575416c11179999e918f321eee6e49d9"
+    }
+  }, 
+  {
+    "pk": 128, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6c58d1cb2cc223b3c52e7123320f027e"
+    }
+  }, 
+  {
+    "pk": 129, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ac668b49c371e4f04fbd08cd14b04e94"
+    }
+  }, 
+  {
+    "pk": 130, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "0eb2c4dac1b8693dcf4db35048f46484"
+    }
+  }, 
+  {
+    "pk": 131, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "91838a519ad87bc7b339034b701fe690"
+    }
+  }, 
+  {
+    "pk": 132, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "9757301adf9a12870ffefbe1af206be1"
+    }
+  }, 
+  {
+    "pk": 133, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "a540db3b0ee01f6ab66832e3aad518e7"
+    }
+  }, 
+  {
+    "pk": 134, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "7118198370606fd12f840cb7b5cc9906"
+    }
+  }, 
+  {
+    "pk": 135, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "34c1e40797b3cfb72b030151d9a4ff2d"
+    }
+  }, 
+  {
+    "pk": 136, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6678f87df69ad8f3338106cd507070b2"
+    }
+  }, 
+  {
+    "pk": 137, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "eb49ab33aca8f4fa065a2b690bcbedb3"
+    }
+  }, 
+  {
+    "pk": 138, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ecec405f3e96922e4dda719e3b9635d9"
+    }
+  }, 
+  {
+    "pk": 139, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "557222a679a757b1bf1f2d9a37d693cf"
+    }
+  }, 
+  {
+    "pk": 140, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "1917558515026d1b6b6b3980cd7c53b0"
+    }
+  }, 
+  {
+    "pk": 141, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "8e5034a4bfc551cfef5b4561f5ea865b"
+    }
+  }, 
+  {
+    "pk": 142, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "abb7ba31a8433f9fa4b64fed937dbfee"
+    }
+  }, 
+  {
+    "pk": 143, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "fb328b4341809ea19e99bb90563671fd"
+    }
+  }, 
+  {
+    "pk": 144, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "d74c412e4524f3f9c8dcbfbe1f9f276b"
+    }
+  }, 
+  {
+    "pk": 145, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "9cf7b8c11d260f7ae4c8864d9c8081a6"
+    }
+  }, 
+  {
+    "pk": 146, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c819d0705436edd83c3b427231baf65d"
+    }
+  }, 
+  {
+    "pk": 147, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "7a8783cf05b8baeb5966852e2e908d15"
+    }
+  }, 
+  {
+    "pk": 148, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4627e07d777ad24004b7e88e785f4600"
+    }
+  }, 
+  {
+    "pk": 149, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "a3b5ba83180e2e4502cb934cf2d05b3a"
+    }
+  }, 
+  {
+    "pk": 150, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "0831bd781621c79f974b8dad78e1e7ed"
+    }
+  }, 
+  {
+    "pk": 151, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "0a6bbf774eb6cc0d836fa550380b12fc"
+    }
+  }, 
+  {
+    "pk": 152, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c431654537abf05d8ebc2cdd0b903e80"
+    }
+  }, 
+  {
+    "pk": 153, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "52bd3eb309e4d4327de2c6fb6ddbcb81"
+    }
+  }, 
+  {
+    "pk": 154, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "913284fa79bca87cd796ebf44f811b24"
+    }
+  }, 
+  {
+    "pk": 155, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "a0c6c9ccc16edcf814a8595910eb48da"
+    }
+  }, 
+  {
+    "pk": 156, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4f23cc9573199a661a84aa0753eb99f1"
+    }
+  }, 
+  {
+    "pk": 157, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "7fa20733b66d38ea724661e1df0a38a2"
+    }
+  }, 
+  {
+    "pk": 158, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "0a431131db1fa99b951f33d794209643"
+    }
+  }, 
+  {
+    "pk": 159, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "642310c1334c962040e92dd1580e289b"
+    }
+  }, 
+  {
+    "pk": 160, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c8cd682eade22580028d10e55ad36b09"
+    }
+  }, 
+  {
+    "pk": 161, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "eeebc0dc305aa491c169fe38506e0ee4"
+    }
+  }, 
+  {
+    "pk": 162, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "d4cb74d2be9a05ee08e9c6c794dd6935"
+    }
+  }, 
+  {
+    "pk": 163, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "87dee2d02aa53551c2ba9f4513138c96"
+    }
+  }, 
+  {
+    "pk": 164, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6fda4c2ed3e968241d470428b97401f4"
+    }
+  }, 
+  {
+    "pk": 165, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "a2c428ba30651050a25f9f99b7613c01"
+    }
+  }, 
+  {
+    "pk": 166, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c1323bd30de88dba5edf165d6c229f78"
+    }
+  }, 
+  {
+    "pk": 167, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "bc7d501bdfabf9350a1abbcd211cda02"
+    }
+  }, 
+  {
+    "pk": 168, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "b47a12c4677aac2323a73dcc85507ee1"
+    }
+  }, 
+  {
+    "pk": 169, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "2ed5e53b2f4e3a09d44a271e0a5e29d0"
+    }
+  }, 
+  {
+    "pk": 170, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "19071f928735e0fac2094bef55f97554"
+    }
+  }, 
+  {
+    "pk": 171, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "7b1a47ee9973dbc31a4740795101282a"
+    }
+  }, 
+  {
+    "pk": 172, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "fadf84f2e04971dcc4539fa294411137"
+    }
+  }, 
+  {
+    "pk": 173, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "63aded9cf98b07f30d2094816752bd75"
+    }
+  }, 
+  {
+    "pk": 174, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e1209997d69744976e6fa4b8c7a77141"
+    }
+  }, 
+  {
+    "pk": 175, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "cdfe462fcb5bd5306906b2c5f95fc6c7"
+    }
+  }, 
+  {
+    "pk": 176, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ef089008dad99e0a6c6cf8a26cd1d4ca"
+    }
+  }, 
+  {
+    "pk": 177, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "bf8833c3b054b66a456ebbd83e954a18"
+    }
+  }, 
+  {
+    "pk": 178, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "2f11bc491cb1573dbc3082d09a6a1f9d"
+    }
+  }, 
+  {
+    "pk": 179, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "f73df8b26fc15486902ae46653b60a25"
+    }
+  }, 
+  {
+    "pk": 180, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "52e793195127bbf35427ddb5b4485ded"
+    }
+  }, 
+  {
+    "pk": 181, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ec225c669207fd6ef69767d2b321bc8a"
+    }
+  }, 
+  {
+    "pk": 182, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "be0b2f2eea002c77514649f13dd76a26"
+    }
+  }, 
+  {
+    "pk": 183, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "dada71636acd0d1b0b23b5e9289704ca"
+    }
+  }, 
+  {
+    "pk": 184, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ae36d1788405976ab2cb6e07d756ab7e"
+    }
+  }, 
+  {
+    "pk": 185, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "734b0638b9439dd960cd6b8be96a8939"
+    }
+  }, 
+  {
+    "pk": 186, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "2f8016accd2282d55738c6b5888f6cb9"
+    }
+  }, 
+  {
+    "pk": 187, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "3afd1dae51ff2c506d96395306fbeee2"
+    }
+  }, 
+  {
+    "pk": 188, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "22313523aeeaebaefdc0a948a7d9f20c"
+    }
+  }, 
+  {
+    "pk": 189, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6fde7795be21bc88942676a4155bfccf"
+    }
+  }, 
+  {
+    "pk": 190, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "cd954b2affd6e837c9da64987631fc4f"
+    }
+  }, 
+  {
+    "pk": 191, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "224ff822c85125a714b490f92d33b6f4"
+    }
+  }, 
+  {
+    "pk": 192, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "f7edc033f617f4ad46aef5019583ee3a"
+    }
+  }, 
+  {
+    "pk": 193, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "44dbbc926dfef701f87878c81d7cc72f"
+    }
+  }, 
+  {
+    "pk": 194, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "5717d97cc2085627a2e4827c771c72ba"
+    }
+  }, 
+  {
+    "pk": 195, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "665ee9b0d5990451a31193af835da4e1"
+    }
+  }, 
+  {
+    "pk": 196, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "929a95d16f2b22292cac0bb94225485a"
+    }
+  }, 
+  {
+    "pk": 197, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ea0abe4d5b94fe305e6f336c26e2e0bf"
+    }
+  }, 
+  {
+    "pk": 198, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "c3635a0fe6edf6f4498883736cb42c75"
+    }
+  }, 
+  {
+    "pk": 199, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "249e0b0268e008f3cc525945f5f7b375"
+    }
+  }, 
+  {
+    "pk": 200, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "7b9ce8a4751d36e77be2c61379643746"
+    }
+  }, 
+  {
+    "pk": 201, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "b4601d7eb3b924276ed380280532ec0b"
+    }
+  }, 
+  {
+    "pk": 202, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "07768fe4b6554e81e783c05ab0ad2018"
+    }
+  }, 
+  {
+    "pk": 203, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "80a5c86c8801cc6a5633e09191210fac"
+    }
+  }, 
+  {
+    "pk": 204, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "efff396e53c761b8d2d1d4e0d271964a"
+    }
+  }, 
+  {
+    "pk": 205, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "03649280f1257068258ddaab10f5e7a8"
+    }
+  }, 
+  {
+    "pk": 206, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "5ff00a5357a72672f6b5617d7d337210"
+    }
+  }, 
+  {
+    "pk": 207, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "8af4c0c5c9e4f5acf76b6315ece9bec6"
+    }
+  }, 
+  {
+    "pk": 208, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "2196625339ac308b2dcbdd3c57510c92"
+    }
+  }, 
+  {
+    "pk": 209, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "bca47478f75601311bab357749b12b82"
+    }
+  }, 
+  {
+    "pk": 210, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "dac7c3cc704d4a7e7036ae8542d4c003"
+    }
+  }, 
+  {
+    "pk": 211, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "efcaee5cc8854dc1ebc0a7c5464449c8"
+    }
+  }, 
+  {
+    "pk": 212, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ac6842c4b552d17bd0e97ef215cc7f2d"
+    }
+  }, 
+  {
+    "pk": 213, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "8becc026a0f4055278cd078fe639f678"
+    }
+  }, 
+  {
+    "pk": 214, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "1211800596c81cff10f2a5b91e6b82e0"
+    }
+  }, 
+  {
+    "pk": 215, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "af0bbfbe4fbb580f45a7d73d410f9b61"
+    }
+  }, 
+  {
+    "pk": 216, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "96d24d774e5460017c6ebcd3ba568102"
+    }
+  }, 
+  {
+    "pk": 217, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4a07d83eea1070d388384b00275a069d"
+    }
+  }, 
+  {
+    "pk": 218, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6b7ef5bf96a4214cb640c90685775caf"
+    }
+  }, 
+  {
+    "pk": 219, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "aebc37ca0c8882d34467ed4c2dca817a"
+    }
+  }, 
+  {
+    "pk": 220, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "38e069321b3ab13553c611bcfc32a594"
+    }
+  }, 
+  {
+    "pk": 221, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "3ecdcf6d3ce63e934cdc5eab3f857f95"
+    }
+  }, 
+  {
+    "pk": 222, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "d9f3cdd73c4a59b926632445dce2912f"
+    }
+  }, 
+  {
+    "pk": 223, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "8046bcbc5486c2b57ec0dbf56448781b"
+    }
+  }, 
+  {
+    "pk": 224, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e19b3283e0dc127a9620e749ea183af3"
+    }
+  }, 
+  {
+    "pk": 225, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "d5bdd0d6d0dcafbe2a2bbf21742dff4d"
+    }
+  }, 
+  {
+    "pk": 226, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "4081478bcde6356469c152c59603f637"
+    }
+  }, 
+  {
+    "pk": 227, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "80534b963d742b98b2d9f795ef8efe1b"
+    }
+  }, 
+  {
+    "pk": 228, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "15246b4ef2bb0d10d60bb522692a44fa"
+    }
+  }, 
+  {
+    "pk": 229, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "0b49ccc75f005beede80f0b54215844f"
+    }
+  }, 
+  {
+    "pk": 230, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "dc5065a328ce01a52789e15b68fc0275"
+    }
+  }, 
+  {
+    "pk": 231, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "1e5a39ad674dd3843730c1533cfcdcce"
+    }
+  }, 
+  {
+    "pk": 232, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "24dfce0779e540698e7a161618809726"
+    }
+  }, 
+  {
+    "pk": 233, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "b2fa8d71af234d0588f7bb16e52272f0"
+    }
+  }, 
+  {
+    "pk": 234, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e57aae92a3f73afa2edfb8a5cd11bdd9"
+    }
+  }, 
+  {
+    "pk": 235, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e877f151db5375ec34882b1b6ff93822"
+    }
+  }, 
+  {
+    "pk": 236, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "78ae98069d4a6d871b4b295e96d31540"
+    }
+  }, 
+  {
+    "pk": 237, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "9d3496e4d5ce651a31fb1888d080925e"
+    }
+  }, 
+  {
+    "pk": 238, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e5a27e7c007f96f6876b33a0493bb0a0"
+    }
+  }, 
+  {
+    "pk": 239, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "3dc18ad30927581da4e9f4421c346d2f"
+    }
+  }, 
+  {
+    "pk": 240, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "7e7e50b2a2c0ad189dda629fdeeec92d"
+    }
+  }, 
+  {
+    "pk": 241, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "91f2b49135d31ede7ecb18d94f62e275"
+    }
+  }, 
+  {
+    "pk": 242, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "a0746f1f91f1e0c8da2fa9aff7c41cd7"
+    }
+  }, 
+  {
+    "pk": 243, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "e7d09bf719a55e3321a515bc317c75a8"
+    }
+  }, 
+  {
+    "pk": 244, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "90ffd3be391a461fa602bc4af254ba99"
+    }
+  }, 
+  {
+    "pk": 245, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "aef310b920ca1627fdcab0743af66c89"
+    }
+  }, 
+  {
+    "pk": 246, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "98519ba2211ad19993d9b88b464ffdbd"
+    }
+  }, 
+  {
+    "pk": 247, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "21f5836940a073ee29006a6173f7decd"
+    }
+  }, 
+  {
+    "pk": 248, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "15f6211d77f1184b39f77a1b21c9ed2d"
+    }
+  }, 
+  {
+    "pk": 249, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "f9ea2d5c2d1019fad4fb284d0ce6d648"
+    }
+  }, 
+  {
+    "pk": 250, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6cad1d445481069901e9c7c1fa2e48ce"
+    }
+  }, 
+  {
+    "pk": 251, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "dd8d9f3021186b59ac2664b9f0f4b9dd"
+    }
+  }, 
+  {
+    "pk": 252, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "949e5f94c9b45e2f96a626e730a4b5c9"
+    }
+  }, 
+  {
+    "pk": 253, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "bd999b9f506d80182faa8f99f57a9d96"
+    }
+  }, 
+  {
+    "pk": 254, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "68895078bbb8a4cd4be0516572477575"
+    }
+  }, 
+  {
+    "pk": 255, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "134b73b4bfe74cfd966e8bd3f6b36ca1"
+    }
+  }, 
+  {
+    "pk": 256, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "ee737f50af1abaa9f4b7eda7eaa9d3f4"
+    }
+  }, 
+  {
+    "pk": 257, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "71b77793f94236ea87ca6c3f2df059a9"
+    }
+  }, 
+  {
+    "pk": 258, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "111bb982c0c29148f687af43ef6cafed"
+    }
+  }, 
+  {
+    "pk": 259, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "3deeffc09d4a0e5d4d7c1b8e30904a6b"
+    }
+  }, 
+  {
+    "pk": 260, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "be429f8ef95916f2787a923e4ebac3f1"
+    }
+  }, 
+  {
+    "pk": 261, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "3d76659ca5f3688e5ec123db6c5c97cb"
+    }
+  }, 
+  {
+    "pk": 262, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "6a1dfda1205f8d6cf70c29d8c69af727"
+    }
+  }, 
+  {
+    "pk": 263, 
+    "model": "market.basket", 
+    "fields": {
+      "user": null, 
+      "session_id": "84db8a2921d3d1320c633ca21ec658a0"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "market.purchased", 
+    "fields": {
+      "basket": 2, 
+      "date": "2011-05-12", 
+      "is_sent": true, 
+      "product": 14, 
+      "quantity": 4
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "market.purchased", 
+    "fields": {
+      "basket": 2, 
+      "date": "2011-05-12", 
+      "is_sent": true, 
+      "product": 15, 
+      "quantity": 3
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "market.purchased", 
+    "fields": {
+      "basket": 2, 
+      "date": "2011-05-12", 
+      "is_sent": true, 
+      "product": 13, 
+      "quantity": 1
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "market.purchased", 
+    "fields": {
+      "basket": 4, 
+      "date": "2011-05-12", 
+      "is_sent": true, 
+      "product": 5, 
+      "quantity": 11
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "market.purchased", 
+    "fields": {
+      "basket": 4, 
+      "date": "2011-05-12", 
+      "is_sent": false, 
+      "product": 16, 
+      "quantity": 1
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "market.purchased", 
+    "fields": {
+      "basket": 2, 
+      "date": "2011-05-15", 
+      "is_sent": false, 
+      "product": 14, 
+      "quantity": 6
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "market.purchased", 
+    "fields": {
+      "basket": 2, 
+      "date": "2011-05-17", 
+      "is_sent": false, 
+      "product": 8, 
+      "quantity": 1
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "market.address", 
+    "fields": {
+      "city": "\u0412\u043b\u0430\u0434\u0438\u0432\u043e\u0441\u0442\u043e\u043a", 
+      "street": "\u0410\u0432\u0440\u0430\u043c\u0435\u043d\u043a\u043e", 
+      "user": null, 
+      "session_id": null, 
+      "house": 17
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "market.address", 
+    "fields": {
+      "city": "\u0412\u043b\u0430\u0434\u0438\u0432\u043e\u0441\u0442\u043e\u043a", 
+      "street": "\u041e\u043a\u0442\u044f\u0431\u0440\u044c\u0441\u043a\u0430\u044f", 
+      "user": null, 
+      "session_id": null, 
+      "house": 25
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "market.address", 
+    "fields": {
+      "city": "\u0412\u043b\u0430\u0434\u0438\u0432\u043e\u0441\u0442\u043e\u043a", 
+      "street": "\u0421\u0443\u0445\u0430\u043d\u043e\u0432\u0430", 
+      "user": null, 
+      "session_id": null, 
+      "house": 18
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "market.address", 
+    "fields": {
+      "city": "\u041c\u043e\u0441\u043a\u0432\u0430", 
+      "street": "\u041b\u0435\u043d\u0438\u043d\u0430", 
+      "user": 13, 
+      "session_id": null, 
+      "house": 5
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "market.address", 
+    "fields": {
+      "city": "\u0422\u0440\u0443\u0434\u043e\u0432\u043e\u0435", 
+      "street": "\u0413\u0440\u0438\u0431\u043e\u0435\u0434\u043e\u0432\u0430", 
+      "user": null, 
+      "session_id": null, 
+      "house": 37
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "market.address", 
+    "fields": {
+      "city": "\u0421\u0430\u043d\u043a\u0442-\u041f\u0435\u0442\u0435\u0440\u0431\u0443\u0440\u0433", 
+      "street": "\u041d\u0435\u0432\u0441\u043a\u0438\u0439", 
+      "user": null, 
+      "session_id": null, 
+      "house": 44
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "market.comment", 
+    "fields": {
+      "comment": "Helloworld 1", 
+      "rating": 31, 
+      "product": 13, 
+      "depth": 0, 
+      "user": 13, 
+      "date": "2011-06-24", 
+      "path": ""
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "market.comment", 
+    "fields": {
+      "comment": "hello 1.1", 
+      "rating": 0, 
+      "product": 13, 
+      "depth": 1, 
+      "user": 13, 
+      "date": "2011-06-24", 
+      "path": ".1"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "market.comment", 
+    "fields": {
+      "comment": "6", 
+      "rating": 0, 
+      "product": 13, 
+      "depth": 2, 
+      "user": 13, 
+      "date": "2011-06-24", 
+      "path": ".1.2"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "market.comment", 
+    "fields": {
+      "comment": "8", 
+      "rating": 0, 
+      "product": 13, 
+      "depth": 3, 
+      "user": 13, 
+      "date": "2011-06-24", 
+      "path": ".1.2.7"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "market.comment", 
+    "fields": {
+      "comment": "10", 
+      "rating": 1, 
+      "product": 13, 
+      "depth": 0, 
+      "user": 13, 
+      "date": "2011-06-24", 
+      "path": ""
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "market.comment", 
+    "fields": {
+      "comment": "11", 
+      "rating": 0, 
+      "product": 13, 
+      "depth": 0, 
+      "user": 13, 
+      "date": "2011-06-24", 
+      "path": ""
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_group", 
+      "name": "Can add group", 
+      "content_type": 2
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_group", 
+      "name": "Can change group", 
+      "content_type": 2
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_group", 
+      "name": "Can delete group", 
+      "content_type": 2
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_message", 
+      "name": "Can add message", 
+      "content_type": 4
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_message", 
+      "name": "Can change message", 
+      "content_type": 4
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_message", 
+      "name": "Can delete message", 
+      "content_type": 4
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_permission", 
+      "name": "Can add permission", 
+      "content_type": 1
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_permission", 
+      "name": "Can change permission", 
+      "content_type": 1
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_permission", 
+      "name": "Can delete permission", 
+      "content_type": 1
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_user", 
+      "name": "Can add user", 
+      "content_type": 3
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_user", 
+      "name": "Can change user", 
+      "content_type": 3
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_user", 
+      "name": "Can delete user", 
+      "content_type": 3
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_contenttype", 
+      "name": "Can add content type", 
+      "content_type": 5
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_contenttype", 
+      "name": "Can change content type", 
+      "content_type": 5
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_contenttype", 
+      "name": "Can delete content type", 
+      "content_type": 5
+    }
+  }, 
+  {
+    "pk": 37, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_address", 
+      "name": "Can add address", 
+      "content_type": 13
+    }
+  }, 
+  {
+    "pk": 38, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_address", 
+      "name": "Can change address", 
+      "content_type": 13
+    }
+  }, 
+  {
+    "pk": 39, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_address", 
+      "name": "Can delete address", 
+      "content_type": 13
+    }
+  }, 
+  {
+    "pk": 31, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_basket", 
+      "name": "Can add basket", 
+      "content_type": 11
+    }
+  }, 
+  {
+    "pk": 32, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_basket", 
+      "name": "Can change basket", 
+      "content_type": 11
+    }
+  }, 
+  {
+    "pk": 33, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_basket", 
+      "name": "Can delete basket", 
+      "content_type": 11
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_category", 
+      "name": "Can add category", 
+      "content_type": 9
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_category", 
+      "name": "Can change category", 
+      "content_type": 9
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_category", 
+      "name": "Can delete category", 
+      "content_type": 9
+    }
+  }, 
+  {
+    "pk": 40, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_comment", 
+      "name": "Can add comment", 
+      "content_type": 14
+    }
+  }, 
+  {
+    "pk": 41, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_comment", 
+      "name": "Can change comment", 
+      "content_type": 14
+    }
+  }, 
+  {
+    "pk": 42, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_comment", 
+      "name": "Can delete comment", 
+      "content_type": 14
+    }
+  }, 
+  {
+    "pk": 46, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_mark", 
+      "name": "Can add mark", 
+      "content_type": 16
+    }
+  }, 
+  {
+    "pk": 47, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_mark", 
+      "name": "Can change mark", 
+      "content_type": 16
+    }
+  }, 
+  {
+    "pk": 48, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_mark", 
+      "name": "Can delete mark", 
+      "content_type": 16
+    }
+  }, 
+  {
+    "pk": 28, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_product", 
+      "name": "Can add product", 
+      "content_type": 10
+    }
+  }, 
+  {
+    "pk": 29, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_product", 
+      "name": "Can change product", 
+      "content_type": 10
+    }
+  }, 
+  {
+    "pk": 30, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_product", 
+      "name": "Can delete product", 
+      "content_type": 10
+    }
+  }, 
+  {
+    "pk": 34, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_purchased", 
+      "name": "Can add purchased", 
+      "content_type": 12
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_purchased", 
+      "name": "Can change purchased", 
+      "content_type": 12
+    }
+  }, 
+  {
+    "pk": 36, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_purchased", 
+      "name": "Can delete purchased", 
+      "content_type": 12
+    }
+  }, 
+  {
+    "pk": 49, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_report", 
+      "name": "Can add report", 
+      "content_type": 17
+    }
+  }, 
+  {
+    "pk": 50, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_report", 
+      "name": "Can change report", 
+      "content_type": 17
+    }
+  }, 
+  {
+    "pk": 51, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_report", 
+      "name": "Can delete report", 
+      "content_type": 17
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_user", 
+      "name": "Can add user", 
+      "content_type": 8
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_user", 
+      "name": "Can change user", 
+      "content_type": 8
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_user", 
+      "name": "Can delete user", 
+      "content_type": 8
+    }
+  }, 
+  {
+    "pk": 52, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_vote", 
+      "name": "Can add vote", 
+      "content_type": 18
+    }
+  }, 
+  {
+    "pk": 53, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_vote", 
+      "name": "Can change vote", 
+      "content_type": 18
+    }
+  }, 
+  {
+    "pk": 54, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_vote", 
+      "name": "Can delete vote", 
+      "content_type": 18
+    }
+  }, 
+  {
+    "pk": 43, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_event", 
+      "name": "Can add event", 
+      "content_type": 15
+    }
+  }, 
+  {
+    "pk": 44, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_event", 
+      "name": "Can change event", 
+      "content_type": 15
+    }
+  }, 
+  {
+    "pk": 45, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_event", 
+      "name": "Can delete event", 
+      "content_type": 15
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_session", 
+      "name": "Can add session", 
+      "content_type": 6
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_session", 
+      "name": "Can change session", 
+      "content_type": 6
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_session", 
+      "name": "Can delete session", 
+      "content_type": 6
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "add_site", 
+      "name": "Can add site", 
+      "content_type": 7
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "change_site", 
+      "name": "Can change site", 
+      "content_type": 7
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "auth.permission", 
+    "fields": {
+      "codename": "delete_site", 
+      "name": "Can delete site", 
+      "content_type": 7
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "admin", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": true, 
+      "is_staff": true, 
+      "last_login": "2011-03-07 01:08:29", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$10baf$f18813373bbfcac345463c6e8fc37d1294c77a43", 
+      "email": "luchiella@yandex.ru", 
+      "date_joined": "2011-03-07 01:08:29"
+    }
+  }
+]

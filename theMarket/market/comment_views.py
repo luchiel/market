@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.template.loader import get_template
-from market.models import Product, Comment
+from market.models import Product, Comment, Vote, User
 from market.forms import CommentForm
 from market.shortcuts import direct_to_template
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -92,7 +92,20 @@ def delete_comment(request, comment_id):
 def add_vote(request, comment_id):
     comment = Comment.objects.get(id=comment_id)
     if not request.user or (comment.user and request.user == comment.user):
-        return HttpResponse(json.dumps(comment.rating), mimetype='application/json')
+        return HttpResponse(json.dumps({'result': '', 'rating': comment.rating}), mimetype='application/json')
+    if not request.user.can_vote_today():
+        return HttpResponse(
+            json.dumps({'result': 'Vote limit for today exceeded', 'rating': comment.rating}),
+            mimetype='application/json'
+        )
     comment.rating = comment.rating + int(request.POST['vote'])
     comment.save()
-    return HttpResponse(json.dumps(comment.rating), mimetype='application/json')
+    vote = Vote(user=request.user, comment=comment)
+    vote.save()
+    return HttpResponse(
+        json.dumps({
+            'result': 'ok',
+            'votes_ok': request.user.can_vote_today(),
+            'rating': comment.rating
+        }), mimetype='application/json'
+    )

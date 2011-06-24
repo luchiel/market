@@ -17,6 +17,12 @@ class User(models.Model):
         return sha1(self.salt + password).hexdigest()
     def get_address(self):
         return Address.objects.get(user=self)
+    COMMENTS_PER_DAY = 3
+    def get_user_vote_count_today(self):
+        return self.votes.filter(date=datetime.today()).aggregate(Count('id'))
+    def can_vote_today(self):
+        return self.get_user_vote_count_today()['id__count'] < User.COMMENTS_PER_DAY
+
 
 class Category(models.Model):
     depth = models.IntegerField()
@@ -152,3 +158,9 @@ class Mark(models.Model):
 
 class Report(models.Model):
     is_completed = models.BooleanField(default=False)
+
+
+class Vote(models.Model):
+    comment = models.ForeignKey(Comment, related_name='votes')
+    user    = models.ForeignKey(User, related_name='votes')
+    date    = models.DateField(auto_now_add=True)

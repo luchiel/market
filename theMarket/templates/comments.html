@@ -16,7 +16,7 @@
     <div id="0_subtree">
         <form id="comment_form" method="POST">
         {% csrf_token %}
-            <input type="hidden" value="1" name="vote" />
+            <input id="vote_input" type="hidden" value="1" name="vote" />
         </form>
     </div>
     <input id="add_root_comment" type="submit" onclick="addResponse({{ product.id }}, 0)" value="Add comment" />
