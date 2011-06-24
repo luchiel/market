@@ -13,35 +13,39 @@ def mark_details(request, product_id):
 
 
 def comments(request, product_id):
-    product = Product.objects.get(id=product_id)
-    paginator = Paginator(product.get_comments(), 5)
-    page = request.GET.get('page')
-    if not page:
-        page = 1
-    try:
-        comments = paginator.page(page)
-    except PageNotAnInteger:
-        comments = paginator.page(1)
-    except EmptyPage:
-        comments = paginator.page(paginator.num_pages)
     return direct_to_template(
         request, 'comments.html', {
-            'product': product,
-            'comments': comments,
+            'product': Product.objects.get(id=product_id),
             'form': CommentForm(),
         }
     )
 
 
+def get_comments(request, product_id):
+    product = Product.objects.get(id=product_id)
+    comments = product.get_comments()
+    comment_list = [{
+        'id': comment.id,
+        'parent': comment.get_parent_id(),
+        'block': direct_to_template(
+            request, 'single_comment.html',
+            { 'comment': comment, 'product': product }
+        ).content
+    } for comment in comments]
+    return HttpResponse(
+        json.dumps({'comment_list': comment_list}), mimetype='application/json'
+    )
+
+
 def add_comment_field(request, product_id, comment_id):
-    form = CommentForm()#data=({ 'response_to': int(comment_id) }))
+    form = CommentForm()
     comment_depth = -1 if comment_id == '0' else Comment.objects.get(id=comment_id).depth
     product = Product.objects.get(id=product_id)
-    page = get_template('single_comment_field.html')
+    new_comment = get_template('single_comment_field.html')
     context = RequestContext(request, { 'form': form, 'product': product })
     return HttpResponse(
         json.dumps({
-            'form': page.render(context), 'depth': comment_depth + 1
+            'form': new_comment.render(context), 'depth': comment_depth + 1
         }), mimetype='application/json'
     )
 
@@ -63,7 +67,6 @@ def add_comment(request, product_id):
         return HttpResponse(
             json.dumps({
                 'result': 'error',
-                'mark_error': form.errors.get('mark'),
                 'comment_error': form.errors.get('comment'),
             }), mimetype='application/json'
         )
@@ -81,6 +84,7 @@ def delete_comment(request, comment_id):
     comment = Comment.objects.get(id=comment_id)
     if not request.user or (not request.user.is_admin and (comment.user and request.user != comment.user)):
         return HttpResponse(json.dumps({ 'result': 'error' }), mimetype='application/json')
+    comment.get_responds().delete()
     comment.delete()
     return HttpResponse(json.dumps({ 'result': 'ok' }), mimetype='application/json')
 

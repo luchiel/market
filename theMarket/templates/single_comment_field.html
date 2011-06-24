@@ -1,3 +1,5 @@
+<form id="new_comment">
+{% csrf_token %}
 <table id="new_comment_table" class="comment_table">
     {% if not request.user %}
     <tr>
@@ -8,18 +10,11 @@
         </td>
     </tr>
     {% endif %}
-    <form id="new_comment">
-    {% csrf_token %}
-
     <tr>
-        <td class="mark_single mark_rate">
-            <div id="mark_errors"></div>
-            {{ form.mark }}
-        </td>
-        <td rowspan="2">
+        <td>
             <div id="comment_errors"></div>
             {{ form.comment }}
-            <input id="response_to_id" hidden="hidden" value="" name="response_to_id" />
+            <input id="response_to_id" type="hidden" value="" name="response_to_id" />
         </td>
     </tr>
     <tr>
@@ -27,6 +22,5 @@
             <input type="submit" onclick="return addComment({{ product.id }});" value="Add" />
         </td>
     </tr>
-    </form>
-
 </table>
+</form>

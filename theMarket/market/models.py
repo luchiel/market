@@ -65,19 +65,22 @@ class Product(models.Model):
 
     def get_product_marks(self):
         #return Comment.objects.filter(product=self).values('mark').annotate(mark_count=Count('id'), rating_sum=Sum('rating')).order_by('-mark')
-        return Comment.objects.raw(
-            'SELECT id, mark, SUM(rating) + COUNT(ID) AS total from market_comment GROUP BY mark HAVING product_id = %s', [self.id]
-        )
+        #return Comment.objects.raw(
+        #    'SELECT id, mark, SUM(rating) + COUNT(ID) AS total from market_comment GROUP BY mark HAVING product_id = %s', [self.id]
+        #)
+        return Mark.objects.filter(product=self).values('mark').annotate(total=Count('id')).order_by('-total')
 
     def get_product_mark_by_most_users(self):
-        marks = Comment.objects.raw(
-            'SELECT id, mark, SUM(rating) + COUNT(ID) AS total from market_comment GROUP BY mark HAVING product_id = %s ORDER BY total DESC',
-            [self.id]
-        )
-        return marks[0].mark if len(list(marks)) else 0
+        #marks = Comment.objects.raw(
+        #    'SELECT id, mark, SUM(rating) + COUNT(ID) AS total from market_comment GROUP BY mark HAVING product_id = %s ORDER BY total DESC',
+        #    [self.id]
+        #)
+        #return marks[0].mark if len(list(marks)) else 0
+        m = Mark.objects.filter(product=self).values('mark').annotate(total=Count('id')).order_by('-total')
+        return 0 if not m else m[0].mark
 
     def get_comments(self):
-        return Comment.objects.filter(product=self).order_by('date')
+        return Comment.objects.filter(product=self).order_by('path', 'date')
 
     def get_comment_count(self):
         return self.get_comments().count()
@@ -93,7 +96,7 @@ class Basket(models.Model):
     def get_basket_price(self):
         counter = 0
         for product in self.get_basket_goods():
-            counter = counter + product.quantity * product.product.price
+            counter += product.quantity * product.product.price
         return counter
 
 
@@ -120,12 +123,8 @@ class Address(models.Model):
 
 
 class Comment(models.Model):
-    MARK_CHOICES = []
-    for i in range(10):
-        MARK_CHOICES.append((i + 1, i + 1))
     user    = models.ForeignKey(User, null=True, editable=False)
     product = models.ForeignKey(Product, editable=False)
-    mark    = models.IntegerField(choices=MARK_CHOICES)
     comment = models.TextField()
     rating  = models.IntegerField(default=0, editable=False)
     date    = models.DateField(auto_now_add=True)
@@ -133,13 +132,22 @@ class Comment(models.Model):
     depth   = models.IntegerField(default=0, editable=False)
 
     def make_path_and_depth(self, parent_id):
-        self.path = str(self.id)
         if Comment.objects.filter(id=parent_id).exists():
-            self.path = '.'.join(Comment.objects.get(id=parent_id).path, self.path)
+            p = Comment.objects.get(id=parent_id)
+            self.path = '{0}.{1}'.format(p.path, p.id)
             self.depth = Comment.objects.get(id=parent_id).depth + 1
 
     def get_responds(self):
-        return Comment.objects.filter(path__startswith=self.path + '.')
+        return Comment.objects.filter(path=self.path + '.' + str(self.id)).order_by('date')
+
+    def get_parent_id(self):
+        return int(self.path.split('.')[-1]) if self.path else 0
+
+
+class Mark(models.Model):
+    MARK_CHOICES = [(i, i) for i in range(1, 11)]
+    mark    = models.IntegerField(choices=MARK_CHOICES)
+    product = models.ForeignKey(Product, editable=False)
 
 
 class Report(models.Model):

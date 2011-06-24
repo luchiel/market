@@ -10,39 +10,16 @@
     Disscussion on product <a href="{% url product product.id %}">{{ product.name }}</a>
 </div>
 
-<div class="data_blocks">
+<script>productIdForTree = {{ product.id }};</script>
 
-<div class="pagination">
-    <span class="step-links">
-        {% if comments.has_previous %}
-            <a href="?page={{ comments.previous_page_number }}">Previous</a>
-        {% endif %}
-
-        <span class="current">
-            [Page {{ comments.number }} of {{ comments.paginator.num_pages }}]
-        </span>
-
-        {% if comments.has_next %}
-            <a href="?page={{ comments.next_page_number }}">Next</a>
-        {% endif %}
-    </span>
-</div>
-
-<div id="comments">
-    <form id="comment_form" hidden="hidden" method="POST">
-    {% csrf_token %}
-        <input hidden="hidden" value="1" name="vote" />
-    </form>
-{% for comment in comments.object_list %}
-<div id="comment{{ comment.id }}">
-    {% include 'single_comment.html' %}
-</div>
-{% endfor %}
-</div>
-
-<div id="comment0" class="comment_blocks">
-</div>
-<input id="add_root_comment" type="submit" onclick="addResponse({{ product.id }}, 0)" value="Add comment" hidden="" />
+<div id="0_div" class="comment_blocks data_blocks">
+    <div id="0_subtree">
+        <form id="comment_form" method="POST">
+        {% csrf_token %}
+            <input type="hidden" value="1" name="vote" />
+        </form>
+    </div>
+    <input id="add_root_comment" type="submit" onclick="addResponse({{ product.id }}, 0)" value="Add comment" />
 </div>
 
 {% endblock content %}

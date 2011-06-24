@@ -1,4 +1,4 @@
-<div class="comment_blocks">
+<div id="{{ comment.id }}_div" class="comment_blocks">
     <table id="{{ comment.id }}_table" class="comment_table">
         <tr>
             <td colspan="2" class="signature_single">
@@ -9,13 +9,9 @@
             </td>
         </tr>
         <tr>
-            <td class="mark_single mark_rate">{{ comment.mark }}</td>
-            <td rowspan="3">{{ comment.comment }}</td>
-        </tr>
-        <tr>
             <td class="mark_rate">
                 {% if request.user and comment.user.id != request.user.id %}
-                    <input type="submit" onclick="changeRating({{ comment.id }})" value="Like!" />
+                    <input type="submit" onclick="changeRating({{ comment.id }})" value="+" />
                 {% endif %}
                 <span id="{{ comment.id }}_rating">(+{{ comment.rating }})</span>
                 <!--
@@ -25,6 +21,7 @@
                 { endif %}
                 -->
             </td>
+            <td rowspan="2">{{ comment.comment }}</td>
         </tr>
         <tr>
             <td class="mark_rate">
@@ -32,4 +29,6 @@
             </td>
         </tr>
     </table>
+    <div id="{{ comment.id}}_subtree" style="margin-left: 40px;">
+    </div>
 </div>

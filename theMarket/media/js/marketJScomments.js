@@ -7,17 +7,29 @@
     );
 }
 
+$(document).ready(function () {
+    $.get(
+        '/theMarket/products/' + productIdForTree + '/get_comments/', $('#comment_form').serialize(),
+        function(data) {
+            var d = data['comment_list'];
+            for(var i = 0; i < d.length; ++i) {
+                $('#' + d[i]['parent'] + '_subtree').append(d[i]['block']);
+            }
+        }
+    );
+});
+
 function addComment(productId) {
     $.post(
         '/theMarket/products/' + productId + '/comments/add_comment/', $('#new_comment').serialize(),
-        //mark, comment, response_to_id
+        //comment, response_to_id
         function(data) {
             if(data['result'] == 'ok') {
                 commentId = $('#response_to_id').val();
-                $('#comment' + commentId).after(data['comment']);
-                //$('#comments').append(data['comment']);
+                $('#' + commentId + '_subtree')
+                    .append(data['comment']);
                 $('#new_comment_table').remove();
-                $('#add_root_comment').attr('hidden', '');
+                $('#add_root_comment').show();
             }
             else {
                 function addErrorListToField(errorField) {
@@ -32,7 +44,6 @@ function addComment(productId) {
                     }
                 }
                 
-                addErrorListToField('mark_error');
                 addErrorListToField('comment_error');
             }
         }
@@ -41,22 +52,23 @@ function addComment(productId) {
 }
 
 function addResponse(productId, commentId) {
-    $('#new_comment_table').remove();
     $.get(
         '/theMarket/products/' + productId + '/comments/add_comment_field/' + commentId + '/',
         $('#comment_form').serialize(),
         function(data) {
-            externalDiv = $('#comment' + commentId);
-            //check later if it does blink
-            externalDiv.attr('hidden', 'hidden').append(data['form']);
-            $('#add_root_comment').attr('hidden', commentId == 0 ? 'hidden': '');
+            $('#new_comment').remove();
+            externalDiv = $('#' + commentId + '_div');
+            externalDiv.hide().append(data['form']);
+            if(commentId == 0)
+                $('#add_root_comment').hide();
+            else
+                $('#add_root_comment').show();
             $('#response_to_id').val(commentId);
-            var widthParam = 40 * data['depth'];
             $('#new_comment_table').css({
-                'margin-left': widthParam//, 'width': 600 - widthParam
+                'margin-left': commentId == 0 ? 0 : 40
             });
-            $('#id_comment').css('width', 450);// - widthParam);
-            externalDiv.attr('hidden', '');
+            $('#id_comment').css('width', 450);
+            externalDiv.show();
         }
     );
 }
@@ -66,7 +78,7 @@ function deleteComment(commentId) {
         '/theMarket/products/comments/' + commentId + '/delete_comment/', $('#comment_form').serialize(),
         function(data) {
             if(data['result'] == 'ok') {
-                $('#' + commentId + '_table').remove();
+                $('#' + commentId + '_div').remove();
             }
             else {
                 alert('You can not delete this comment');

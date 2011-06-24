@@ -1,7 +1,7 @@
 ﻿from django.utils import simplejson as json
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from market.models import User, Category, Product, Basket, Purchased, Address, Comment
+from market.models import User, Category, Product, Basket, Purchased, Address
 from market.forms import MoveForm
 from market.forms import ProductForm, ProductChoiceForm
 from market.shortcuts import direct_to_template

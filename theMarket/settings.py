@@ -95,7 +95,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
 #    'django.contrib.admin',
 #    'django.contrib.admindocs',
-    'django_extensions',
+#    'django_extensions',
     'scheduler',
     'market',
     'django.contrib.webdesign',
