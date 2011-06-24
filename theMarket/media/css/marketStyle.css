@@ -303,7 +303,25 @@ div#edit_category input, input.edit_button
     font-style: italic;
 }
 
-.comment_table
+.comment_toggler
+{
+    background-color: #DDDDDD;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #FFFFFF;
+}
+
+.toggler:hover
+{
+    cursor: pointer;
+}
+
+.toggler
+{
+    padding-left: 4px;
+}
+
+.comment_table, .comment_toggler
 {
     width: 600px;
 }
@@ -317,7 +335,7 @@ div#edit_category input, input.edit_button
     border-collapse: collapse;
     border-color: #FFFFFF;
     
-    padding: 10px;
+    padding: 5px;
     
     vertical-align: top;
 }
@@ -361,4 +379,9 @@ div#edit_category input, input.edit_button
     margin-left: 10px;
     font-weight: normal;
     color: #0000FF;
+}
+
+.tiny span
+{
+    font-size: 12px;
 }

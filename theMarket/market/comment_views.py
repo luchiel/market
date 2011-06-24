@@ -27,6 +27,7 @@ def get_comments(request, product_id):
     comment_list = [{
         'id': comment.id,
         'parent': comment.get_parent_id(),
+        'rating': comment.rating,
         'block': direct_to_template(
             request, 'single_comment.html',
             { 'comment': comment, 'product': product }

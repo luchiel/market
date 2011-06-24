@@ -1,3 +1,7 @@
+<div id="{{ comment.id }}_toggler" class="comment_toggler tiny">
+    <span id="{{ comment.id }}_togglestatus" class="message toggler" onclick="toggleTree({{ comment.id }})">Click to hide</span>
+    <span id="{{ comment.id }}_toggleerror" class="errorlist"></span>
+</div>
 <div id="{{ comment.id }}_div" class="comment_blocks">
     <table id="{{ comment.id }}_table" class="comment_table">
         <tr>

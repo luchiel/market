@@ -1,4 +1,21 @@
-﻿function changeRating(commentId, value) {
+﻿function toggleTree(commentId) {
+    element = $('#' + commentId + '_div');
+    if(element.is(':hidden')) {
+        s = 'Click to hide';
+        p = '-';
+    }
+    else {
+        s = 'Click to show';
+        p = '+';
+    }
+    element.slideToggle(400);
+    //element.toggle();
+    $('#' + commentId + '_togglestatus').html(s);
+}
+
+var BAD_COMMENT = 5;
+
+function changeRating(commentId, value) {
     $('#vote_input').val(value);
     $.post(
         '/theMarket/add_vote/' + commentId + '/', $('#comment_form').serialize(),
@@ -7,6 +24,8 @@
                 $('#' + commentId + '_rating').html('(' + data['rating'] + ')');
                 if(!data['votes_ok'])
                     $('.vote_input').hide();
+                if(parseInt(data['rating']) > BAD_COMMENT)
+                    $('#' + d[i]['id'] + '_toggleerror').html('');
             }
             else if(data['result'] != '') {
                 alert(data['result']);
@@ -22,6 +41,10 @@ $(document).ready(function () {
             var d = data['comment_list'];
             for(var i = 0; i < d.length; ++i) {
                 $('#' + d[i]['parent'] + '_subtree').append(d[i]['block']);
+                if(d[i]['rating'] <= BAD_COMMENT) {
+                    toggleTree(d[i]['id']);
+                    $('#' + d[i]['id'] + '_toggleerror').html('Comment was rated too negatively');
+                }
             }
         }
     );
@@ -85,6 +108,7 @@ function deleteComment(commentId) {
         '/theMarket/products/comments/' + commentId + '/delete_comment/', $('#comment_form').serialize(),
         function(data) {
             if(data['result'] == 'ok') {
+                $('#' + commentId + '_toggler').remove();
                 $('#' + commentId + '_div').remove();
             }
             else {
