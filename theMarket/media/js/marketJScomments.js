@@ -13,7 +13,7 @@
     $('#' + commentId + '_togglestatus').html(s);
 }
 
-var BAD_COMMENT = 5;
+var BAD_COMMENT = 5;//-10
 
 function changeRating(commentId, value) {
     $('#vote_input').val(value);
@@ -73,7 +73,6 @@ function addComment(productId) {
                         ul.addClass('errorlist').appendTo($('#' + errorField + 's'));
                     }
                 }
-                
                 addErrorListToField('comment_error');
             }
         }
@@ -87,18 +86,17 @@ function addResponse(productId, commentId) {
         $('#comment_form').serialize(),
         function(data) {
             $('#new_comment').remove();
-            externalDiv = $('#' + commentId + '_div');
-            externalDiv.hide().append(data['form']);
-            if(commentId == 0)
+            externalDiv = $('#' + commentId + '_subtree');
+            if(commentId == 0) {
                 $('#add_root_comment').hide();
-            else
+                externalDiv.append(data['form']);
+            }
+            else {
                 $('#add_root_comment').show();
+                externalDiv.prepend(data['form']);
+            }
             $('#response_to_id').val(commentId);
-            $('#new_comment_table').css({
-                'margin-left': commentId == 0 ? 0 : 40
-            });
-            $('#id_comment').css('width', 450);
-            externalDiv.show();
+            $('#id_comment').css('width', 500);
         }
     );
 }
