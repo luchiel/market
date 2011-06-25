@@ -1,19 +1,15 @@
 ﻿function toggleTree(commentId) {
     element = $('#' + commentId + '_div');
-    if(element.is(':hidden')) {
+    if(element.is(':hidden'))
         s = 'Click to hide';
-        p = '-';
-    }
-    else {
+    else
         s = 'Click to show';
-        p = '+';
-    }
     element.slideToggle(400);
     //element.toggle();
     $('#' + commentId + '_togglestatus').html(s);
 }
 
-var BAD_COMMENT = 5;//-10
+var BAD_COMMENT = 5;
 
 function changeRating(commentId, value) {
     $('#vote_input').val(value);

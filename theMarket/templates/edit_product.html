@@ -69,6 +69,13 @@
         ?
     {% endif %}
     </p>
+    <form class="field_list" action="{% url product_mark product.id %}" method="POST">
+        {% csrf_token %}
+        <ul>
+            {{ mark_form.as_ul }}
+            <li><input type="submit" value="Vote!" /></li>
+        </ul>
+    </form>
     <p><a class="buttonlike_href" href="{% url comments product.id %}">
     {% if product.get_comment_count > 0 %}Comments ({{ product.get_comment_count }}){% else %}Add comment...{% endif %}
     </a></p>

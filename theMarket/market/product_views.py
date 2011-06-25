@@ -2,8 +2,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from market.models import User, Category, Product, Basket, Purchased, Address
-from market.forms import MoveForm
-from market.forms import ProductForm, ProductChoiceForm
+from market.forms import MoveForm, MarkForm, ProductForm, ProductChoiceForm
 from market.shortcuts import direct_to_template
 from market.image_utils import save_image, remove_image
 
@@ -40,6 +39,7 @@ def product(request, product_id):
             'description': product.description,
         })
     product_form = ProductChoiceForm()
+    mark_form = MarkForm()
     if request.POST and (not request.user or not request.user.is_admin):
         return redirect('product', product_id=product.id)
     msg = ''
@@ -53,8 +53,16 @@ def product(request, product_id):
         msg = 'Data saved'
         
     return direct_to_template(
-        request, 'edit_product.html', {'message': msg, 'product': product, 'form': form, 'product_form': product_form}
+        request, 'edit_product.html', {'message': msg, 'product': product, 'form': form, 'product_form': product_form, 'mark_form': mark_form}
     )
+
+def product_mark(request, product_id):
+    if not request.POST:
+        return redirect('product', product_id=product_id)
+    mark = MarkForm(request.POST)
+    mark.instance.product_id = product_id
+    mark.save()
+    return redirect('product', product_id=product_id)
 
 
 def add_product(request, category_id):

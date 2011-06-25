@@ -108,19 +108,13 @@ def create_report(request, p):
     col_param = int(request.POST.get('detail1', '0'))
     start_date, end_date = get_dates_from_request(request)
 
-    #dataset
-    #print get_query(QUERY_TEMPLATE, row, col)
+    #data
     dataset = Purchased.objects.raw(get_query(QUERY_TEMPLATE, row, col), [start_date, end_date, root_cat.path + '%'])
-
-    #make headers
     row_header = MAKE_HEADER[row](row_param, start_date, end_date, root_cat.path)
     col_header = MAKE_HEADER[col](col_param, start_date, end_date, root_cat.path)
 
-    grid = [[0]]
-
     #fill grid
-    #if not list(dataset):
-    #    return redirect('reports')
+    grid = [[0]]
     dataset = list(dataset)
     i = 0
     if dataset:
@@ -151,10 +145,6 @@ def create_report(request, p):
                 item = dataset[i]
             if i == len(dataset):
                 break
-    #test_output
-    #print grid
-    #print row_header
-    #print col_header
     #output data
     font_name = 'Arial'
     font = ttfonts.TTFont(font_name, os.path.join(os.environ['WINDIR'], 'fonts', 'arial.ttf'))
@@ -298,24 +288,31 @@ def create_histo(request, p):
     dataset = Purchased.objects.raw(get_query(QUERY_TEMPLATE, row, 5), [start_date, end_date, root_cat.path + '%'])
     header = MAKE_HEADER[row](param, start_date, end_date, root_cat.path)
     dataset = list(dataset)
-    current_row = 0
     y = [0]
+    current_row = 0
     for item in dataset:
-        while current_row < len(header) and not CHECK_FOR_CHANGE[row](item, header[current_row], param):
+        while current_row < len(header) - 1 and not CHECK_FOR_CHANGE[row](item, header[current_row], param):
             y.append(0)
             current_row += 1
         y[current_row] += item.quantity
+    while current_row < len(header) - 1:
+        y.append(0)
+        current_row += 1
+    #output
+    plot.clf()
+    plot.cla()
     plot.rcParams['font.sans-serif'] = 'Verdana'
-    #vertical
-    plot.xticks(range(len(header)), [OUTPUT_HEADER[row](param, item) for item in header], rotation=45)
-    plot.bar(range(len(header)), y, align='center')
-    #horizontal
-    #plot.yticks(range(len(header)), [OUTPUT_HEADER[row](param, item) for item in header])
-    #plot.legend([OUTPUT_HEADER[row](param, item) for item in header])
-    #plot.barh(range(len(header)), y, height=0.5, align='center')
-    #switch labels
-    #plot.ylabel(REPORT_CHOICES[row][1])
-    #plot.xlabel('Quantity')
+    #plot.xticks(range(len(header)), [OUTPUT_HEADER[row](param, item) for item in header], rotation=45)
+    #plot.bar(range(len(header)), y, align='center')
+    #plot.xlabel(REPORT_CHOICES[row][1])
+    #plot.ylabel('Quantity')
+
+    plot.yticks(range(len(header)), [OUTPUT_HEADER[row](param, item) for item in header], rotation=45)
+    plot.barh(range(len(header)), y, height=0.5, align='center')
+    #plot.legend([OUTPUT_HEADER[row](param, item) for item in header], loc='left')
+    plot.ylabel(REPORT_CHOICES[row][1])
+    plot.xlabel('Quantity')
+
     plot.title('{0}. Category: {1}, {2}-{3}'.format(
         REPORT_CHOICES[row][1],
         root_cat.name,
@@ -332,6 +329,10 @@ def histogram(request, histogram_index):
     if not Report.objects.get(id=histogram_index).is_completed:
         return HttpResponse('Update page')
     filename = get_histogram_name(histogram_index)
+    print 'ku'
+    if not os.path.exists(filename):
+        return HttpResponse('No file. Strange')
+    print 'kuku'
     wrapper = FileWrapper(open(filename, 'rb'))
     response = HttpResponse(wrapper, content_type='application/png')
     response['Content-Length'] = os.path.getsize(filename)

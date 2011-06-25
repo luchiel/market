@@ -83,7 +83,7 @@ class Product(models.Model):
         #)
         #return marks[0].mark if len(list(marks)) else 0
         m = Mark.objects.filter(product=self).values('mark').annotate(total=Count('id')).order_by('-total')
-        return 0 if not m else m[0].mark
+        return 0 if not m else m[0]['mark']
 
     def get_comments(self):
         return Comment.objects.filter(product=self).order_by('path', 'date')

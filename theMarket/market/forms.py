@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from market.models import User, Address, Comment
+from market.models import User, Address, Comment, Mark
 from market.report_utils import REPORT_CHOICES
 
 
@@ -114,6 +114,11 @@ class AddressForm(ModelForm):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
+
+
+class MarkForm(ModelForm):
+    class Meta:
+        model = Mark
 
 
 class ReportForm(MoveForm):

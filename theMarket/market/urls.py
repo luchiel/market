@@ -29,6 +29,7 @@ urlpatterns += patterns('theMarket.market.product_views',
     url(r'^products/(?P<category_id>\d+)/addproduct/$', 'add_product', name='add_product'),
     url(r'^products/(?P<product_id>\d+)/deleteproduct/$', 'delete_product', name='delete_product'),
     url(r'^products/(?P<product_id>\d+)/$', 'product', name='product'),
+    url(r'^products/(?P<product_id>\d+)/mark/$', 'product_mark', name='product_mark'),
 )
 
 urlpatterns += patterns('theMarket.market.basket_views',
